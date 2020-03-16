@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    tools:context=".POI.PoiSelectType">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratmedium"
+        android:text="POINTS OF INTEREST"
+        android:textColor="@color/darkGreen"
+        android:textSize="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratitalic"
+        android:text="Select what you wish to visit."
+        android:textColor="@color/lightGreen"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:background="@drawable/customshape"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.262">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/customshape"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.10">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+
+                <RelativeLayout
+                    android:layout_width="177dp"
+                    android:layout_height="210dp"
+                    android:layout_marginTop="20dp">
+
+
+                    <TextView
+                        android:id="@+id/restView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="PLACES TO EAT"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/restButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/poiselectshape"
+                        android:fontFamily="@font/montserratmedium"
+                        android:textColor="@color/lightGreen" />
+
+                    <ImageView
+                        android:id="@+id/restImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:translationZ="10dp"
+                        app:srcCompat="@drawable/imglight" />
+
+                    <TextView
+                        android:id="@+id/restView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="Find out where to eat."
+                        android:textSize="12dp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/visitView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="WORTH TO VISIT"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/visitButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/poiselectshape"
+                        android:fontFamily="@font/montserratmedium"
+                        android:textColor="@color/lightGreen" />
+
+                    <ImageView
+                        android:id="@+id/visitImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:translationZ="10dp"
+                        app:srcCompat="@drawable/imglight" />
+
+                    <TextView
+                        android:id="@+id/visitView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="Looking for something new?"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/customshape"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.10">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+
+                <RelativeLayout
+                    android:layout_width="177dp"
+                    android:layout_height="210dp"
+                    android:layout_marginTop="20dp">
+
+
+                    <TextView
+                        android:id="@+id/routesView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="ROUTES"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/routesButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/poiselectshape"
+                        android:fontFamily="@font/montserratmedium"
+                        android:textColor="@color/lightGreen" />
+
+                    <ImageView
+                        android:id="@+id/routesImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:translationZ="10dp"
+                        app:srcCompat="@drawable/imglight" />
+
+                    <TextView
+                        android:id="@+id/routesView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="Nearby cycling routes"
+                        android:textSize="12dp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/activitiesView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="ACTIVITIES"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/activitiesButton"
+                        android:layout_width="fill_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/poiselectshape"
+                        android:fontFamily="@font/montserratmedium"
+                        android:textColor="@color/lightGreen" />
+
+                    <ImageView
+                        android:id="@+id/activitiesImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:translationZ="10dp"
+                        app:srcCompat="@drawable/imglight" />
+
+                    <TextView
+                        android:id="@+id/activitiesView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montserratmedium"
+                        android:text="Nearby events."
+                        android:textSize="12dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

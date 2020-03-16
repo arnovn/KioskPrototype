@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".payment.PaymentSelect"
+    android:background="@color/backgroundColor">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratmedium"
+        android:text="PAYMENT"
+        android:textColor="@color/darkGreen"
+        android:textSize="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/customshape"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.098">
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:textSize="24dp"
+            android:fontFamily="@font/montserratbold"
+            android:textColor="@color/darkGreen"
+            android:id="@+id/paymentSelectTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="How would you like to pay?" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="80dp"
+            android:layout_marginTop="40dp"
+            android:weightSum="2"
+            android:background="@drawable/homescreenbuttonshape">
+
+            <TextView
+                android:id="@+id/textView2"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="Credits:" />
+
+            <TextView
+                android:id="@+id/creditView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratbold"
+                android:textColor="@color/darkGreen"
+                android:background="@drawable/whitebuttonshape"
+                android:gravity="center"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="20dp"
+                android:layout_weight="1"
+                android:text="set credits" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:background="@drawable/homescreenbuttonshape">
+
+            <ImageView
+                android:id="@+id/bikeImage"
+                android:layout_marginVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/bike" />
+
+            <TextView
+                android:id="@+id/bikeNameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:text="Bike type" />
+
+            <TextView
+                android:id="@+id/bikeAmountView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:background="@drawable/whitebuttonshape"
+                android:text="1" />
+
+            <TextView
+                android:id="@+id/bikePriceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratmedium"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical"
+                android:text="Amount eur/h" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoViewPS"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="40dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/montserratmedium"
+            android:textSize="18dp"
+            android:textColor="@color/darkGreen"
+            android:layout_marginTop="20dp"
+            android:text="Setinfotext" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+            android:fontFamily="@font/montserratbold"
+            android:textColor="@color/darkGreen"
+            android:id="@+id/checkoutUsing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Checkout using:"
+            android:layout_marginBottom="20dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="40dp">
+
+            <Button
+                android:id="@+id/creditButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Credit card"
+                android:layout_marginHorizontal="20dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/lightGreen"
+                android:fontFamily="@font/montserratmedium"
+                android:textSize="16dp"
+                android:background="@drawable/confirmbuttonshape"/>
+
+            <Button
+                android:id="@+id/bancontactButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Bancontact"
+                android:layout_marginHorizontal="20dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/lightGreen"
+                android:fontFamily="@font/montserratmedium"
+                android:textSize="16dp"
+                android:background="@drawable/confirmbuttonshape"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="40dp">
+
+
+            <Button
+                android:id="@+id/creditsButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Credits"
+                android:layout_marginHorizontal="20dp"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/lightGreen"
+                android:fontFamily="@font/montserratmedium"
+                android:textSize="16dp"
+
+                android:background="@drawable/confirmbuttonshape"/>
+
+            <Button
+                android:id="@+id/delayedPaymentButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="Delayded"
+                android:paddingHorizontal="10dp"
+                android:textColor="@color/lightGreen"
+                android:fontFamily="@font/montserratmedium"
+                android:textSize="16dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/confirmbuttonshape"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="40dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Sign out"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/lightGreen"
+            android:fontFamily="@font/montserratmedium"
+            android:textSize="16dp"
+            android:layout_marginHorizontal="140dp"
+            android:background="@drawable/confirmbuttonshape"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginAndRegister.MailVerification"
+    android:background="@color/backgroundColor">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratmedium"
+        android:text="VERIFY E-MAIL ADDRESS"
+        android:textColor="@color/darkGreen"
+        android:textSize="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/customshape"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.10">
+
+
+        <TextView
+            android:id="@+id/vEmailText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/homescreenbuttonshape"
+            android:fontFamily="@font/montserratmedium"
+            android:layout_marginHorizontal="120dp"
+            android:paddingVertical="10dp"
+            android:textColor="@color/darkGreen"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:text="Verify your E-mail" />
+
+        <TextView
+            android:id="@+id/vEmailText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lightGreen"
+            android:textSize="14dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center_horizontal"
+            android:text="Please enter the code we just sent you" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/homescreenbuttonshape"
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="80dp">
+
+            <TextView
+                android:id="@+id/codeView1"
+                android:layout_width="40dp"
+                android:paddingVertical="6dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/codeView2"
+                android:gravity="center"
+                android:layout_width="40dp"
+                android:paddingVertical="6dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/codeView3"
+                android:layout_width="40dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/codeView4"
+                android:layout_width="40dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/codeView5"
+                android:layout_width="40dp"
+                android:paddingVertical="6dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/codeView6"
+                android:layout_width="40dp"
+                android:paddingVertical="6dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:background="@drawable/whitebuttonshape"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="60dp"
+            android:layout_marginHorizontal="160dp"
+            android:layout_marginBottom="40dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/entryButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="1" />
+
+                <Button
+                    android:id="@+id/entryButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="2" />
+
+                <Button
+                    android:id="@+id/entryButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="3" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/entryButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="4" />
+
+                <Button
+                    android:id="@+id/entryButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="5" />
+
+                <Button
+                    android:id="@+id/entryButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="6" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/entryButton7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="7" />
+
+                <Button
+                    android:id="@+id/entryButton8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="8" />
+
+                <Button
+                    android:id="@+id/entryButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="9" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/entryButton0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="0" />
+
+                <Button
+                    android:id="@+id/buttonDel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserratmedium"
+                    android:textColor="@color/darkGreen"
+                    android:background="@drawable/morewhiterbuttonshape"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginVertical="8dp"
+                    android:text="DEL" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

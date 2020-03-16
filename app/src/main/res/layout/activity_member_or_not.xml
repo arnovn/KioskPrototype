@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginAndRegister.MemberOrNot"
+    android:background="@color/backgroundColor">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserratmedium"
+        android:text="MEMBER OR NOT"
+        android:textColor="@color/darkGreen"
+        android:textSize="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/customshape"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+
+            <TextView
+                android:id="@+id/memberText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="30dp"
+                android:fontFamily="@font/montserratmedium"
+                android:text="MEMBER"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:translationZ="10dp" />
+
+            <TextView
+                android:id="@+id/rentabiketext2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="120dp"
+                android:fontFamily="@font/montserratmedium"
+                android:text="Already used our services? \n Log in with your account."
+                android:textColor="@color/darkGreen"
+                android:textSize="12dp"
+                android:translationZ="10dp" />
+
+            <Button
+                android:id="@+id/memberbutton"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/homescreenbuttonshape"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:translationZ="1dp" />
+
+            <ImageView
+                android:id="@+id/accountImgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="400dp"
+                android:layout_marginVertical="50dp"
+                android:translationZ="10dp"
+                app:srcCompat="@drawable/account" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/newUserText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="30dp"
+                android:fontFamily="@font/montserratmedium"
+                android:text="NEW USER"
+                android:textColor="@color/darkGreen"
+                android:textSize="20dp"
+                android:translationZ="10dp" />
+
+            <TextView
+                android:id="@+id/newUserText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="120dp"
+                android:fontFamily="@font/montserratmedium"
+                android:text="First time using? Register now so you can use \n our services."
+                android:textColor="@color/darkGreen"
+                android:textSize="12dp"
+                android:translationZ="10dp" />
+
+            <Button
+                android:id="@+id/newUserButton"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/homescreenbuttonshape"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/darkGreen"
+                android:translationZ="1dp" />
+
+            <ImageView
+                android:id="@+id/newUserImgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="400dp"
+                android:layout_marginVertical="50dp"
+                android:translationZ="10dp"
+                app:srcCompat="@drawable/newuser" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
