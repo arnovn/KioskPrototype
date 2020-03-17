@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+import com.example.kioskprototype.adapterView.PhoneDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,12 +31,13 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.DeviceLoginManager;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.DeviceLoginButton;
 import com.facebook.login.widget.LoginButton;
 
 
-public class RegisterFacebook extends AppCompatActivity {
+public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.PhoneDialogListener {
 
     DeviceLoginButton loginButton;
     CallbackManager callbackManager;
@@ -44,11 +46,17 @@ public class RegisterFacebook extends AppCompatActivity {
 
     private String name;
     private String mail;
+    private String phonenumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_facebook);
+
+        AccessToken checkCurrent = AccessToken.getCurrentAccessToken();
+        if(checkCurrent != null){
+            LoginManager.getInstance().logOut();
+        }
 
         final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this.findViewById(android.R.id.content)).getChildAt(0);
 
@@ -91,6 +99,7 @@ public class RegisterFacebook extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             Toast.makeText(getApplicationContext(), "Successfuly retreived login info: " + name + " - " + mail, Toast.LENGTH_SHORT).show();
+                            openPhoneDialog();
                         }
                     });
             Bundle parameters = new Bundle();
@@ -102,10 +111,28 @@ public class RegisterFacebook extends AppCompatActivity {
         }
     }
 
+    public void openPhoneDialog(){
+        PhoneDialog phoneDialog = new PhoneDialog();
+        phoneDialog.show(getSupportFragmentManager(),"One last step..");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void applyTexts(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    @Override
+    public void cancelPressed() {
+        //Implement logic when cancel pressed.
+        Toast.makeText(getApplicationContext(),"Register process canceled, returning to register options",Toast.LENGTH_LONG);
+        LoginManager.getInstance().logOut();
+        this.finish();
     }
 
 }

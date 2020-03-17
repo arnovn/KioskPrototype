@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialogshape">
+
+    <TextView
+        android:id="@+id/phoneInfoFB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/homescreenbuttonshape"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/montserratmedium"
+        android:text="Input phone number" />
+
+    <EditText
+        android:id="@+id/phoneText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone"
+        android:background="@drawable/whitebuttonshape"
+        android:fontFamily="@font/montserratlight1"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="20dp"
+        android:paddingHorizontal="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="80dp"
+        android:layout_marginBottom="40dp">
+
+        <Button
+            android:id="@+id/cancelButtonFB"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/lightGreen"
+            android:fontFamily="@font/montserratmedium"
+            android:layout_height="wrap_content"
+            android:background="@drawable/confirmbuttonshape"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/okButtonFB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserratmedium"
+            android:textColor="@color/lightGreen"
+            android:background="@drawable/confirmbuttonshape"
+            android:layout_weight="1"
+            android:text="Ok" />
+    </LinearLayout>
+</LinearLayout>
