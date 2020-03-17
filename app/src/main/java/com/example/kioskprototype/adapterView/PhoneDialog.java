@@ -39,9 +39,8 @@ public class PhoneDialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 if(!editTextPhone.getText().toString().isEmpty()){
                     listener.applyTexts(editTextPhone.getText().toString());
-                    dialog.dismiss();
                 }else{
-                    Toast.makeText(getContext(),"Phone number empty.", Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(),"Phone number empty.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -50,7 +49,6 @@ public class PhoneDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 listener.cancelPressed();
-                dialog.dismiss();
             }
         });
 
