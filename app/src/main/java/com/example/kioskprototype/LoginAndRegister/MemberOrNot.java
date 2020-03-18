@@ -37,5 +37,14 @@ public class MemberOrNot extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MemberOrNot.this, LoginOptions.class);
+                intent.putExtra("Bike",(Serializable)bikeObject);
+                startActivity(intent);
+            }
+        });
     }
 }

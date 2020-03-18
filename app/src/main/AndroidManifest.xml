@@ -13,11 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity android:name=".LoginAndRegister.LoginOptions"></activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/client_token"/>
-        <activity android:name=".LoginAndRegister.RegisterFacebook"></activity>
+            android:value="@string/client_token" />
+
+        <activity android:name=".LoginAndRegister.RegisterFacebook" />
         <activity android:name=".payment.PaymentSelect" />
         <activity android:name=".InstructionVideo" />
         <activity android:name=".LoginAndRegister.MailVerification" />
