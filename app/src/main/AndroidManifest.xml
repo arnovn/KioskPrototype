@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginAndRegister.LoginOptions"></activity>
+        <activity android:name=".LoginAndRegister.LoginStandardCode"></activity>
+        <activity android:name=".LoginAndRegister.LoginOptions" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

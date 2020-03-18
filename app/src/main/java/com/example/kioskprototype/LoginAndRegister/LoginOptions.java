@@ -10,6 +10,7 @@ import com.example.kioskprototype.R;
 public class LoginOptions extends AppCompatActivity {
 
     Button codeLogin;
+    Button smsLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,5 +18,6 @@ public class LoginOptions extends AppCompatActivity {
         setContentView(R.layout.activity_login_options);
 
         codeLogin = (Button)findViewById(R.id.standardButton);
+        smsLogin = (Button)findViewById(R.id.smsButton);
     }
 }
