@@ -114,7 +114,7 @@ public class OrderConfirmation extends AppCompatActivity {
                     infoString = bikeInfo.getString("info");
                     bikePrice = bikeInfo.getDouble("priceperhour");
 
-                    bikeNameView.setText("Bike" + bikeObject.getId() + bikeType);
+                    bikeNameView.setText("Bike" + bikeObject.getId());
                     pricePerHourView.setText(bikePrice+" euro/min");
                     infoView.setText(infoString);
 
