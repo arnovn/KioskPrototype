@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginAndRegister.LoginStandardCode"></activity>
+        <activity android:name=".Order.CreditDelayedConfirmation"></activity>
+        <activity android:name=".LoginAndRegister.LoginStandardCode" />
         <activity android:name=".LoginAndRegister.LoginOptions" />
 
         <meta-data
@@ -36,7 +37,9 @@
         <activity android:name=".POI.PoiArrayView" />
         <activity android:name=".POI.PoiSelectType" />
         <activity android:name=".StdRegister" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

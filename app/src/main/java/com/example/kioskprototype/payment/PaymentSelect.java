@@ -2,6 +2,7 @@ package com.example.kioskprototype.payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kioskprototype.MainActivity;
+import com.example.kioskprototype.Order.CreditDelayedConfirmation;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
 
@@ -22,6 +25,7 @@ import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URI;
 
 public class PaymentSelect extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class PaymentSelect extends AppCompatActivity {
     Button bancontactButton;
     Button creditsButton;
     Button delayedButton;
+    Button signOutButton;
 
     ABikeObject bikeObject;
     String mail;
@@ -56,11 +61,10 @@ public class PaymentSelect extends AppCompatActivity {
         bancontactButton = (Button)findViewById(R.id.bancontactButton);
         creditsButton = (Button)findViewById(R.id.creditsButton);
         delayedButton = (Button)findViewById(R.id.delayedPaymentButton);
+        signOutButton = (Button)findViewById(R.id.signOutButton);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
         mail = (String)getIntent().getStringExtra("Mail");
-
-        //type = bikeObject.getType();
 
         new ConnectionGetUserPaymentInfo().execute();
 
@@ -68,6 +72,7 @@ public class PaymentSelect extends AppCompatActivity {
         setCreditsButton();
         setBancontactButton();
         setCreditCardButton();
+        setSignOutButton();
     }
 
     public void setDelayedButton(){
@@ -75,7 +80,7 @@ public class PaymentSelect extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(delayedPayment == 0){
-                    Toast.makeText(getApplicationContext(),"Failed: delayed payment not set for your account.",Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"Failed: delayed payment not set for your account.",Toast.LENGTH_SHORT).show();
                 }else{
                     //Handle delayed payment.
                 }
@@ -88,9 +93,14 @@ public class PaymentSelect extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(credits < 5.0){
-                    Toast.makeText(getApplicationContext(),"Insufficient credits, has to be at least 5 euro", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"Insufficient credits, has to be at least 5 euro", Toast.LENGTH_SHORT).show();
                 }else{
                     //Handle credit payment.
+                    Intent intent = new Intent(PaymentSelect.this, CreditDelayedConfirmation.class);
+                    intent.putExtra("Bike",(Serializable)bikeObject);
+                    intent.putExtra("Type", 1);
+                    intent.putExtra("Mail", mail);
+                    startActivity(intent);
                 }
             }
         });
@@ -114,12 +124,20 @@ public class PaymentSelect extends AppCompatActivity {
         });
     }
 
+    public void setSignOutButton(){
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PaymentSelect.this, MainActivity.class));
+            }
+        });
+    }
+
     class ConnectionGetUserPaymentInfo extends AsyncTask<String, String, String> {
         String result ="";
         @Override
         protected String doInBackground(String... strings) {
             try{
-                mail = "arnovanneste96@gmail.com";
                 String host = "http://10.0.2.2/getuserpaymentinfo.php?mail='"+ mail+"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
