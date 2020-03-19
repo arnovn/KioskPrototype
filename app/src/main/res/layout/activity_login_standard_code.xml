@@ -345,7 +345,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/confirmButton2"
+                android:id="@+id/loginButtonStd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

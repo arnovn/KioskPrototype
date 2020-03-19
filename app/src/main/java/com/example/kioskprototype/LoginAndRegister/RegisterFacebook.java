@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 
 import org.apache.http.HttpResponse;
@@ -55,6 +57,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
     private String mail;
     private String phonenumber;
     private ABikeObject bikeObject;
+    String code;
 
     PhoneDialog phoneDialog;
 
@@ -244,11 +247,11 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
     }
 
     class ConnectionNewUserToDatabaseFB extends AsyncTask<String, String, String>{
-        String code = generateRandomNumber();
         String result = "";
         @Override
         protected String doInBackground(String... strings) {
             try{
+                code = generateRandomNumber();
                 name = name.replaceAll("\\s","");
                 System.out.println("We here 2");
                 String host = "http://10.0.2.2/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code=" + code;
@@ -286,12 +289,11 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
                 if(success == 1){
                     JSONArray userDetails = jsonResult.getJSONArray("message");
                     JSONObject userDetail = userDetails.getJSONObject(0);
-                    Toast.makeText(getApplicationContext(),"We here 5", Toast.LENGTH_SHORT).show();
                     int id = userDetail.getInt("id");
                     String name = userDetail.getString("name");
                     System.out.println("Success");
                     Toast.makeText(getApplicationContext(),"User successfully registered.\n \n  User: " + id + " : " + name,Toast.LENGTH_LONG).show();
-                    toPaymentWindow();
+                    sendCode();
 
                 }else if(success == 0){
                     Toast.makeText(getApplicationContext(),"Registration failed...",Toast.LENGTH_SHORT).show();
@@ -301,6 +303,31 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
                 e.printStackTrace();
             }
         }
+    }
+
+    public void sendCode(){
+        final String loginCode = code;
+        Runnable mailRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GmailSender sender = new GmailSender("wowkioskmail@gmail.com",
+                            "kioskmail123");
+                    sender.sendMail("WOW kiosk Verification mail",
+                            "Hello "+ name +"! Welcome at WOW solutions bike rental service.\n \n" +
+                                    "Your LOGIN code is:" + loginCode +". "
+                                    + "\n -> This code is used to login to the kiosk and the bikes."
+                                    +"\n \n Enjoy your ride!",
+                            "wowkioskmail@gmail.com", mail);
+                } catch (Exception e) {
+                    Log.e("SendMail", e.getMessage(), e);
+                    System.out.println("The exception :" + e);
+                }
+            }
+        };
+        Thread mailThread = new Thread(mailRunnable);
+        mailThread.start();
+        toPaymentWindow();
     }
 
     public void toPaymentWindow(){
