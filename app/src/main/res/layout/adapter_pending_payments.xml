@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="90"
+    android:background="@drawable/whitebuttonshape">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="56dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:srcCompat="@drawable/bike" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:weightSum="15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+            <TextView
+                android:id="@+id/bikeTypeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratmedium"
+                android:text="Bike type"
+                android:textColor="@color/darkGreen"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/startDateView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserratitalic"
+                android:text="date"
+                android:textColor="@color/darkGreen"
+                android:textSize="14dp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/timeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserratmedium"
+            android:text="Time driven"
+            android:textColor="@color/darkGreen"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tobePaidView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserratmedium"
+            android:text="Price"
+            android:textColor="@color/darkGreen"
+            android:textSize="18dp" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
