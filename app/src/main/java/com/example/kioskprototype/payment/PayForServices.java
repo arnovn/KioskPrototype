@@ -6,12 +6,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kioskprototype.R;
+import com.example.kioskprototype.adapterView.ExtraCreditAdapter;
+import com.example.kioskprototype.adapterView.ExtraCreditObject;
 import com.example.kioskprototype.adapterView.PendingPaymentAdapter;
 import com.example.kioskprototype.adapterView.PendingPaymentObject;
 
@@ -41,9 +44,14 @@ public class PayForServices extends AppCompatActivity {
     TextView amountView;
     TextView depthView;
     ListView listView;
+    ListView creditsListView;
 
     PendingPaymentAdapter adapter;
+    ExtraCreditAdapter creditAdapter;
     ArrayList<PendingPaymentObject> pendingPaymentObjects;
+    ArrayList<ExtraCreditObject> extraCreditObjects;
+
+    Button add5Credits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +59,18 @@ public class PayForServices extends AppCompatActivity {
         setContentView(R.layout.activity_pay_for_services);
 
         pendingPaymentObjects = new ArrayList<>();
+        extraCreditObjects = new ArrayList<>();
         adapter = new PendingPaymentAdapter(this,R.layout.adapter_pending_payments,pendingPaymentObjects);
+        creditAdapter = new ExtraCreditAdapter(this, R.layout.adapter_extra_credits, extraCreditObjects);
         listView = (ListView)findViewById(R.id.paymentList);
+        creditsListView = (ListView)findViewById(R.id.extraCreditList);
+        creditsListView.setAdapter(creditAdapter);
 
         amount = 0;
         userId = getIntent().getIntExtra("Id", 0);
 
         setTextViews();
+        setButtons();
 
         new ConnectionGetUserCredits().execute();
 
@@ -74,6 +87,20 @@ public class PayForServices extends AppCompatActivity {
             amountView.setText(amount + " euro");
             depthView.setText("You have " + amount +"depths.");
         }
+    }
+
+    public void setButtons(){
+        add5Credits = (Button)findViewById(R.id.fiveEuroButton);
+
+        add5Credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                ExtraCreditObject extraCredit = new ExtraCreditObject(date, 5);
+                extraCreditObjects.add(extraCredit);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void setTextViews(){
