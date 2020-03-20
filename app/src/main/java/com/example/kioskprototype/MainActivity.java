@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.kioskprototype.LoginAndRegister.LoginOptions;
 import com.example.kioskprototype.LoginAndRegister.MailVerification;
 import com.example.kioskprototype.POI.PoiSelectType;
 
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, StdRegister.class));
+                Intent intent = new Intent(MainActivity.this, LoginOptions.class);
+                intent.putExtra("Type", "PayForServices");
+                startActivity(intent);
             }
         });
 

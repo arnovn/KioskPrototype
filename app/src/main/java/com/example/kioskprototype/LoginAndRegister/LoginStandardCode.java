@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.payment.PayForServices;
 import com.example.kioskprototype.payment.PaymentSelect;
 
 import org.apache.http.HttpResponse;
@@ -33,6 +34,7 @@ import java.util.List;
 public class LoginStandardCode extends AppCompatActivity {
 
     String enteredCode;
+    String type;
 
     TextView firstEntry;
     TextView secondEntry;
@@ -70,6 +72,7 @@ public class LoginStandardCode extends AppCompatActivity {
         entryList = new ArrayList<>();
 
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
+        type = (String)getIntent().getStringExtra("Type");
 
         editMailTextStd = (EditText)findViewById(R.id.editEmailText);
 
@@ -283,6 +286,13 @@ public class LoginStandardCode extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void toPayForServicesWindow(){
+        //Intent which goes to the pay for services class.
+        Intent intent = new Intent(LoginStandardCode.this, PayForServices.class);
+        intent.putExtra("Mail", mail);
+        startActivity(intent);
+    }
+
     class ConnectionGetUserCode extends AsyncTask<String, String, String> {
         String result = "";
         @Override
@@ -325,7 +335,12 @@ public class LoginStandardCode extends AppCompatActivity {
                     //Check if codes match
                     if(checkCodesMatch()){
                         //Successfull!
-                         toPaymentWindow();
+                        if(type.equals("RentABike")){
+                            toPaymentWindow();
+                        }else if(type.equals("PayForServices")){
+                            toPayForServicesWindow();
+                        }
+
                     }else{
                         //Unsuccesfull.
                         Toast.makeText(getApplicationContext(), "Failed: codes don't match", Toast.LENGTH_LONG).show();

@@ -18,6 +18,7 @@ public class MemberOrNot extends AppCompatActivity {
     Button registerButton;
     Button loginButton;
     ABikeObject bikeObject;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MemberOrNot extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MemberOrNot.this, LoginOptions.class);
                 intent.putExtra("Bike",(Serializable)bikeObject);
+                intent.putExtra("Type","RentABike");
                 startActivity(intent);
             }
         });

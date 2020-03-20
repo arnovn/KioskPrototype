@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FinalScreen"></activity>
+        <activity android:name=".payment.PayForServices"></activity>
+        <activity android:name=".FinalScreen" />
         <activity android:name=".Order.CreditDelayedConfirmation" />
         <activity android:name=".LoginAndRegister.LoginStandardCode" />
         <activity android:name=".LoginAndRegister.LoginOptions" />

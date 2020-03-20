@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
@@ -16,6 +17,7 @@ public class LoginOptions extends AppCompatActivity {
     Button codeLogin;
     Button smsLogin;
     ABikeObject bikeObject;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class LoginOptions extends AppCompatActivity {
         setContentView(R.layout.activity_login_options);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
+        type = (String)getIntent().getStringExtra("Type");
 
         codeLogin = (Button)findViewById(R.id.standardButton);
         smsLogin = (Button)findViewById(R.id.smsButton);
@@ -32,6 +35,7 @@ public class LoginOptions extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginOptions.this, LoginStandardCode.class);
                 intent.putExtra("Bike", bikeObject);
+                intent.putExtra("Type", type);
                 startActivity(intent);
             }
         });
