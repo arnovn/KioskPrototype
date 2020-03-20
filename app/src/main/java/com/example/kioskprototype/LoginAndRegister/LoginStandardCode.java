@@ -61,6 +61,7 @@ public class LoginStandardCode extends AppCompatActivity {
     String mail;
     String mailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String code;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,6 +291,7 @@ public class LoginStandardCode extends AppCompatActivity {
         //Intent which goes to the pay for services class.
         Intent intent = new Intent(LoginStandardCode.this, PayForServices.class);
         intent.putExtra("Mail", mail);
+        intent.putExtra("Id", id);
         startActivity(intent);
     }
 
@@ -331,6 +333,7 @@ public class LoginStandardCode extends AppCompatActivity {
                     JSONObject codeinfo = codeinfos.getJSONObject(0);
 
                     code = codeinfo.getString("code");
+                    id = codeinfo.getInt("id");
 
                     //Check if codes match
                     if(checkCodesMatch()){
