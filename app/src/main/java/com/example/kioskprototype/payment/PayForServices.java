@@ -2,17 +2,22 @@ package com.example.kioskprototype.payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kioskprototype.BikeSelect;
+import com.example.kioskprototype.Order.OrderConfirmation;
 import com.example.kioskprototype.R;
+import com.example.kioskprototype.adapterView.ABikeObject;
 import com.example.kioskprototype.adapterView.ExtraCreditAdapter;
 import com.example.kioskprototype.adapterView.ExtraCreditObject;
 import com.example.kioskprototype.adapterView.PendingPaymentAdapter;
@@ -27,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -40,6 +46,7 @@ public class PayForServices extends AppCompatActivity {
     double credits;
 
     double amount;
+    double extraCredits;
 
     TextView amountView;
     TextView depthView;
@@ -52,6 +59,9 @@ public class PayForServices extends AppCompatActivity {
     ArrayList<ExtraCreditObject> extraCreditObjects;
 
     Button add5Credits;
+    Button add10Credits;
+    Button add15Credits;
+    Button add20Credits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +77,12 @@ public class PayForServices extends AppCompatActivity {
         creditsListView.setAdapter(creditAdapter);
 
         amount = 0;
+        extraCredits = 0;
         userId = getIntent().getIntExtra("Id", 0);
 
         setTextViews();
         setButtons();
+        setCreditListViewListener();
 
         new ConnectionGetUserCredits().execute();
 
@@ -89,8 +101,35 @@ public class PayForServices extends AppCompatActivity {
         }
     }
 
+    public void setCreditListViewListener(){
+        creditsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"Clicked", Toast.LENGTH_SHORT);
+                ExtraCreditObject creditObject = creditAdapter.getItem(position);
+                extraCredits = extraCredits - creditObject.getAmount();
+                extraCreditObjects.remove(position);
+                creditAdapter.notifyDataSetChanged();
+                updateAmountView();
+            }
+        });
+    }
+
+    public void updateAmountView(){
+        double totalAmount = 0;
+        if(credits < 0){
+            totalAmount = extraCredits - credits;
+        }else{
+            totalAmount = extraCredits;
+        }
+        amountView.setText(totalAmount + " euro");
+    }
+
     public void setButtons(){
         add5Credits = (Button)findViewById(R.id.fiveEuroButton);
+        add10Credits = (Button)findViewById(R.id.tenEuroButton);
+        add15Credits = (Button)findViewById(R.id.fifteenEuroButton);
+        add20Credits = (Button)findViewById(R.id.twentyEuroButton);
 
         add5Credits.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +137,45 @@ public class PayForServices extends AppCompatActivity {
                 Date date = new Date();
                 ExtraCreditObject extraCredit = new ExtraCreditObject(date, 5);
                 extraCreditObjects.add(extraCredit);
+                creditAdapter.notifyDataSetChanged();
+                extraCredits = extraCredits + 5;
+                updateAmountView();
+            }
+        });
+
+        add10Credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                ExtraCreditObject extraCredit = new ExtraCreditObject(date, 10);
+                extraCreditObjects.add(extraCredit);
                 adapter.notifyDataSetChanged();
+                extraCredits = extraCredits + 10;
+                updateAmountView();
+            }
+        });
+
+        add15Credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                ExtraCreditObject extraCredit = new ExtraCreditObject(date, 15);
+                extraCreditObjects.add(extraCredit);
+                adapter.notifyDataSetChanged();
+                extraCredits = extraCredits + 15;
+                updateAmountView();
+            }
+        });
+
+        add20Credits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date date = new Date();
+                ExtraCreditObject extraCredit = new ExtraCreditObject(date, 20);
+                extraCreditObjects.add(extraCredit);
+                adapter.notifyDataSetChanged();
+                extraCredits = extraCredits + 20;
+                updateAmountView();
             }
         });
     }
@@ -219,7 +296,8 @@ public class PayForServices extends AppCompatActivity {
 
                     //Set listview to max height
                 }else if(success == 0){
-                    Toast.makeText(getApplicationContext(),"Failed: credits couldn't be retreived.",Toast.LENGTH_SHORT).show();
+                    listView.setAdapter(adapter);
+                    Toast.makeText(getApplicationContext(),"No pending payments.",Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();

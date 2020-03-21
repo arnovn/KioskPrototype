@@ -71,12 +71,13 @@
             android:textColor="@color/darkGreen"
             android:textSize="18dp" />
 
-        <Button
+        <TextView
             android:id="@+id/deleteButton"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="5"
             android:gravity="center"
+            android:focusable="false"
             android:fontFamily="@font/montserratmedium"
             android:background="@drawable/confirmbuttonshape"
             android:text="DEL"
