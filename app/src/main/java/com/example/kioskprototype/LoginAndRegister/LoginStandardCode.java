@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kioskprototype.AccountSettings.AccountSettings;
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
@@ -295,6 +296,23 @@ public class LoginStandardCode extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void toAccountSettingsWindow(){
+        Intent intent = new Intent(LoginStandardCode.this, AccountSettings.class);
+        intent.putExtra("Mail", mail);
+        intent.putExtra("Id", id);
+        startActivity(intent);
+    }
+
+    public void toNextWindow(){
+        if(type.equals("RentABike")){
+            toPaymentWindow();
+        }else if(type.equals("PayForServices")){
+            toPayForServicesWindow();
+        }else if(type.equals("AccountSettings")){
+            toAccountSettingsWindow();
+        }
+    }
+
     class ConnectionGetUserCode extends AsyncTask<String, String, String> {
         String result = "";
         @Override
@@ -338,11 +356,7 @@ public class LoginStandardCode extends AppCompatActivity {
                     //Check if codes match
                     if(checkCodesMatch()){
                         //Successfull!
-                        if(type.equals("RentABike")){
-                            toPaymentWindow();
-                        }else if(type.equals("PayForServices")){
-                            toPayForServicesWindow();
-                        }
+                        toNextWindow();
 
                     }else{
                         //Unsuccesfull.

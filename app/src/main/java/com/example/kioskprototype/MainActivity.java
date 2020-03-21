@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     Button payButton;
     Button settingsButton;
 
-    Button toCurrent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        toCurrent = (Button)findViewById(R.id.jumpToCurrentScreen);
-
-        toCurrent.setOnClickListener(new View.OnClickListener() {
+        settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, InstructionVideo.class));
+                Intent intent = new Intent(MainActivity.this, LoginOptions.class);
+                intent.putExtra("Type", "AccountSettings");
+                startActivity(intent);
             }
         });
     }
