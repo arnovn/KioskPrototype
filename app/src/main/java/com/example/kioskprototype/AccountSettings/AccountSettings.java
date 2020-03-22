@@ -2,8 +2,10 @@ package com.example.kioskprototype.AccountSettings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +44,33 @@ public class AccountSettings extends AppCompatActivity {
         mail = getIntent().getStringExtra("Mail");
         id = getIntent().getIntExtra("Id",0);
 
+        initTextViews();
+        initButtons();
+        setButtonListeners();
+
+        new ConnectionGetNameAndCredits().execute();
+    }
+
+    public void initTextViews(){
         welcomeView = (TextView)findViewById(R.id.accountSettingTitle);
         creditView = (TextView)findViewById(R.id.creditsWindow);
+    }
+
+    public void initButtons(){
         pastactivitiesButton = (Button)findViewById(R.id.pastActivityButton);
         membercardButton = (Button)findViewById(R.id.membercardButton);
         newLoginButton = (Button)findViewById(R.id.requestNewUserCode);
+    }
 
-        new ConnectionGetNameAndCredits().execute();
+    public void setButtonListeners(){
+        pastactivitiesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountSettings.this, PastActivities.class);
+                intent.putExtra("Id", id);
+                startActivityForResult(intent,0);
+            }
+        });
     }
 
     public void setTextViews(){

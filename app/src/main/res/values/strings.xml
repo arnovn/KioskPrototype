@@ -2,4 +2,10 @@
     <string name="app_name">KioskPrototype</string>
     <string name="facebook_app_id">3299183700105486</string>
     <string name="client_token">5fcb0c39dbae5cc40a55705c54c5f067</string>
+    <string-array name="entrylist">
+        <item>All</item>
+        <item>Last month</item>
+        <item>Last week</item>
+        <item>Today</item>
+    </string-array>
 </resources>
