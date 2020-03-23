@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AccountSettings.PastActivities"></activity>
+        <activity android:name=".RequestMemberCard"></activity>
+        <activity android:name=".AccountSettings.PastActivities" />
         <activity android:name=".AccountSettings.AccountSettings" />
         <activity android:name=".payment.PayForServices" />
         <activity android:name=".FinalScreen" />
