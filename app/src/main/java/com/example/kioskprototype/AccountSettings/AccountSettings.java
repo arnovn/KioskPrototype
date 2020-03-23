@@ -1,7 +1,5 @@
 package com.example.kioskprototype.AccountSettings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kioskprototype.LoginAndRegister.MailVerification;
-import com.example.kioskprototype.LoginAndRegister.RegisterStandard;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 
@@ -25,7 +23,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Random;
 
@@ -85,6 +82,14 @@ public class AccountSettings extends AppCompatActivity {
                 newCode = generateNewCode();
                 new ConnectionUpdateCode().execute();
                 sendCodeMail();
+            }
+        });
+
+        membercardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountSettings.this, RequestMemberCard.class);
+                startActivityForResult(intent,0);
             }
         });
     }
