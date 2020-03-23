@@ -22,7 +22,6 @@ public class ExtraCreditAdapter extends ArrayAdapter<ExtraCreditObject> {
     private Context mContext;
     private int mResource;
 
-    TextView timeView;
     TextView amountView;
     Button deleteButton;
 
@@ -43,10 +42,8 @@ public class ExtraCreditAdapter extends ArrayAdapter<ExtraCreditObject> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);
 
-        timeView = (TextView)convertView.findViewById(R.id.startDateView);
         amountView = (TextView)convertView.findViewById(R.id.amountView);
 
-        timeView.setText(date.toString());
         amountView.setText("€" + amount);
 
         return convertView;

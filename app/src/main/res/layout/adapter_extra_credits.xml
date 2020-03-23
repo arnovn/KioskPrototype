@@ -41,14 +41,7 @@
                 android:textColor="@color/darkGreen"
                 android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/startDateView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserratitalic"
-                android:text="date"
-                android:textColor="@color/darkGreen"
-                android:textSize="14dp" />
+
         </LinearLayout>
         <TextView
             android:id="@+id/timeView"

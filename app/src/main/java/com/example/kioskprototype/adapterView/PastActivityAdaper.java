@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.kioskprototype.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +49,12 @@ public class PastActivityAdaper extends ArrayAdapter<PastActivityObject> {
         TextView amountPayedText = (TextView)convertView.findViewById(R.id.payedViewPA);
 
         bikeNameText.setText(activityObject.getBikeName());
-        orderDateText.setText(activityObject.getOrderDate().toString());
+
+        String pattern = "dd-MM-yy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String simpleOrderDate = simpleDateFormat.format(orderdate);
+
+        orderDateText.setText(simpleOrderDate);
         timeRentedText.setText(activityObject.getDuration());
         tobePaidText.setText("€" + activityObject.getAmount());
         amountPayedText.setText("€" + activityObject.getAmountpayed());

@@ -75,16 +75,16 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
     }
 
     public void setTime(List timeList){
-        if(!timeList.get(3).toString().equals(0)){
+        if(!timeList.get(3).toString().equals("0")){
             String time = timeList.get(3).toString() + "d " + timeList.get(2) + "h" + timeList.get(1) + "min " + timeList.get(0) + "s";
             timeDriven.setText(time);
-        }else if(!timeList.get(2).toString().equals(0)){
+        }else if(!timeList.get(2).toString().equals("0")){
             String time = timeList.get(2) + "h" + timeList.get(1) + "min " + timeList.get(0) + "s";
             timeDriven.setText(time);
-        }else if(!timeList.get(1).toString().equals(0)){
+        }else if(!timeList.get(1).toString().equals("0")){
             String time = timeList.get(1) + "min " + timeList.get(0) + "s";
             timeDriven.setText(time);
-        }else if(!timeList.get(0).toString().equals(0)){
+        }else if(!timeList.get(0).toString().equals("0")){
             String time = timeList.get(0) + "s";
             timeDriven.setText(time);
         }else{

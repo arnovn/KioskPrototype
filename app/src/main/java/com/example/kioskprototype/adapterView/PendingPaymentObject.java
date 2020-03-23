@@ -71,7 +71,7 @@ public class PendingPaymentObject implements Serializable {
     }
 
     public ArrayList getTimeRented(){
-        long totalTime = startRent.getTime() - endRent.getTime();
+        long totalTime = endRent.getTime() - startRent.getTime();
         long diffSeconds = totalTime / 1000 % 60;
         long diffMinutes = totalTime / (60 * 1000) % 60;
         long diffHours = totalTime / (60 * 60 * 1000) % 24;
