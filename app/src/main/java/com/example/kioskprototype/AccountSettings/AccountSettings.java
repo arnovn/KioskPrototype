@@ -1,5 +1,6 @@
 package com.example.kioskprototype.AccountSettings;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.MailSender.GmailSender;
@@ -33,11 +35,13 @@ public class AccountSettings extends AppCompatActivity {
     Button pastactivitiesButton;
     Button membercardButton;
     Button newLoginButton;
+    Button signOutButton;
 
     String mail;
     String name;
     String newCode;
     int id;
+    final int RESULT_FAILED = 2;
     double credits;
 
     @Override
@@ -60,10 +64,57 @@ public class AccountSettings extends AppCompatActivity {
         creditView = (TextView)findViewById(R.id.creditsWindow);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AlertDialog alertDialog;
+        if(requestCode == 0){
+            switch (resultCode){
+                case RESULT_CANCELED:
+                    alertDialog = new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("REQUEST CANCELED")
+                            .setMessage("Your request has been canceled.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+
+                    break;
+                case RESULT_OK:
+                    alertDialog = new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("REQUEST SUCCESFULL")
+                            .setMessage("Your card will be sent to you within 5 working days.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                    break;
+                case RESULT_FAILED:
+                    alertDialog = new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("REQUEST FAILED")
+                            .setMessage("Something went wrong during the request, try again later.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                    break;
+            }
+        }
+    }
+
     public void initButtons(){
         pastactivitiesButton = (Button)findViewById(R.id.pastActivityButton);
         membercardButton = (Button)findViewById(R.id.membercardButton);
         newLoginButton = (Button)findViewById(R.id.requestNewUserCode);
+        signOutButton = (Button)findViewById(R.id.signOutButton);
     }
 
     public void setButtonListeners(){
@@ -72,7 +123,7 @@ public class AccountSettings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AccountSettings.this, PastActivities.class);
                 intent.putExtra("Id", id);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -89,7 +140,16 @@ public class AccountSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AccountSettings.this, RequestMemberCard.class);
+                intent.putExtra("Id",id);
+                intent.putExtra("Mail", mail);
                 startActivityForResult(intent,0);
+            }
+        });
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
