@@ -89,6 +89,10 @@ public class AccountSettings extends AppCompatActivity {
      * Code returned by RequestMemberCard activity if the process of requesting a new membercard failed.
      */
     final int RESULT_FAILED = 2;
+
+    /**
+     * Credits of the user logged in at the Kiosk.
+     */
     double credits;
 
     /**
