@@ -314,7 +314,7 @@ public class AccountSettings extends AppCompatActivity {
         /**
          * Method in charge of handling the result gathered from the database.
          * @param s
-         *          Parameters passed when the AsynTask has finished.
+         *          Parameters passed when the AsyncTask has finished.
          */
         @Override
         protected void onPostExecute(String s) {
