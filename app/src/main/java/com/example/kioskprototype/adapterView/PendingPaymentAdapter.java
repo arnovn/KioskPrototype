@@ -1,5 +1,6 @@
 package com.example.kioskprototype.adapterView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,34 +13,71 @@ import androidx.annotation.Nullable;
 
 import com.example.kioskprototype.R;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Custon ArrayAdapter class for PendingPaymentObjects
+ */
 public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
 
-    private static final String TAG = "paymentAdapter";
+    /**
+     * Current state of the application.
+     */
     private Context mContext;
+
+    /**
+     * Layout resource of the adapter
+     */
     private int mResource;
+
+    /**
+     * Converter type(int) to type(String)
+     */
     private TypeConverter converter;
-    DateFormat df;
 
-    TextView bikeType;
-    TextView startDate;
-    TextView timeDriven;
-    TextView priceStillToBePaidView;
+    /**
+     * DateFormat for converting Dates to another format
+     */
+    private DateFormat df;
 
-    public PendingPaymentAdapter(@NonNull Context context, int resource, List<PendingPaymentObject> bikes) {
-        super(context, resource, bikes);
+    /**
+     * Textview which visualizes the time a user has driven for a certain order.
+     */
+    private TextView timeDriven;
+
+    /**
+     * Constructor of PendingPaymentAdapter
+     * @param context
+     *              Current context of the application
+     * @param resource
+     *              Layout resource passed to the adapter
+     * @param paymentObjects
+     *              List containing the elements which need to be visualized on the UI layer
+     */
+    @SuppressLint("SimpleDateFormat")
+    public PendingPaymentAdapter(@NonNull Context context, int resource, List<PendingPaymentObject> paymentObjects) {
+        super(context, resource, paymentObjects);
         converter = new TypeConverter();
         mContext = context;
         mResource = resource;
         df = new SimpleDateFormat("dd--MM-yyyy");
     }
 
+    /**
+     * Returns the View that displays the data (PastActivityObject) at the specified position (based on the list passed at the constructor
+     * @param position
+     *              Position inside the dataset
+     * @param convertView
+     *              Example view layout which will  be implemented in the adapter
+     * @param parent
+     *              ViewGroup in which the convertView will be visualized.
+     * @return
+     *              Returns the ConvertView at of the object at the given position in the dataset.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -59,10 +97,10 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);
 
-        bikeType = (TextView)convertView.findViewById(R.id.bikeTypeView);
-        startDate = (TextView)convertView.findViewById(R.id.startDateView);
+        TextView bikeType = (TextView) convertView.findViewById(R.id.bikeTypeView);
+        TextView startDate = (TextView) convertView.findViewById(R.id.startDateView);
         timeDriven = (TextView)convertView.findViewById(R.id.timeView);
-        priceStillToBePaidView = (TextView)convertView.findViewById(R.id.tobePaidView);
+        TextView priceStillToBePaidView = (TextView) convertView.findViewById(R.id.tobePaidView);
 
         String typeString = converter.getType(type);
         bikeType.setText(typeString);
@@ -74,6 +112,15 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
         return  convertView;
     }
 
+    /**
+     * Method in charge of converting the List which has the duration of a rent to a string & setting the timeDriven TextView
+     * @param timeList
+     *              List consisting the duration of one bike rent
+     *               - list[3]: amount of days
+     *               - list[2]: remaining hours
+     *               - list[1]: remaining minutes
+     *               - list[0]: remaining seconds
+     */
     public void setTime(List timeList){
         if(!timeList.get(3).toString().equals("0")){
             String time = timeList.get(3).toString() + "d " + timeList.get(2) + "h" + timeList.get(1) + "min " + timeList.get(0) + "s";
