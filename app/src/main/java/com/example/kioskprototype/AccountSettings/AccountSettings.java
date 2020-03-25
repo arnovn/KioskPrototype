@@ -51,7 +51,7 @@ public class AccountSettings extends AppCompatActivity {
     Button pastactivitiesButton;
 
     /**
-     * Button which will guid the user to the RequestMemberCard activity.
+     * Button which will guide the user to the RequestMemberCard activity.
      */
     Button membercardButton;
 

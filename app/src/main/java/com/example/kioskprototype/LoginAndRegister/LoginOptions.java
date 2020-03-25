@@ -1,43 +1,66 @@
 package com.example.kioskprototype.LoginAndRegister;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
-import com.facebook.login.Login;
 
+/**
+ * Activity which gives the different login options:
+ *  - Standard (code)
+ *  - Sms
+ *  - Membercard
+ *  - Fingerprint
+ */
 public class LoginOptions extends AppCompatActivity {
 
+    /**
+     * Button which takes the user to the LoginStandardCode activity
+     */
     Button codeLogin;
+
+    /**
+     * Button which takes the user to the LoginSms activity
+     */
     Button smsLogin;
+
+    /**
+     * Selected bike, to be rented by the User which wants to log in.
+     */
     ABikeObject bikeObject;
+
+    /**
+     * Type of the bike.
+     */
     String type;
 
+    /**
+     * When the activity is created:
+     *  - Type & bike are retreived from previous activity
+     *  - Buttons are set
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_options);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
-        type = (String)getIntent().getStringExtra("Type");
+        type = getIntent().getStringExtra("Type");
 
-        codeLogin = (Button)findViewById(R.id.standardButton);
-        smsLogin = (Button)findViewById(R.id.smsButton);
+        codeLogin = findViewById(R.id.standardButton);
+        smsLogin = findViewById(R.id.smsButton);
 
-        codeLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginOptions.this, LoginStandardCode.class);
-                intent.putExtra("Bike", bikeObject);
-                intent.putExtra("Type", type);
-                startActivity(intent);
-            }
+        codeLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginOptions.this, LoginStandardCode.class);
+            intent.putExtra("Bike", bikeObject);
+            intent.putExtra("Type", type);
+            startActivity(intent);
         });
     }
 }
