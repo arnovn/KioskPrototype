@@ -1,18 +1,14 @@
 package com.example.kioskprototype.LoginAndRegister;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
@@ -27,57 +23,102 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Random;
 
+/**
+ * Activity in charge of registering a new user the standard way.
+ */
 public class RegisterStandard extends AppCompatActivity {
 
+    /**
+     * EditText object where user can input his name
+     */
     EditText editNameText;
+
+    /**
+     * EditText object where user can input his E-mail address
+     */
     EditText editMailText;
+
+    /**
+     * EditText object where user can input his phone number
+     */
     EditText editPhoneNumer;
 
+    /**
+     * Confirm button when the user has inputted his register data correctly
+     */
     ImageButton confirmButton;
 
+    /**
+     * Bike selected by the user, to be rented
+     */
     ABikeObject bikeObject;
 
+    /**
+     * Name of the user
+     */
     String name;
+
+    /**
+     * E-mail address of the user
+     */
     String mail;
+
+    /**
+     * Phone number of the user
+     */
     String phone;
 
+    /**
+     * Inputted mail will be checked against this pattern to check if mail structure is correct
+     */
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
+    /**
+     * When the activity is created:
+     *  - EditTexts & Button initialized
+     *  - Selected bike from previous activity is retrieved
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_standard);
 
-        editNameText = (EditText)findViewById(R.id.editNameText);
-        editMailText = (EditText)findViewById(R.id.editEmailText);
-        editPhoneNumer = (EditText)findViewById(R.id.editPhoneText);
-        confirmButton = (ImageButton)findViewById(R.id.registerButton1);
+        editNameText = findViewById(R.id.editNameText);
+        editMailText = findViewById(R.id.editEmailText);
+        editPhoneNumer = findViewById(R.id.editPhoneText);
+        confirmButton = findViewById(R.id.registerButton1);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkValidInputData()){
-                    name = editNameText.getText().toString();
-                    name = name.replaceAll("\\s","");
-                    mail = editMailText.getText().toString();
-                    phone = editPhoneNumer.getText().toString();
+        confirmButton.setOnClickListener(v -> {
+            if(checkValidInputData()){
+                name = editNameText.getText().toString();
+                name = name.replaceAll("\\s","");
+                mail = editMailText.getText().toString();
+                phone = editPhoneNumer.getText().toString();
 
-                    startRegistration();
-                };
+                startRegistration();
             }
         });
     }
 
+    /**
+     * We check if the user doesn't already exist inside the MySql Database
+     */
     public void startRegistration(){
         new ConnectionCheckUserData().execute();
     }
 
+    /**
+     * We check if every EditText has been filled in correctly
+     * @return
+     *          True or false
+     */
     public boolean checkValidInputData(){
         if(editNameText.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(),"Name field empty.\nEnter your name please.",Toast.LENGTH_SHORT).show();
@@ -96,8 +137,20 @@ public class RegisterStandard extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Class in charge of checking if the user already exists inside the MySal Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionCheckUserData extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -108,22 +161,28 @@ public class RegisterStandard extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
                 System.out.println("The exception: "+e.getMessage());
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database.
+         * - If the user already exist, we return to RegisterOptions activity
+         * - If new user we go on with the registration
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{
@@ -150,9 +209,21 @@ public class RegisterStandard extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of inserting the new users' data into the MySql Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionNewUserToDatabase extends AsyncTask<String, String, String>{
         String code = generateRandomNumber();
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             try{
@@ -164,22 +235,28 @@ public class RegisterStandard extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             }catch (Exception e) {
                 System.out.println("The exception: "+e.getMessage());
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database.
+         * - If successful we go to the MailVerification activity
+         * - Else we return to the RegisterOptions activity
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             System.out.println(result);
@@ -205,40 +282,47 @@ public class RegisterStandard extends AppCompatActivity {
         }
     }
 
+    /**
+     * We send a mail with a verification code to check if the user actually inputted a valid E-mail address
+     * After this we create the MailVerification activity
+     * @param code
+     *              Verification code
+     */
     public void toVerificationScreen(String code){
         final String verificationCode = generateVerificationCode();
         final String loginCode = code;
-        Runnable mailRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GmailSender sender = new GmailSender("wowkioskmail@gmail.com",
-                            "kioskmail123");
-                    sender.sendMail("WOW kiosk Verification mail",
-                                    "Hello "+ name +"! Welcome at WOW solutions bike rental service.\n \n" +
-                                    "Your verification code is: " + verificationCode
-                                            +"\n \n Your LOGIN code is:" + loginCode +". "
-                                            + "\n -> This code is used to login to the kiosk and the bikes."
-                                            +"\n \n Enjoy your ride!",
-                            "wowkioskmail@gmail.com", mail);
-                } catch (Exception e) {
-                    Log.e("SendMail", e.getMessage(), e);
-                    System.out.println("The exception :" + e);
-                }
+        Runnable mailRunnable = () -> {
+            try {
+                GmailSender sender = new GmailSender("wowkioskmail@gmail.com",
+                        "kioskmail123");
+                sender.sendMail("WOW kiosk Verification mail",
+                                "Hello "+ name +"! Welcome at WOW solutions bike rental service.\n \n" +
+                                "Your verification code is: " + verificationCode
+                                        +"\n \n Your LOGIN code is:" + loginCode +". "
+                                        + "\n -> This code is used to login to the kiosk and the bikes."
+                                        +"\n \n Enjoy your ride!",
+                        "wowkioskmail@gmail.com", mail);
+            } catch (Exception e) {
+                System.out.println("The exception :" + e);
             }
         };
         Thread mailThread = new Thread(mailRunnable);
         mailThread.start();
         Intent intent = new Intent(RegisterStandard.this, MailVerification.class);
         intent.putExtra("VerificationCode", verificationCode);
-        intent.putExtra("Bike",(Serializable) bikeObject);
+        intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail",mail);
         startActivity(intent);
     }
 
+    /**
+     * Login code generator
+     * @return
+     *              User login code
+     */
     public String generateRandomNumber(){
         Random random = new Random();
-        int randomNumber = random.nextInt(9999-0)+0;
+        int randomNumber = random.nextInt(9999);
         if(randomNumber < 10){
             return "000"+randomNumber;
         }else if(randomNumber < 100){
@@ -250,9 +334,14 @@ public class RegisterStandard extends AppCompatActivity {
         }
     }
 
+    /**
+     * Verification code generator
+     * @return
+     *              Verification code
+     */
     public String generateVerificationCode(){
         Random random = new Random();
-        int randomNumber = random.nextInt(999999-0)+0;
+        int randomNumber = random.nextInt(999999);
         if(randomNumber < 10){
             return "00000"+randomNumber;
         }else if(randomNumber < 100){
