@@ -12,23 +12,44 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Class in charge of sending mail using GMAIL
+ */
 public class GmailSender extends Authenticator {
 
-    private String mailhost = "smtp.gmail.com";
+    /**
+     * User of the mail address
+     */
     private String user;
+
+    /**
+     * Password for logging into the GMail account
+     */
     private String password;
+
+    /**
+     * Used to get communication with a secure element
+     */
     private Session session;
 
     static {
         Security.addProvider(new JSSEProvider());
     }
 
+    /**
+     * Constructor of the GMail sender
+     * @param user
+     *              Username of the GMail account
+     * @param password
+     *              Password of the GMail account
+     */
     public GmailSender(String user, String password) {
         this.user = user;
         this.password = password;
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
+        String mailhost = "smtp.gmail.com";
         props.setProperty("mail.host", mailhost);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
@@ -40,10 +61,28 @@ public class GmailSender extends Authenticator {
         session = Session.getDefaultInstance(props, this);
     }
 
+    /**
+     * Repository for the username and password
+     * @return
+     *          The repository
+     */
     protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(user, password);
     }
 
+    /**
+     * Method in charge of sending the mail.
+     * @param subject
+     *              Subject of the mail
+     * @param body
+     *              Body of the mail
+     * @param sender
+     *              Sender of the mail
+     * @param recipients
+     *              Recipients of the mail
+     * @throws Exception
+     *              Exception when something goes wrong
+     */
     public synchronized void sendMail(String subject, String body,
                                       String sender, String recipients) throws Exception {
         MimeMessage message = new MimeMessage(session);
