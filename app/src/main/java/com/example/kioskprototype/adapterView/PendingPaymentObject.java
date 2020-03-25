@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Converts rows from Order-table of MySql Database to Payment objects.
+ */
 public class PendingPaymentObject implements Serializable {
     /**
      * Id of order in MySQL Kiosk_db in bikeorder table
@@ -51,13 +54,21 @@ public class PendingPaymentObject implements Serializable {
      * Constructor for PendingPaymentObjects, param declaration can be found above.
      *
      * @param id
+     *              id of the order from the MySql Database
      * @param bikeid
+     *              bike id of the order from the MySql Database
      * @param startRent
+     *              Start rent date of the order from the MySql Database
      * @param endRent
+     *              End rent of the order from the MySql Database
      * @param amount
+     *              Total cost of the order from the MySql Database
      * @param amountPayed
+     *              Amount already payed of the order from the MySql Database
      * @param type
+     *              Bike type of the order from the MySql Database
      * @param pricePerHour
+     *              Cost per hour of the order from the MySql Database
      */
     public PendingPaymentObject(int id, int bikeid, Date startRent, Date endRent, double amount, double amountPayed, int type, double pricePerHour){
         this.id = id;

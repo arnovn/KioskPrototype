@@ -17,6 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Custom Dialog for confirming the address
+ */
 public class ConfirmAddressDialog extends AppCompatDialogFragment {
 
     /**
@@ -79,7 +82,7 @@ public class ConfirmAddressDialog extends AppCompatDialogFragment {
     }
 
     /**
-     * Attacht the listener to the context of the activity.
+     * Attach the listener to the context of the activity.
      * @param context
      *              Context of the activity whi will create the dialog.
      */
@@ -95,7 +98,7 @@ public class ConfirmAddressDialog extends AppCompatDialogFragment {
     }
 
     /**
-     * Methods to be implemented at the activity which creates this Dialog object to handle:
+     * Methods to be implemented at the activity which creates this Dialog-object to handle:
      *  - Confirmation event
      *  - Cancel event.
      */

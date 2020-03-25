@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Custon ArrayAdapter class for PendingPaymentObjects
@@ -78,29 +79,30 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
      * @return
      *              Returns the ConvertView at of the object at the given position in the dataset.
      */
+    @SuppressLint({"ViewHolder", "SetTextI18n"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        int id = getItem(position).getId();
-        int bikeid = getItem(position).getBikeid();
-        Date startRent = getItem(position).getStartRent();
-        Date endRent = getItem(position).getEndRent();
-        double amount = getItem(position).getAmount();
-        double amountPayed = getItem(position).getAmountPayed();
-        int type = getItem(position).getType();
-        double pricePerHour = getItem(position).getPricePerHour();
+        int id = Objects.requireNonNull(getItem(position)).getId();
+        int bikeid = Objects.requireNonNull(getItem(position)).getBikeid();
+        Date startRent = Objects.requireNonNull(getItem(position)).getStartRent();
+        Date endRent = Objects.requireNonNull(getItem(position)).getEndRent();
+        double amount = Objects.requireNonNull(getItem(position)).getAmount();
+        double amountPayed = Objects.requireNonNull(getItem(position)).getAmountPayed();
+        int type = Objects.requireNonNull(getItem(position)).getType();
+        double pricePerHour = Objects.requireNonNull(getItem(position)).getPricePerHour();
 
         PendingPaymentObject pendingPaymentObject = new PendingPaymentObject(id, bikeid, startRent, endRent, amount, amountPayed, type, pricePerHour);
 
-        ArrayList<Long> timeList = pendingPaymentObject.getTimeRented();
+        ArrayList timeList = pendingPaymentObject.getTimeRented();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);
 
-        TextView bikeType = (TextView) convertView.findViewById(R.id.bikeTypeView);
-        TextView startDate = (TextView) convertView.findViewById(R.id.startDateView);
-        timeDriven = (TextView)convertView.findViewById(R.id.timeView);
-        TextView priceStillToBePaidView = (TextView) convertView.findViewById(R.id.tobePaidView);
+        TextView bikeType = convertView.findViewById(R.id.bikeTypeView);
+        TextView startDate = convertView.findViewById(R.id.startDateView);
+        timeDriven = convertView.findViewById(R.id.timeView);
+        TextView priceStillToBePaidView = convertView.findViewById(R.id.tobePaidView);
 
         String typeString = converter.getType(type);
         bikeType.setText(typeString);
@@ -121,7 +123,8 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
      *               - list[1]: remaining minutes
      *               - list[0]: remaining seconds
      */
-    public void setTime(List timeList){
+    @SuppressLint("SetTextI18n")
+    private void setTime(List timeList){
         if(!timeList.get(3).toString().equals("0")){
             String time = timeList.get(3).toString() + "d " + timeList.get(2) + "h" + timeList.get(1) + "min " + timeList.get(0) + "s";
             timeDriven.setText(time);

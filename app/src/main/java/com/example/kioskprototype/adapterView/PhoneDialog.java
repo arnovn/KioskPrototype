@@ -1,9 +1,7 @@
 package com.example.kioskprototype.adapterView;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +13,30 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.kioskprototype.R;
 
+/**
+ * Custom dialog for inserting a phone number during registration
+ */
 public class PhoneDialog extends AppCompatDialogFragment {
 
+    /**
+     * EditText where phone will be inputted
+     */
     private EditText editTextPhone;
-    private PhoneDialogListener listener;
-    private Button okButton;
-    private Button cancelButton;
 
+    /**
+     * listener so dialog knows when it needs to be instantiated
+     */
+    private PhoneDialogListener listener;
+
+    /**
+     * Instantiation of the Dialog.
+     *  - EditText is set
+     *  - Buttons are set
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     * @return
+     *      Returns the instantiated dialog.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = new Dialog(getActivity());
@@ -29,8 +44,8 @@ public class PhoneDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog_phonenumber, null);
         editTextPhone = view.findViewById(R.id.phoneText);
-        okButton = view.findViewById(R.id.okButtonFB);
-        cancelButton = view.findViewById(R.id.cancelButtonFB);
+        Button okButton = view.findViewById(R.id.okButtonFB);
+        Button cancelButton = view.findViewById(R.id.cancelButtonFB);
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
@@ -56,6 +71,11 @@ public class PhoneDialog extends AppCompatDialogFragment {
         return dialog;
     }
 
+    /**
+     * Attach the listener to the context of the activity.
+     * @param context
+     *              Context of the activity whi will create the dialog.
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -67,6 +87,11 @@ public class PhoneDialog extends AppCompatDialogFragment {
         }
     }
 
+    /**
+     * Methods to be implemented at the activity which creates this Dialog-object to handle:
+     *  - ApplyTexts: when confirm button pressed, the inserted phone number is passed to the activity.
+     *  - Cancel event: when cancelled is pressed the activity calls the cancelPressed() method.
+     */
     public interface PhoneDialogListener{
         void applyTexts(String phonenumber);
         void cancelPressed();

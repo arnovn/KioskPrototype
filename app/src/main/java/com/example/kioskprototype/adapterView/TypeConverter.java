@@ -1,22 +1,41 @@
 package com.example.kioskprototype.adapterView;
 
+import android.annotation.SuppressLint;
+
 import java.util.HashMap;
 import java.util.Map;
 
 //TODO: create map base on database bikeinfo types.
 
-public class TypeConverter {
+/**
+ * Convert int type to String type
+ */
+class TypeConverter {
 
-    Map<Integer, String> typeMapper;
+    /**
+     * Maps ints to Strings
+     */
+    private Map<Integer, String> typeMapper;
 
 
-    public TypeConverter(){
-        typeMapper = new HashMap<Integer, String>();
+    /**
+     * Constructor of TypeConverter
+     */
+    @SuppressLint("UseSparseArrays")
+    TypeConverter(){
+        typeMapper = new HashMap<>();
         typeMapper.put(1, "Electric bike");
         typeMapper.put(2, "Normal bike");
     }
 
-    public String getType(int id){
-        return typeMapper.get(id).toString();
+    /**
+     * Getter of type
+     * @param id
+     *              int type
+     * @return
+     *              String type
+     */
+    String getType(int id){
+        return typeMapper.get(id);
     }
 }
