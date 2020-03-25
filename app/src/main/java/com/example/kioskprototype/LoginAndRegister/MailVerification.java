@@ -1,29 +1,34 @@
 package com.example.kioskprototype.LoginAndRegister;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
 
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
-import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity in charge of verifying the E-mail address of the user during registration.
+ */
 public class MailVerification extends AppCompatActivity {
 
+    /**
+     * Code entered by the user.
+     */
     String enteredCode;
 
+    /**
+     * TextViews visualizing the inputted digits of the user by *
+     * - Giving feedback to the user
+     */
     TextView firstEntry;
     TextView secondEntry;
     TextView thirdEntry;
@@ -31,8 +36,14 @@ public class MailVerification extends AppCompatActivity {
     TextView fifthEntry;
     TextView sixthEntry;
 
+    /**
+     * List of the Entry TextViews
+     */
     List<TextView> entryList;
 
+    /**
+     * Buttons the user can interact with for inputting the verification code.
+     */
     Button deleteButton;
     Button button1;
     Button button2;
@@ -45,34 +56,56 @@ public class MailVerification extends AppCompatActivity {
     Button button9;
     Button button0;
 
+    /**
+     * Selected bike for the new user to rent
+     */
     ABikeObject bikeObject;
+
+    /**
+     * Mail of the user
+     */
     String mail;
+
+    /**
+     * Generated verification code
+     */
     String verificationCode;
 
+    /**
+     * When the activity is created:
+     *  - initialize the buttons & textviews
+     *  - retrieve the bike, mail & verificationcode from previous activity
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail_verification);
 
         enteredCode ="";
-        entryList = new ArrayList<TextView>();
+        entryList = new ArrayList<>();
 
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
-        mail = (String)getIntent().getStringExtra("Mail");
-        verificationCode = (String)getIntent().getStringExtra("VerificationCode");
+        mail = getIntent().getStringExtra("Mail");
+        verificationCode = getIntent().getStringExtra("VerificationCode");
 
         connectTextViews();
         connectButtons();
         setOnClickListeners();
     }
 
+    /**
+     * Connect the TextView Objects to the TextViews in the UI layer.
+     * Add them to the entryList
+     */
     public void connectTextViews(){
-        firstEntry = (TextView)findViewById(R.id.codeView1);
-        secondEntry = (TextView)findViewById(R.id.codeView2);
-        thirdEntry = (TextView)findViewById(R.id.codeView3);
-        fourthEntry = (TextView)findViewById(R.id.codeView4);
-        fifthEntry = (TextView)findViewById(R.id.codeView5);
-        sixthEntry = (TextView)findViewById(R.id.codeView6);
+        firstEntry = findViewById(R.id.codeView1);
+        secondEntry = findViewById(R.id.codeView2);
+        thirdEntry = findViewById(R.id.codeView3);
+        fourthEntry = findViewById(R.id.codeView4);
+        fifthEntry = findViewById(R.id.codeView5);
+        sixthEntry = findViewById(R.id.codeView6);
         entryList.add(firstEntry);
         entryList.add(secondEntry);
         entryList.add(thirdEntry);
@@ -81,6 +114,11 @@ public class MailVerification extends AppCompatActivity {
         entryList.add(sixthEntry);
     }
 
+    /**
+     * When one of the input buttons (0-9) has been pressed we add a * to one of the TextViews for feedback to the user
+     * @param entry
+     *              the code up to now.
+     */
     public void addEntry(String entry){
         if(enteredCode.length()<6){
             enteredCode = enteredCode+entry;
@@ -93,11 +131,16 @@ public class MailVerification extends AppCompatActivity {
         }
     }
 
+    /**
+     * When the verification has been inputted we check it with the actual verification code
+     * - If true: We go the InstructionVideo activity
+     * - Else: Toast("failed")
+     */
     public void checkCode(){
         if(enteredCode.equals(verificationCode)){
             Toast.makeText(getApplicationContext(),"Verification succesful!",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MailVerification.this, InstructionVideo.class);
-            intent.putExtra("Bike",(Serializable)bikeObject);
+            intent.putExtra("Bike", bikeObject);
             intent.putExtra("Mail", mail);
             startActivity(intent);
         }else{
@@ -109,6 +152,9 @@ public class MailVerification extends AppCompatActivity {
         }
     }
 
+    /**
+     *  When the DeleteButton is pressed we remove one of the * of one of the TextViews for feedback to the user
+     */
     public  void deleteEntry(){
         if(enteredCode.length()>0){
             enteredCode = enteredCode.substring(0, enteredCode.length()-1);
@@ -116,6 +162,9 @@ public class MailVerification extends AppCompatActivity {
         }
     }
 
+    /**
+     * Connect the Button objects to the Buttons on the UI layer.
+     */
     public void setOnClickListeners(){
         setDeletButton();
         setButton1();
@@ -130,126 +179,94 @@ public class MailVerification extends AppCompatActivity {
         setButton0();
     }
 
+    /**
+     * Connect the Button objects to the Buttons on the UI layer.
+     */
     public void connectButtons(){
-        deleteButton = (Button)findViewById(R.id.buttonDel);
-        button1 = (Button)findViewById(R.id.entryButton1);
-        button2 = (Button)findViewById(R.id.entryButton2);
-        button3 = (Button)findViewById(R.id.entryButton3);
-        button4 = (Button)findViewById(R.id.entryButton4);
-        button5 = (Button)findViewById(R.id.entryButton5);
-        button6 = (Button)findViewById(R.id.entryButton6);
-        button7 = (Button)findViewById(R.id.entryButton7);
-        button8 = (Button)findViewById(R.id.entryButton8);
-        button9 = (Button)findViewById(R.id.entryButton9);
-        button0 = (Button)findViewById(R.id.entryButton0);
+        deleteButton = findViewById(R.id.buttonDel);
+        button1 = findViewById(R.id.entryButton1);
+        button2 = findViewById(R.id.entryButton2);
+        button3 = findViewById(R.id.entryButton3);
+        button4 = findViewById(R.id.entryButton4);
+        button5 = findViewById(R.id.entryButton5);
+        button6 = findViewById(R.id.entryButton6);
+        button7 = findViewById(R.id.entryButton7);
+        button8 = findViewById(R.id.entryButton8);
+        button9 = findViewById(R.id.entryButton9);
+        button0 = findViewById(R.id.entryButton0);
     }
 
 
     public void setDeletButton(){
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteEntry();
-            }
-        });
+        deleteButton.setOnClickListener(v -> deleteEntry());
     }
 
     public void setButton1(){
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button1.getText().toString();
-                addEntry(entry);
-            }
+        button1.setOnClickListener(v -> {
+            String entry = button1.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton2(){
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button2.getText().toString();
-                addEntry(entry);
-            }
+        button2.setOnClickListener(v -> {
+            String entry = button2.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton3(){
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button3.getText().toString();
-                addEntry(entry);
-            }
+        button3.setOnClickListener(v -> {
+            String entry = button3.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton4(){
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button4.getText().toString();
-                addEntry(entry);
-            }
+        button4.setOnClickListener(v -> {
+            String entry = button4.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton5(){
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button5.getText().toString();
-                addEntry(entry);
-            }
+        button5.setOnClickListener(v -> {
+            String entry = button5.getText().toString();
+            addEntry(entry);
         });
     }
     public void setButton6(){
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button6.getText().toString();
-                addEntry(entry);
-            }
+        button6.setOnClickListener(v -> {
+            String entry = button6.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton7(){
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button7.getText().toString();
-                addEntry(entry);
-            }
+        button7.setOnClickListener(v -> {
+            String entry = button7.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton8(){
-        button8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button8.getText().toString();
-                addEntry(entry);
-            }
+        button8.setOnClickListener(v -> {
+            String entry = button8.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton9(){
-        button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button9.getText().toString();
-                addEntry(entry);
-            }
+        button9.setOnClickListener(v -> {
+            String entry = button9.getText().toString();
+            addEntry(entry);
         });
     }
 
     public void setButton0(){
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String entry = button0.getText().toString();
-                addEntry(entry);
-            }
+        button0.setOnClickListener(v -> {
+            String entry = button0.getText().toString();
+            addEntry(entry);
         });
     }
 }
