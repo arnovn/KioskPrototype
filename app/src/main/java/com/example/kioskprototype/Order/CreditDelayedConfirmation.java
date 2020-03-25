@@ -1,14 +1,14 @@
 package com.example.kioskprototype.Order;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.FinalScreen;
 import com.example.kioskprototype.R;
@@ -20,31 +20,87 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
 
+/**
+ * Class in charge of finishing an order when the payment is set: DELAYED
+ */
 public class CreditDelayedConfirmation extends AppCompatActivity {
 
+    /**
+     * Type of the bike
+     */
     private int type;
+
+    /**
+     * E-mail address of the user
+     */
     private String mail;
+
+    /**
+     * Selected bike which the user will rent
+     */
     private ABikeObject bikeObject;
+
+    /**
+     * Id of the user
+     */
     private int id;
 
+    /**
+     * TextView which visualizes the bike name on the UI layer
+     */
     TextView bikeNameView;
+
+
+    /**
+     * TextView which visualizes the bike amount on the UI layer
+     *  - For this version only one bike per user can be rented
+     */
     TextView bikeAmountView;
+
+    /**
+     * TextView which visualizes the payment info on the UI layer
+     */
     TextView infoViewType;
+
+    /**
+     * TextView which visualizes extra info on the UI layer
+     */
     TextView infoViewExtra;
 
+    /**
+     * Async task 1 checker
+     */
     boolean taskReady1;
+
+    /**
+     * Async task 2 checker
+     */
     boolean taskReady2;
+
+    /**
+     * Async task 3 checker
+     */
     boolean taskReady3;
 
+    /**
+     * Confirmation button
+     */
     Button confirm;
 
+    /**
+     * When the activity is created:
+     *  - payment type is retrieved
+     *  - user mail is retrieved
+     *  - selected bike from previous activity is retrieved
+     *  - initialize TextViews and Button
+     * @param savedInstanceState
+     *          Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +108,8 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
 
         initTaskBooleans();
 
-        type = (int)getIntent().getIntExtra("Type",0);
-        mail = (String)getIntent().getStringExtra("Mail");
+        type = getIntent().getIntExtra("Type",0);
+        mail = getIntent().getStringExtra("Mail");
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
         setBikeTextviews();
@@ -62,12 +118,25 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
 
     }
 
+    /**
+     * Initialize if asynctasks are ready
+     */
     public void initTaskBooleans(){
         taskReady1 = false;
         taskReady2 = false;
         taskReady3 = false;
     }
 
+    /**
+     * When one of the asyntasks is ready we set them to true
+     * When all asynctasks are finished, the order is completed and we can return to the final window!!
+     * @param task1
+     *              Input new Order into the BikeOrder table of the MySql Database
+     * @param task2
+     *              Update the bike in the Bike table of the MySql Database
+     * @param task3
+     *              Update the user in the User table of the MySql Database
+     */
     public void setTasks(boolean task1, boolean task2, boolean task3){
         taskReady1 = task1;
         taskReady2 = task2;
@@ -78,40 +147,52 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * When the order is finished we move to the final activity
+     */
     public void toFinalScreen(){
         Intent intent = new Intent(CreditDelayedConfirmation.this, FinalScreen.class);
-        intent.putExtra("Bike", (Serializable)bikeObject);
+        intent.putExtra("Bike", bikeObject);
         startActivity(intent);
     }
 
+    /**
+     * Confirm button setter
+     */
     public void setconfirm(){
-        confirm = (Button)findViewById(R.id.confirmButtonCfn);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new ConnectionGetId().execute();
-            }
-        });
+        confirm = findViewById(R.id.confirmButtonCfn);
+        confirm.setOnClickListener(v -> new ConnectionGetId().execute());
     }
 
+    /**
+     * The three async tasks which will update three parts of the database (see setTasks())
+     */
     public void finishOrder(){
         new ConnectionSetInputOrder().execute();
         new ConnectionSetUser().execute();
         new ConnectionSetBike().execute();
     }
 
+    /**
+     * TextView setters
+     */
+    @SuppressLint("SetTextI18n")
     public void setBikeTextviews(){
-        bikeNameView = (TextView)findViewById(R.id.bikeNameViewConf);
-        bikeAmountView = (TextView)findViewById(R.id.bikeAmountViewConf);
+        bikeNameView = findViewById(R.id.bikeNameViewConf);
+        bikeAmountView = findViewById(R.id.bikeAmountViewConf);
 
         bikeNameView.setText("Bike"+bikeObject.getId()+bikeObject.getType());
         bikeAmountView.setText(1+"");
 
     }
 
+    /**
+     * TextView setters
+     */
+    @SuppressLint("SetTextI18n")
     public void setInfoTextviews(){
-        infoViewType = (TextView)findViewById(R.id.confirmSideText);
-        infoViewExtra = (TextView)findViewById(R.id.confirmSideText2);
+        infoViewType = findViewById(R.id.confirmSideText);
+        infoViewExtra = findViewById(R.id.confirmSideText2);
 
         switch (type){
             case 1:
@@ -134,8 +215,20 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         infoViewExtra.setText(infoString);
     }
 
+    /**
+     * Class in charge of retrieving the User id
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionGetId extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -146,21 +239,26 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If we retrieve and id we set it & finish the order
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{
@@ -185,8 +283,20 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of inserting the new order into the BikeOrder table of the MySql Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionSetInputOrder extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -197,21 +307,26 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successful we set this task to true meaning it has finished
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{
@@ -227,8 +342,20 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of updating the user so the bikeId is set to the is of the selected bike
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionSetUser extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Parameters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -239,21 +366,26 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successful we set this task to true meaning it has finished
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{
@@ -269,8 +401,20 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of updating the selected bike so the user id in the MySql Database is set to the id of the user
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionSetBike extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Parameters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -281,21 +425,26 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successful we set this task to true meaning it has finished
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{

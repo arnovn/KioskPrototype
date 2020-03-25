@@ -1,21 +1,16 @@
 package com.example.kioskprototype.Order;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kioskprototype.KioskInfo;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.kioskprototype.LoginAndRegister.MemberOrNot;
-import com.example.kioskprototype.POI.PoiSingleItem;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
 
@@ -28,54 +23,105 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
-import java.net.URL;
 
-import javax.mail.internet.InternetAddress;
-
+/**
+ * Activity which visualizes the order the user has made when the user ahs selected a bike at the Kiosk
+ * If he confirms the we go on with the sequence by going to the MemberOrNot activity
+ */
 public class OrderConfirmation extends AppCompatActivity {
 
+    /**
+     * TextView visualizing the bike name on the UI layer
+     */
     TextView bikeNameView;
+
+    /**
+     * TextView visualizing the amount of bikes ordered on the UI layer
+     *  - For this version the order amount per user is limited to 1
+     */
     TextView bikeAmountView;
+
+    /**
+     * TextView visualizing price per hour of the bike on the UI layer
+     */
     TextView pricePerHourView;
+
+    /**
+     * TextView visualizing extra bike info on the UI layer
+     */
     TextView infoView;
+
+    /**
+     * The bike selected by the user
+     */
     ABikeObject bikeObject;
+
+    /**
+     * Confirmation button
+     */
     Button confirmButton;
 
+    /**
+     * Type of the bike
+     */
     int bikeType;
+
+    /**
+     * Extra info of the bike type
+     */
     String infoString;
+
+    /**
+     * Price of the bike
+     */
     Double bikePrice;
 
 
+    /**
+     * When the activity is created:
+     *  - Bike data is retrieved from the MySql Database
+     *  - TextViews and Button are set
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirmation);
 
-        bikeNameView = (TextView)findViewById(R.id.bikeNameView);
-        bikeAmountView = (TextView)findViewById(R.id.bikeAmountView);
-        pricePerHourView = (TextView)findViewById(R.id.bikePriceView);
-        infoView = (TextView)findViewById(R.id.infoView);
-        confirmButton = (Button)findViewById(R.id.confirmButton);
+        bikeNameView = findViewById(R.id.bikeNameView);
+        bikeAmountView = findViewById(R.id.bikeAmountView);
+        pricePerHourView = findViewById(R.id.bikePriceView);
+        infoView = findViewById(R.id.infoView);
+        confirmButton = findViewById(R.id.confirmButton);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
         ConnectionBikeInfo connectionBikeInfo = new ConnectionBikeInfo();
         connectionBikeInfo.execute();
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(OrderConfirmation.this, MemberOrNot.class);
-                intent2.putExtra("Bike",(Serializable) bikeObject);
-                startActivity(intent2);
-            }
+        confirmButton.setOnClickListener(v -> {
+            Intent intent2 = new Intent(OrderConfirmation.this, MemberOrNot.class);
+            intent2.putExtra("Bike", bikeObject);
+            startActivity(intent2);
         });
     }
 
+    /**
+     * Class in charge of retrieving the bike info
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionBikeInfo extends AsyncTask<String, String, String> {
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... params) {
             try{
@@ -86,21 +132,28 @@ public class OrderConfirmation extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             } catch (Exception e) {
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successfull we set all the attributes and TextViews
+         *  - Else: error is Toasted
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String s) {
             try{
