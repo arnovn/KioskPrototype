@@ -102,7 +102,7 @@ public class AccountSettings extends AppCompatActivity {
      *  - buttons are initiated
      *  - buttonlisteners are set
      * @param savedInstanceState
-     *          Bundle containing the activity's previously saved states
+     *              Bundle containing the activity's previously saved states
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
