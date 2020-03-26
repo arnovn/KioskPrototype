@@ -1,14 +1,13 @@
 package com.example.kioskprototype;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.Order.OrderConfirmation;
 import com.example.kioskprototype.adapterView.ABikeAdapter;
@@ -24,17 +23,36 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * Activity in charge of representing the different available bikes at the Kiosk
+ */
 public class BikeSelect extends AppCompatActivity {
 
+    /**
+     * ListView which will contain the available bike objects at the Kiosk
+     */
     ListView listView;
+
+    /**
+     * Custom ArrayAdapter for the ListView
+     */
     ABikeAdapter adapter;
+
+    /**
+     * List containing the available bike objects
+     */
     ArrayList<ABikeObject> bikeObjects;
 
+    /**
+     * When the activity is created:
+     *  - Retrieve available bikes
+     *  - Initialize ListView & Adapater
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,25 +60,33 @@ public class BikeSelect extends AppCompatActivity {
 
         bikeObjects = new ArrayList<>();
         adapter = new ABikeAdapter(this,R.layout.adapter_bike_select_layout,bikeObjects);
-        listView = (ListView)findViewById(R.id.bikeArray);
+        listView = findViewById(R.id.bikeArray);
 
         new ConnectionBikeGet().execute();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ABikeObject bike = adapter.getItem(position);
-                Intent intent = new Intent(BikeSelect.this, OrderConfirmation.class);
-                intent.putExtra("Bike", (Serializable) bike);
-                setResult(1, intent);
-                startActivity(intent);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            ABikeObject bike = adapter.getItem(position);
+            Intent intent = new Intent(BikeSelect.this, OrderConfirmation.class);
+            intent.putExtra("Bike", bike);
+            setResult(1, intent);
+            startActivity(intent);
         });
     }
 
+    /**
+     * Class in charge of retrieving the avalaible bikes at the Kiosk from the MySql Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionBikeGet extends AsyncTask<String,String,String>{
         String result = "";
 
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             try {
@@ -71,12 +97,11 @@ public class BikeSelect extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer();
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line = "";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
@@ -87,6 +112,13 @@ public class BikeSelect extends AppCompatActivity {
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - if successful we create Bike objects and add them to the List
+         *  - We set this list with as input data for the ListView
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
         @Override
         protected void onPostExecute(String s) {
             try{
