@@ -1,14 +1,14 @@
 package com.example.kioskprototype.payment;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.MainActivity;
 import com.example.kioskprototype.Order.CreditDelayedConfirmation;
@@ -21,50 +21,106 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.URI;
 
+/**
+ * Activity where the user can choose the payment option:
+ *  - Credit card payment
+ *  - Bancontact payment
+ *  - Delayed payment
+ *  - Credit payment (is enough credits remain on the users account)
+ */
 public class PaymentSelect extends AppCompatActivity {
 
+    /**
+     * TextView visualizing the amount of remaining credits on the users' account at the UI layer
+     */
     TextView creditView;
+
+    /**
+     * TextView visualizing the price for renting the bike for a certain amount of time at the UI layer
+     */
     TextView priceBikeView;
+
+    /**
+     * Extra info TextView at the UI layer
+     */
     TextView infoView;
+
+    /**
+     * Selection buttons guiding the user to the preferred payment option or logout if the user changed his mind during the process
+     */
     Button creditCardButton;
     Button bancontactButton;
     Button creditsButton;
     Button delayedButton;
     Button signOutButton;
 
+    /**
+     * The selected bike the be rented by the user
+     */
     ABikeObject bikeObject;
+
+    /**
+     * E-mail address of the user
+     */
     String mail;
 
+    /**
+     * 0 if delayedpayment not set
+     * >0 if delayedpayment set (usually 1)
+     */
     int delayedPayment;
+
+    /**
+     * Logincode of the user
+     */
     String code;
+
+    //TODO if the user has negative amount of credits: first pay depths before renting new bike
+    /**
+     * Credits of the user
+     */
     double credits;
+
+    /**
+     * Bike type
+     */
     int type;
 
+    /**
+     * Price of renting the bike for a certain amount of time
+     */
     double priceperhour;
 
+    /**
+     * When the activity is created:
+     *  - Buttons & TextViews are set
+     *  - Selected bike is retrieved from previous activity
+     *  - Mail of the user is retrieved from previous activity
+     *  - User info necessary for mayment is retrieved from the database
+     * @param savedInstanceState
+     *                  Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_select);
 
-        creditView = (TextView)findViewById(R.id.creditView);
-        priceBikeView = (TextView)findViewById(R.id.bikePriceView);
-        infoView = (TextView)findViewById(R.id.infoViewPS);
-        creditCardButton = (Button)findViewById(R.id.creditButton);
-        bancontactButton = (Button)findViewById(R.id.bancontactButton);
-        creditsButton = (Button)findViewById(R.id.creditsButton);
-        delayedButton = (Button)findViewById(R.id.delayedPaymentButton);
-        signOutButton = (Button)findViewById(R.id.signOutButton);
+        creditView          = findViewById(R.id.creditView);
+        priceBikeView       = findViewById(R.id.bikePriceView);
+        infoView            = findViewById(R.id.infoViewPS);
+        creditCardButton    = findViewById(R.id.creditButton);
+        bancontactButton    = findViewById(R.id.bancontactButton);
+        creditsButton       = findViewById(R.id.creditsButton);
+        delayedButton       = findViewById(R.id.delayedPaymentButton);
+        signOutButton       = findViewById(R.id.signOutButton);
 
-        bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
-        mail = (String)getIntent().getStringExtra("Mail");
+        bikeObject          = (ABikeObject)getIntent().getSerializableExtra("Bike");
+        mail                = getIntent().getStringExtra("Mail");
 
         new ConnectionGetUserPaymentInfo().execute();
 
@@ -75,66 +131,85 @@ public class PaymentSelect extends AppCompatActivity {
         setSignOutButton();
     }
 
+    /**
+     * Delayed payment button initializer
+     *  -   If not set: Toast to the user ha can't payed delayed
+     *  -   If set: we finalize the order
+     */
     public void setDelayedButton(){
-        delayedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(delayedPayment == 0){
-                    Toast.makeText(getApplicationContext(),"Failed: delayed payment not set for your account.",Toast.LENGTH_SHORT).show();
-                }else{
-                    //Handle delayed payment.
-                }
+        delayedButton.setOnClickListener(v -> {
+            if(delayedPayment == 0){
+                Toast.makeText(getApplicationContext(),"Failed: delayed payment not set for your account.",Toast.LENGTH_SHORT).show();
+            }else{
+                //Handle delayed payment.
+                Intent intent = new Intent(PaymentSelect.this, CreditDelayedConfirmation.class);
+                intent.putExtra("Bike", bikeObject);
+                intent.putExtra("Type", 1);
+                intent.putExtra("Mail", mail);
+                startActivity(intent);
             }
         });
     }
 
+    /**
+     * Credit payment button initializer
+     *  - If sufficient amount of credits: we finalize the order
+     *  - If not sufficient amount of credits: toast to user, pay another way
+     */
     public void setCreditsButton(){
-        creditsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(credits < 5.0){
-                    Toast.makeText(getApplicationContext(),"Insufficient credits, has to be at least 5 euro", Toast.LENGTH_SHORT).show();
-                }else{
-                    //Handle credit payment.
-                    Intent intent = new Intent(PaymentSelect.this, CreditDelayedConfirmation.class);
-                    intent.putExtra("Bike",(Serializable)bikeObject);
-                    intent.putExtra("Type", 1);
-                    intent.putExtra("Mail", mail);
-                    startActivity(intent);
-                }
+        creditsButton.setOnClickListener(v -> {
+            if(credits < 5.0){
+                Toast.makeText(getApplicationContext(),"Insufficient credits, has to be at least 5 euro", Toast.LENGTH_SHORT).show();
+            }else{
+                //Handle credit payment.
+                Intent intent = new Intent(PaymentSelect.this, CreditDelayedConfirmation.class);
+                intent.putExtra("Bike", bikeObject);
+                intent.putExtra("Type", 1);
+                intent.putExtra("Mail", mail);
+                startActivity(intent);
             }
         });
     }
 
+    /**
+     * Bancontact button initializer
+     */
     public void setBancontactButton(){
-        bancontactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Handle bancontact payment.
-            }
+        bancontactButton.setOnClickListener(v -> {
+            //Handle bancontact payment.
         });
     }
 
+    /**
+     * Creditcard button initializer
+     */
     public void setCreditCardButton(){
-        creditCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Handle creditcard payment.
-            }
+        creditCardButton.setOnClickListener(v -> {
+            //Handle creditcard payment.
         });
     }
 
+    /**
+     * Signout button initializer
+     */
     public void setSignOutButton(){
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PaymentSelect.this, MainActivity.class));
-            }
-        });
+        signOutButton.setOnClickListener(v -> startActivity(new Intent(PaymentSelect.this, MainActivity.class)));
     }
 
+    /**
+     * Class in charge of retrieving necessary payment info of the user from the MySql Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionGetUserPaymentInfo extends AsyncTask<String, String, String> {
         String result ="";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             try{
@@ -145,35 +220,40 @@ public class PaymentSelect extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             }catch (Exception e) {
                 System.out.println("The exception: "+e.getMessage());
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - if successful we set this payment info
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String s) {
             try{
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if(success == 1){
-                    JSONArray paymentinfos = jsonResult.getJSONArray("info");
-                    JSONObject paymentinfo = paymentinfos.getJSONObject(0);
+                    JSONArray paymentinfos  = jsonResult.getJSONArray("info");
+                    JSONObject paymentinfo  = paymentinfos.getJSONObject(0);
 
-                    code = paymentinfo.getString("code");
-                    credits = paymentinfo.getDouble("credits");
-                    delayedPayment = paymentinfo.getInt("delayedpayment");
-                    Toast.makeText(getApplicationContext(),"User credits: " + credits + "\nUser code: " + code,Toast.LENGTH_LONG).show();
+                    code                    = paymentinfo.getString("code");
+                    credits                 = paymentinfo.getDouble("credits");
+                    delayedPayment          = paymentinfo.getInt("delayedpayment");
 
                     creditView.setText(credits+" euro");
                     new ConnectionBikeTypeInfo().execute();
@@ -187,8 +267,20 @@ public class PaymentSelect extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of retrieving the bike type info from the MySql Database
+     */
+    @SuppressLint("StaticFieldLeak")
     class ConnectionBikeTypeInfo extends AsyncTask<String, String, String> {
         String result ="";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             try{
@@ -200,22 +292,28 @@ public class PaymentSelect extends AppCompatActivity {
                 HttpResponse response = client.execute(request);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-                StringBuffer stringBuffer = new StringBuffer("");
+                StringBuilder stringBuffer = new StringBuilder();
 
-                String line ="";
+                String line;
                 while((line = reader.readLine()) != null){
                     stringBuffer.append(line);
-                    break;
                 }
                 reader.close();
                 result = stringBuffer.toString();
             }catch (Exception e) {
                 System.out.println("The exception: "+e.getMessage());
-                return new String("The exception: " + e.getMessage());
+                return "The exception: " + e.getMessage();
             }
             return result;
         }
 
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - if successful we set the bike info
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(String s) {
             try{
