@@ -1,63 +1,67 @@
 package com.example.kioskprototype.POI;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
 
+/**
+ * Activity which present the different POI options the user can select
+ *  -   Restaurants
+ *  -   Worth to visit
+ *  -   Tours
+ *  -   Activities
+ */
 public class PoiSelectType extends AppCompatActivity {
 
+    /**
+     * Buttons which guide the user to the selected PoiArrayView activity
+     */
     Button restoButton;
     Button visitButton;
     Button routesButton;
     Button activitiesButton;
     Intent intent;
 
+    /**
+     * When the acitivity is created:
+     *  - Initialize the intent
+     *  - Initialize buttons
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poi_select_type);
-        restoButton = (Button)findViewById(R.id.restButton);
-        visitButton =(Button)findViewById(R.id.visitButton);
-        routesButton = (Button)findViewById(R.id.routesButton);
-        activitiesButton = (Button)findViewById(R.id.activitiesButton);
+        restoButton = findViewById(R.id.restButton);
+        visitButton = findViewById(R.id.visitButton);
+        routesButton = findViewById(R.id.routesButton);
+        activitiesButton = findViewById(R.id.activitiesButton);
 
         intent = new Intent(PoiSelectType.this, PoiArrayView.class);
 
-        restoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("Type", 1);
-                startActivity(intent);
-            }
+        restoButton.setOnClickListener(v -> {
+            intent.putExtra("Type", 1);
+            startActivity(intent);
         });
 
-        visitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("Type",2);
-                startActivity(intent);
-            }
+        visitButton.setOnClickListener(v -> {
+            intent.putExtra("Type",2);
+            startActivity(intent);
         });
 
-        routesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("Type",3);
-                startActivity(intent);
-            }
+        routesButton.setOnClickListener(v -> {
+            intent.putExtra("Type",3);
+            startActivity(intent);
         });
 
-        activitiesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("Type",4);
-                startActivity(intent);
-            }
+        activitiesButton.setOnClickListener(v -> {
+            intent.putExtra("Type",4);
+            startActivity(intent);
         });
     }
 

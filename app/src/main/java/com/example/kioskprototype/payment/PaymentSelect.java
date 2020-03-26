@@ -103,7 +103,7 @@ public class PaymentSelect extends AppCompatActivity {
      *  - Mail of the user is retrieved from previous activity
      *  - User info necessary for mayment is retrieved from the database
      * @param savedInstanceState
-     *                  Bundle containing the activity's previously saved states
+     *             Bundle containing the activity's previously saved states
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
