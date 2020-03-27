@@ -258,7 +258,7 @@ public class PayForServices extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getusercredits.php?userid=" + userId;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getusercredits.php?userid=" + userId;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -326,7 +326,7 @@ public class PayForServices extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getpendingpayments.php?userid=" + userId;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getpendingpayments.php?userid=" + userId;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

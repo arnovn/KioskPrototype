@@ -150,7 +150,7 @@ public class RequestMemberCard extends AppCompatActivity implements ConfirmAddre
             String convertedAddress = address.replaceAll("\\s", "%20");
             System.out.println("Adress: " + convertedAddress);
             try{
-                String host = "http://10.0.2.2/insertaddress.php?userid=" + id + "&address=" + "'" + convertedAddress + "'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/insertaddress.php?userid=" + id + "&address=" + "'" + convertedAddress + "'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

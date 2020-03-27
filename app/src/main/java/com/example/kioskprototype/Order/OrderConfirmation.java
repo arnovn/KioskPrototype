@@ -125,7 +125,7 @@ public class OrderConfirmation extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/getbiketypeinfo.php?type="+ bikeObject.getType();
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getbiketypeinfo.php?type="+ bikeObject.getType();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

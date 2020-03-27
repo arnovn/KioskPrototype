@@ -406,7 +406,7 @@ public class LoginStandardCode extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getusercode.php?mail='"+ mail +"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getusercode.php?mail='"+ mail +"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

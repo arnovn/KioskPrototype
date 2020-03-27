@@ -125,7 +125,7 @@ public class PoiArrayView extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                String host = "http://10.0.2.2/getpoiarray2.php?id="+ KioskInfo.get().getId()+"&type=" + type;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getpoiarray2.php?id="+ KioskInfo.get().getId()+"&type=" + type;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

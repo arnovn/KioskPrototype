@@ -106,7 +106,7 @@ public class PoiSingleItem extends AppCompatActivity {
         protected Bitmap doInBackground(String... params) {
             Bitmap image = null;
             URL url;
-            String host = "http://10.0.2.2/getpoiimage.php?id="+ id;
+            String host = "http://"+ getResources().getString(R.string.ip) +"/getpoiimage.php?id="+ id;
             try {
                 url = new URL(host);
                 image = BitmapFactory.decodeStream(url.openConnection().getInputStream());

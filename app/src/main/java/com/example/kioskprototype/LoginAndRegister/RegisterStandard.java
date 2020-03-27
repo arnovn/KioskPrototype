@@ -154,7 +154,7 @@ public class RegisterStandard extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/checkregisterdata.php?mail='"+ mail +"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/checkregisterdata.php?mail='"+ mail +"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -227,7 +227,7 @@ public class RegisterStandard extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code=" + code;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code=" + code;
                // String host = "http://10.0.2.2/input_std_registerdata.php?name=Arno&mail=zeifjo&phonenumber=fref&code=fzfez";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();

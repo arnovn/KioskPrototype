@@ -289,7 +289,7 @@ public class AccountSettings extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getusernamecredits.php?id='"+ id +"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getusernamecredits.php?id='"+ id +"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

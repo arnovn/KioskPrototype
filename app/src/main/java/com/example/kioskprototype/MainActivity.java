@@ -16,6 +16,10 @@ import com.example.kioskprototype.POI.PoiSelectType;
  *  - Looking at Points Of Interest near the Kiosk
  *  - Paying for depths/adding extra credits to your account
  *  - Changing your account settings (request new login code, request membercard, look at past activities with your account)
+ *
+ *  IP's:
+ *      - 192.168.0.122
+ *      - 10.0.2.2
  */
 public class MainActivity extends AppCompatActivity {
 

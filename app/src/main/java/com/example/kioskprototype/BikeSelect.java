@@ -90,7 +90,7 @@ public class BikeSelect extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                String host = "http://10.0.2.2/getbikesatkiosk.php?id=" + KioskInfo.get().getId();
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getbikesatkiosk.php?id=" + KioskInfo.get().getId();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

@@ -213,7 +213,7 @@ public class PaymentSelect extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getuserpaymentinfo.php?mail='"+ mail+"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getuserpaymentinfo.php?mail='"+ mail+"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -285,7 +285,7 @@ public class PaymentSelect extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             try{
                 type = 1;
-                String host = "http://10.0.2.2/getbiketypeinfo.php?type="+ type;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getbiketypeinfo.php?type="+ type;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

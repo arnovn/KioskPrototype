@@ -29,6 +29,11 @@ public class LoginOptions extends AppCompatActivity {
     Button smsLogin;
 
     /**
+     * Button wich takes the user to the LoginMemberCard activity
+     */
+    Button rfidButton;
+
+    /**
      * Selected bike, to be rented by the User which wants to log in.
      */
     ABikeObject bikeObject;
@@ -55,9 +60,17 @@ public class LoginOptions extends AppCompatActivity {
 
         codeLogin = findViewById(R.id.standardButton);
         smsLogin = findViewById(R.id.smsButton);
+        rfidButton = findViewById(R.id.rfidButton);
 
         codeLogin.setOnClickListener(v -> {
             Intent intent = new Intent(LoginOptions.this, LoginStandardCode.class);
+            intent.putExtra("Bike", bikeObject);
+            intent.putExtra("Type", type);
+            startActivity(intent);
+        });
+
+        rfidButton.setOnClickListener(v->{
+            Intent intent = new Intent(LoginOptions.this, LoginMemberCard.class);
             intent.putExtra("Bike", bikeObject);
             intent.putExtra("Type", type);
             startActivity(intent);

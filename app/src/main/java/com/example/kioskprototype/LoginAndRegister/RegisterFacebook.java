@@ -268,7 +268,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/checkregisterdata.php?mail='"+ mail +"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/checkregisterdata.php?mail='"+ mail +"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -354,7 +354,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
                 code = generateRandomNumber();
                 name = name.replaceAll("\\s","");
                 System.out.println("We here 2");
-                String host = "http://10.0.2.2/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code=" + code;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code=" + code;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

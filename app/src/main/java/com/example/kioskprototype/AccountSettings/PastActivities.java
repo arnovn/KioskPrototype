@@ -317,7 +317,7 @@ public class PastActivities extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/getpastactivities.php?userid=" + id + "&date=" + newDate;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getpastactivities.php?userid=" + id + "&date=" + newDate;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

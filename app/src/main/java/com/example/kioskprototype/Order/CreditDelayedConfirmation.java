@@ -232,7 +232,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/getuserid.php?mail='"+ mail+"'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/getuserid.php?mail='"+ mail+"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -300,7 +300,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/inputneworder.php?userid="+ id + "&bikeid=" + bikeObject.getId();
+                String host = "http://"+ getResources().getString(R.string.ip) +"/inputneworder.php?userid="+ id + "&bikeid=" + bikeObject.getId();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -359,7 +359,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/updateuser.php?userid="+ id + "&bikeid=" + bikeObject.getId();
+                String host = "http://"+ getResources().getString(R.string.ip) +"/updateuser.php?userid="+ id + "&bikeid=" + bikeObject.getId();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -418,7 +418,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String host = "http://10.0.2.2/updatebike.php?userid="+ id + "&bikeid=" + bikeObject.getId();
+                String host = "http://"+ getResources().getString(R.string.ip) +"/updatebike.php?userid="+ id + "&bikeid=" + bikeObject.getId();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

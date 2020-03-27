@@ -65,6 +65,12 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="50">
 
+                <Button
+                    android:id="@+id/standardButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/homescreenbuttonshape" />
+
                 <ImageView
                     android:id="@+id/standardImage"
                     android:layout_width="wrap_content"
@@ -84,11 +90,6 @@
                     android:textSize="20dp"
                     android:translationZ="5dp" />
 
-                <Button
-                    android:id="@+id/standardButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/homescreenbuttonshape" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -98,6 +99,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="50">
+
+                <Button
+                    android:id="@+id/smsButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/homescreenbuttonshape" />
 
                 <ImageView
                     android:id="@+id/smsImage"
@@ -118,11 +125,6 @@
                     android:textSize="20dp"
                     android:translationZ="5dp" />
 
-                <Button
-                    android:id="@+id/smsButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/homescreenbuttonshape" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -140,6 +142,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="50">
+
+                <Button
+                    android:id="@+id/rfidButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/homescreenbuttonshape" />
 
                 <ImageView
                     android:id="@+id/rfidImage"
@@ -160,11 +168,6 @@
                     android:textSize="20dp"
                     android:translationZ="5dp" />
 
-                <Button
-                    android:id="@+id/rfidButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/homescreenbuttonshape" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -174,6 +177,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="50">
+
+                <Button
+                    android:id="@+id/fingerprintButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/homescreenbuttonshape" />
 
                 <ImageView
                     android:id="@+id/fingerprintImage"
@@ -194,11 +203,6 @@
                     android:textSize="20dp"
                     android:translationZ="5dp" />
 
-                <Button
-                    android:id="@+id/fingerprintButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@drawable/homescreenbuttonshape" />
             </RelativeLayout>
         </LinearLayout>
 
