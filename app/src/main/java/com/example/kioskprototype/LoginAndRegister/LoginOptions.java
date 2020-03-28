@@ -29,7 +29,7 @@ public class LoginOptions extends AppCompatActivity {
     Button smsLogin;
 
     /**
-     * Button wich takes the user to the LoginMemberCard activity
+     * Button which takes the user to the LoginMemberCard activity
      */
     Button rfidButton;
 

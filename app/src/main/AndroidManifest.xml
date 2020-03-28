@@ -14,8 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <activity android:name=".LoginAndRegister.LoginMemberCard"></activity>
+        <activity android:name=".LoginAndRegister.RegistrationGoogle"></activity>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".LoginAndRegister.LoginMemberCard" />
         <activity android:name=".AccountSettings.RequestMemberCard" />
         <activity android:name=".AccountSettings.PastActivities" />
         <activity android:name=".AccountSettings.AccountSettings" />
@@ -24,7 +29,7 @@
         <activity android:name=".Order.CreditDelayedConfirmation" />
         <activity android:name=".LoginAndRegister.LoginStandardCode" />
         <activity android:name=".LoginAndRegister.LoginOptions" />
-
+        <service android:enabled="true" android:name=".LoginAndRegister.GooglePollService.SyncService"></service>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

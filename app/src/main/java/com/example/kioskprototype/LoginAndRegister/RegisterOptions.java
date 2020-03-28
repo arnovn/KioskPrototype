@@ -21,7 +21,7 @@ public class RegisterOptions extends AppCompatActivity {
     Button facebookRegister;
 
     /**
-     * Button which will guide the user to the RegisterGoogle activity
+     * Button which takes the user to the RegisterGoogle activity
      */
     Button googleRegister;
 
@@ -67,6 +67,7 @@ public class RegisterOptions extends AppCompatActivity {
 
         setStandardButton();
         setFacebookButton();
+        setGoogleButton();
     }
 
     /**
@@ -75,6 +76,17 @@ public class RegisterOptions extends AppCompatActivity {
     public void setStandardButton(){
         standardRegister.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterOptions.this, RegisterStandard.class);
+            intent.putExtra("Bike", bikeObject);
+            startActivity(intent);
+        });
+    }
+
+    /**
+     * Initialize OnClickListener of google register code button
+     */
+    public void setGoogleButton(){
+        googleRegister.setOnClickListener(v->{
+            Intent intent = new Intent(RegisterOptions.this, RegistrationGoogle.class);
             intent.putExtra("Bike", bikeObject);
             startActivity(intent);
         });
