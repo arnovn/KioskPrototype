@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginAndRegister.RegistrationGoogle"></activity>
+        <activity android:name=".POI.PoiSingleRoute"></activity>
+        <activity android:name=".POI.PoiAllMapView" />
+        <activity android:name=".LoginAndRegister.RegistrationGoogle" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -29,7 +31,11 @@
         <activity android:name=".Order.CreditDelayedConfirmation" />
         <activity android:name=".LoginAndRegister.LoginStandardCode" />
         <activity android:name=".LoginAndRegister.LoginOptions" />
-        <service android:enabled="true" android:name=".LoginAndRegister.GooglePollService.SyncService"></service>
+
+        <service
+            android:name=".LoginAndRegister.GooglePollService.SyncService"
+            android:enabled="true" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

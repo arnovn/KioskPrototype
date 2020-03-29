@@ -287,6 +287,53 @@
             </LinearLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="177dp"
+            android:layout_height="210dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+
+            <TextView
+                android:id="@+id/allMapPoiView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/montserratmedium"
+                android:text="POI MAP"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/allMapPoiButton"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/poiselectshape"
+                android:fontFamily="@font/montserratmedium"
+                android:textColor="@color/lightGreen" />
+
+            <ImageView
+                android:id="@+id/allMapPoiImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:translationZ="10dp"
+                app:srcCompat="@drawable/imglight" />
+
+            <TextView
+                android:id="@+id/allMapPoiView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/montserratmedium"
+                android:text="A map with all different POI."
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

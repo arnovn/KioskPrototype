@@ -68,8 +68,10 @@ public class PoiAdapter1 extends ArrayAdapter<PoiObject1> {
         String address = Objects.requireNonNull(getItem(position)).getAddress();
         float distance = Objects.requireNonNull(getItem(position)).getDistance();
         String description = Objects.requireNonNull(getItem(position)).getDescription();
+        double latitude = Objects.requireNonNull(getItem(position)).getLatitude();
+        double longitude = Objects.requireNonNull(getItem(position)).getLongitude();
 
-        PoiObject1 object1 = new PoiObject1(id,name,address,distance,description,type);
+        PoiObject1 object1 = new PoiObject1(id,name,address,distance,description,type, latitude, longitude);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);

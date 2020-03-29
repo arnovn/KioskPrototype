@@ -1,5 +1,7 @@
 package com.example.kioskprototype;
 
+//TODO: connection with database so data is pulled from there on startup.
+
 /**
  * Singleton class containing the name and id of the kiosk (same as in the MySql Database)
  * Should be unique per Kiosk
@@ -17,11 +19,23 @@ public class KioskInfo {
     private int id;
 
     /**
+     * Longitude of the Kiosk
+     */
+    double longitude;
+
+    /**
+     * Latitude of the Kiosk
+     */
+    double latitude;
+
+    /**
      * Constructor of the KioskInfo class
      */
     private KioskInfo(){
         id = 1;
         name = "Kiosk station leuven";
+        longitude = 4.71556200;
+        latitude = 50.88229700;
     }
 
     /**
@@ -57,5 +71,23 @@ public class KioskInfo {
      */
     public String getName(){
         return name;
+    }
+
+    /**
+     * Getter for longitude
+     * @return
+     *          Kiosk longitude
+     */
+    public double getLongitude() {
+        return longitude;
+    }
+
+    /**
+     * Getter for latitude
+     * @return
+     *          Kiosk latitude
+     */
+    public double getLatitude() {
+        return latitude;
     }
 }

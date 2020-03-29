@@ -20,20 +20,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hoofdView" />
 
+
+    <Button
+        android:id="@+id/poiRouteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:text="VIEW ROUTE FROM KIOSK"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/confirmbuttonshape"
+        android:textColor="@color/lightGreen"
+        android:fontFamily="@font/montserratlight1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/poiImageView"
+        app:layout_constraintVertical_bias="0.341" />
+
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/customshape"
         android:gravity="top"
         android:orientation="vertical"
         android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poiImageView"
-        app:layout_constraintVertical_bias="0.101">
+        app:layout_constraintTop_toBottomOf="@+id/poiRouteButton"
+        android:layout_marginTop="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"

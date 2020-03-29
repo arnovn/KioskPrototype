@@ -39,22 +39,14 @@ public class PoiObject1 implements Serializable {
     private  String description;
 
     /**
-     * Id getter
-     * @return
-     *          Id of PoiObject
+     * Latitude of Poi
      */
-    public int getId() {
-        return id;
-    }
+    private double latitude;
 
     /**
-     * Type getter
-     * @return
-     *          Type of the Poi object
+     * Longitude of Poi
      */
-    public int getType() {
-        return type;
-    }
+    private double longitude;
 
     /**
      * Constructor of the PoiObject
@@ -71,13 +63,15 @@ public class PoiObject1 implements Serializable {
      * @param type
      *              Type of the Poi from the MySql Database
      */
-    public PoiObject1(int id, String name, String address, float distance, String description, int type){
+    public PoiObject1(int id, String name, String address, float distance, String description, int type, double latitude, double longitude){
         this.id = id;
         this.type = type;
         this.name = name;
         this.address = address;
         this.distance = distance;
         this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     /**
@@ -87,6 +81,43 @@ public class PoiObject1 implements Serializable {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Id getter
+     * @return
+     *          Id of PoiObject
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Type getter
+     * @return
+     *          Type of the type id Poi
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * Type getter
+     * @return
+     *          Type of the string name Poi type
+     */
+    public String getStringType() {
+        switch (type){
+            case 1:
+                return "Restaurant";
+            case 2:
+                return "Worth to visit";
+            case 3:
+                return "Route";
+            case 4:
+                return "Activity";
+        }
+        return "Error: type doesn't exist yet";
     }
 
     /**
@@ -141,5 +172,23 @@ public class PoiObject1 implements Serializable {
      */
     public String getDescription(){
         return description;
+    }
+
+    /**
+     * Getter of latitude Poi
+     * @return
+     *              Latitude of Poi
+     */
+    public double getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * Getter of longitude Poi
+     * @return
+     *              Longitude of Poi
+     */
+    public double getLongitude() {
+        return longitude;
     }
 }

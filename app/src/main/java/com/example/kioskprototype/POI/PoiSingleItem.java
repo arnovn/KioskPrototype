@@ -2,10 +2,12 @@ package com.example.kioskprototype.POI;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,17 @@ public class PoiSingleItem extends AppCompatActivity {
     ImageView poiImageView;
 
     /**
+     * Button guiding the user to the POI route activity from the kiosk
+     */
+    Button poiRouteButton;
+
+    /**
+     * Selected POI from last activity
+     */
+    PoiObject1 object1;
+
+
+    /**
      * When the activity is created:
      *  - Initialize TextViews
      *  - Retrieve the remaining selected POI information from the MySql Database
@@ -69,8 +82,9 @@ public class PoiSingleItem extends AppCompatActivity {
         distanceView = findViewById(R.id.distanceText);
         descriptionsView = findViewById(R.id.descriptionText);
         poiImageView = findViewById(R.id.poiImageView);
+        poiRouteButton = findViewById(R.id.poiRouteButton);
 
-        PoiObject1 object1 = (PoiObject1) getIntent().getSerializableExtra("Object");
+        object1 = (PoiObject1) getIntent().getSerializableExtra("Object");
         assert object1 != null;
         Toast toast = Toast.makeText(getApplicationContext(),
                 object1.getName(),
@@ -85,7 +99,16 @@ public class PoiSingleItem extends AppCompatActivity {
 
         ConnectionPoi poiImage = new ConnectionPoi();
         poiImage.execute();
+        buttonListener();
 
+    }
+
+    private void buttonListener(){
+        poiRouteButton.setOnClickListener(v->{
+            Intent routeIntent = new Intent(PoiSingleItem.this, PoiSingleRoute.class);
+            routeIntent.putExtra("POI", object1);
+            startActivity(routeIntent);
+        });
     }
 
     /**

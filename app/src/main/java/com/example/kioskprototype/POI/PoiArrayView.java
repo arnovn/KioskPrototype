@@ -102,7 +102,6 @@ public class PoiArrayView extends AppCompatActivity {
             PoiObject1 object = adapter.getItem(position);
             Intent intent = new Intent(PoiArrayView.this, PoiSingleItem.class);
             intent.putExtra("Object", object);
-            intent.putExtra("Type",type);
             setResult(1,intent);
             startActivity(intent);
         });
@@ -167,9 +166,9 @@ public class PoiArrayView extends AppCompatActivity {
                         String address = resto.getString("address");
                         float distance = BigDecimal.valueOf(resto.getDouble("distance")).floatValue();
                         String desc = resto.getString("description");
-                       // BigDecimal latitude = BigDecimal.valueOf(resto.getDouble("latitude"));
-                       // BigDecimal longitude = BigDecimal.valueOf(resto.getDouble("longitude"));
-                        PoiObject1 object1 = new PoiObject1(id,name, address,distance, desc, type);
+                        Double latitude = resto.getDouble("latitude");
+                        Double longitude = resto.getDouble("longitude");
+                        PoiObject1 object1 = new PoiObject1(id,name, address,distance, desc, type, latitude, longitude);
                         poiObjects.add(object1);
                         listView.setAdapter(adapter);
                     }
