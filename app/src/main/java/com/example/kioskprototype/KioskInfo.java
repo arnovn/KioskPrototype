@@ -36,6 +36,11 @@ public class KioskInfo {
         name = "Kiosk station leuven";
         longitude = 4.71556200;
         latitude = 50.88229700;
+       /* id = 2;
+        name = "Kiosk station leuven";
+        longitude = 4.66504400;
+        latitude = 50.86130500;*/
+
     }
 
     /**

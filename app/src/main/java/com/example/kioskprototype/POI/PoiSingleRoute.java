@@ -2,7 +2,6 @@ package com.example.kioskprototype.POI;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,30 +26,71 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DecimalFormat;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * Class in charge of representing the route of a POI from the Kiosk to the user on an interactive map
+ */
 public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallback, Callback<DirectionsResponse> {
 
-
+    /**
+     * Interactive map at UI layer
+     */
     private MapView mapView;
+
+    /**
+     * Interactie map object, for interactin with the UI layer map
+     */
     private MapboxMap mapBoxMap;
+
+    /**
+     * POI marker
+     */
     private Marker destinationMarker;
-    Point markerLocation;
+
+    /**
+     * Kiosk object for gathering the necessary information (lat, long, id)
+     */
     KioskInfo kioskInfo;
 
-    Button goToPoiButton;
+    /**
+     * The selected point of interest
+     */
     PoiObject1 poiObject1;
+
+    /**
+     * TextView visualizing the distance of this route at the UI layer
+     */
     TextView distanceTextView;
+
+    /**
+     * Textview visualizing the name of the POI + "Route"
+     */
     TextView titleView;
 
+    /**
+     * Navigation object, will calculate the best route from Kiosk to POI by bike
+     */
     private NavigationMapRoute navigationMapRoute;
-    private static final String TAG = "PoiAllMapActivity";
 
+    /**
+     * When the activity is created:
+     *  - The interactive map is initialized
+     *  - The selected point of interest is retrieved from previous activity
+     *  - Kiosks' information is retrieved
+     *  - TextViews are initialized
+     *  - Route from startposition (Kiosk) to endpoistion (POI) is calculated
+     *  - The route is visualized on the UI layer
+     *
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,44 +103,47 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
         poiObject1 = (PoiObject1) getIntent().getSerializableExtra("POI");
 
         kioskInfo = KioskInfo.get();
-        goToPoiButton = findViewById(R.id.goToPoiButton);
         distanceTextView = findViewById(R.id.distanceViewRoute);
         titleView = findViewById(R.id.routeNameView);
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        // Map is set up and the style has loaded. Now you can add data or make other map adjustments.
+        mapView.getMapAsync(mapboxMap -> {
+            mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> {
+                // Map is set up and the style has loaded. Now you can add data or make other map adjustments.
 
-                    }
-                });
+            });
 
-                mapBoxMap = mapboxMap;
-                setCameraPosition();
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(poiObject1.getLatitude(), poiObject1.getLongitude()));
-                markerOptions.setTitle(poiObject1.getName());
-                markerOptions.setSnippet(poiObject1.getStringType());
-                destinationMarker = mapBoxMap.addMarker(markerOptions);
+            mapBoxMap = mapboxMap;
+            setCameraPosition();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(poiObject1.getLatitude(), poiObject1.getLongitude()));
+            markerOptions.setTitle(poiObject1.getName());
+            markerOptions.setSnippet(poiObject1.getStringType());
+            destinationMarker = mapBoxMap.addMarker(markerOptions);
 
-                Point startPos = Point.fromLngLat(kioskInfo.getLongitude(), kioskInfo.getLatitude());
-                Point endPos = Point.fromLngLat(destinationMarker.getPosition().getLongitude(), destinationMarker.getPosition().getLatitude());
-                getRoute(startPos, endPos);
+            Point startPos = Point.fromLngLat(kioskInfo.getLongitude(), kioskInfo.getLatitude());
+            Point endPos = Point.fromLngLat(destinationMarker.getPosition().getLongitude(), destinationMarker.getPosition().getLatitude());
+            getRoute(startPos, endPos);
 
-            }
         });
         titleView.setText(poiObject1.getName() + " ROUTE");
     }
 
+    /**
+     * We set the Kiosks' position as the center point of the map when the map is generated.
+     */
     private void setCameraPosition(){
         mapBoxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(kioskInfo.getLatitude(), kioskInfo.getLongitude()), 13.0));
     }
 
+    /**
+     * Mathod in charge of calculating the optimal route from origin to destination by bike.
+     * @param origin
+     *              Starting point
+     * @param destination
+     *              Destination point
+     */
     private void getRoute(Point origin, Point destination){
         NavigationRoute.builder(this)
                 .accessToken(getString(R.string.mapbox_access_token))
@@ -111,7 +154,7 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
                 .getRoute(new Callback<DirectionsResponse>() {
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+                    public void onResponse(@NotNull Call<DirectionsResponse> call, @NotNull Response<DirectionsResponse> response) {
                         if(response.body() == null){
                             System.out.println("No routes found, check right user and accestoken");
                             return;
@@ -137,7 +180,7 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
                     }
 
                     @Override
-                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+                    public void onFailure(@NotNull Call<DirectionsResponse> call, @NotNull Throwable t) {
                         System.out.println("Error: " + t.getMessage());
                     }
                 });
@@ -192,12 +235,12 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+    public void onResponse(@NotNull Call<DirectionsResponse> call, @NotNull Response<DirectionsResponse> response) {
 
     }
 
     @Override
-    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+    public void onFailure(@NotNull Call<DirectionsResponse> call, @NotNull Throwable t) {
 
     }
 }

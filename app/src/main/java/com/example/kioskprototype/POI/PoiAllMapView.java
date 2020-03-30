@@ -14,9 +14,7 @@ import com.example.kioskprototype.KioskInfo;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.PoiObject1;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -24,12 +22,12 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,23 +42,56 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Class in charge of gathering all POI's assigned to a certain Kiosk
+ * and visualizing this on an interactive map.
+ */
 public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallback, Callback<DirectionsResponse> {
 
-
+    /**
+     * Interactive map at UI layer
+     */
     private MapView mapView;
+
+    /**
+     * Interactie map object, for interactin with the UI layer map
+     */
     private MapboxMap mapBoxMap;
-    private Marker destinationMarker;
-    Point markerLocation;
+
+    /**
+     * Kiosk object for gathering the necessary information (lat, long, id)
+     */
     KioskInfo kioskInfo;
 
+    /**
+     * Button which directs the user to the PoiSingleItem activity, passing the selected POI
+     */
     Button goToPoiButton;
+
+    /**
+     * List of all POI's connected to the Kiosk
+     */
     List<PoiObject1> poiMapObjects;
+
+    /**
+     * List of all POI's transformed to map markers
+     */
     List<MarkerOptions> poiMarkers;
+
+    /**
+     * The selected POI
+     */
     PoiObject1 selectedPoiObject;
 
-    private NavigationMapRoute navigationMapRoute;
-    private static final String TAG = "PoiAllMapActivity";
-
+    /**
+     * When this activity is created:
+     *  - We initialize the interactie map
+     *  - We gather the Kiosk info
+     *  - We gather the POI's and transform them to markers
+     *  - We add these markers to the map
+     * @param savedInstanceState
+     *              Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +114,11 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    /**
+     * PoiSingleItem button initializer
+     *  - If no POI is selected, we Toast saying there is non selected
+     *  - If POI selected we go the toe PoiSingleItem activity
+     */
     private void initializeButton(){
         goToPoiButton = findViewById(R.id.goToPoiButton);
 
@@ -97,12 +133,13 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
             intent.putExtra("Object", selectedPoiObject);
             setResult(1,intent);
             startActivity(intent);
-
-            //TODO: initialize this view in PoiSingleItem
-            //startActivity(new Intent(PoiAllMapView.this, PoiSingleRoute.class));
         });
     }
 
+    /**
+     * OnClick marker listener:
+     *  - When we've selected one of the POI's we set this POI as selected POI
+     */
     private void initializeMarkerListener(){
         mapBoxMap.setOnMarkerClickListener(marker ->
         {
@@ -110,13 +147,15 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
             for(PoiObject1 poiMapObject: poiMapObjects){
                 if(poiMapObject.getName().equals(name)){
                     selectedPoiObject = poiMapObject;
-                    System.out.println("Selected: " + selectedPoiObject.getName());
                 }
             }
             return false;
         });
     }
 
+    /**
+     * Method in charge of converting the POI object to marker objects
+     */
     private void generateMarkers(){
         for(PoiObject1 poiObject: poiMapObjects){
             MarkerOptions newMarker = new MarkerOptions();
@@ -128,6 +167,9 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
         initializeMap();
     }
 
+    /**
+     * Interactive map initialization
+     */
     private void initializeMap(){
         mapView.getMapAsync(mapboxMap -> {
             mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> {
@@ -146,6 +188,9 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
         });
     }
 
+    /**
+     * We set the Kiosks' position as the center point of the map when the map is generated.
+     */
     private void setCameraPosition(){
         mapBoxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(kioskInfo.getLatitude(), kioskInfo.getLongitude()), 13.0));
     }
@@ -199,12 +244,12 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     @Override
-    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+    public void onResponse(@NotNull Call<DirectionsResponse> call, @NotNull Response<DirectionsResponse> response) {
 
     }
 
     @Override
-    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+    public void onFailure(@NotNull Call<DirectionsResponse> call, @NotNull Throwable t) {
 
     }
 

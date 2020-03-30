@@ -66,9 +66,7 @@ public class PoiSelectType extends AppCompatActivity {
             startActivity(intent);
         });
 
-        poiMapButton.setOnClickListener(v->{
-            startActivity(new Intent(PoiSelectType.this, PoiAllMapView.class));
-        });
+        poiMapButton.setOnClickListener(v-> startActivity(new Intent(PoiSelectType.this, PoiAllMapView.class)));
     }
 
 
