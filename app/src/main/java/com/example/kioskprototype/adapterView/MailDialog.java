@@ -19,19 +19,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- * Custom dialog for inserting a phone number during registration
+ * Custom dialog for inserting an email address for logging in
  */
-public class PhoneDialog extends AppCompatDialogFragment {
+public class MailDialog extends AppCompatDialogFragment {
 
     /**
      * EditText where phone will be inputted
      */
-    private EditText editTextPhone;
+    private EditText editTextMail;
 
     /**
      * listener so dialog knows when it needs to be instantiated
      */
-    private PhoneDialogListener listener;
+    private MailDialogListener listener;
 
     /**
      * Instantiation of the Dialog.
@@ -48,18 +48,18 @@ public class PhoneDialog extends AppCompatDialogFragment {
         final Dialog dialog = new Dialog(Objects.requireNonNull(getActivity()));
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.layout_dialog_phonenumber, null);
-        editTextPhone = view.findViewById(R.id.phoneText);
-        Button okButton = view.findViewById(R.id.okButtonFB);
-        Button cancelButton = view.findViewById(R.id.cancelButtonFB);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.layout_dialog_email, null);
+        editTextMail = view.findViewById(R.id.mailText);
+        Button okButton = view.findViewById(R.id.okButtonSMS);
+        Button cancelButton = view.findViewById(R.id.cancelButtonSMS);
 
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
 
         okButton.setOnClickListener(v -> {
-            if(!editTextPhone.getText().toString().isEmpty()){
-                listener.applyTexts(editTextPhone.getText().toString());
+            if(!editTextMail.getText().toString().isEmpty()){
+                listener.applyTexts(editTextMail.getText().toString());
             }else{
-                Toast.makeText(getContext(),"Phone number empty.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Mail address empty.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -79,7 +79,7 @@ public class PhoneDialog extends AppCompatDialogFragment {
         super.onAttach(context);
 
         try {
-            listener = (PhoneDialogListener) context;
+            listener = (MailDialogListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement PhoneDialogListener");
         }
@@ -87,10 +87,10 @@ public class PhoneDialog extends AppCompatDialogFragment {
 
     /**
      * Methods to be implemented at the activity which creates this Dialog-object to handle:
-     *  - ApplyTexts: when confirm button pressed, the inserted phone number is passed to the activity.
+     *  - ApplyTexts: when confirm button pressed, the inserted mail address is passed to the activity.
      *  - Cancel event: when cancelled is pressed the activity calls the cancelPressed() method.
      */
-    public interface PhoneDialogListener{
+    public interface MailDialogListener{
         void applyTexts(String phonenumber);
         void cancelPressed();
     }

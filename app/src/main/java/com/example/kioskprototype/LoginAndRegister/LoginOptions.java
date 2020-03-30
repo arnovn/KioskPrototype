@@ -75,5 +75,12 @@ public class LoginOptions extends AppCompatActivity {
             intent.putExtra("Type", type);
             startActivity(intent);
         });
+
+        smsLogin.setOnClickListener(v->{
+            Intent intent = new Intent(LoginOptions.this, LoginSms.class);
+            intent.putExtra("Bike", bikeObject);
+            intent.putExtra("Type", type);
+            startActivityForResult(intent,1);
+        });
     }
 }
