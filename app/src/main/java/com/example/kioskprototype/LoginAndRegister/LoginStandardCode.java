@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.AccountSettings.AccountSettings;
+import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
 import com.example.kioskprototype.payment.PayForServices;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -337,8 +339,10 @@ public class LoginStandardCode extends AppCompatActivity {
      * @return
      *          true or false.
      */
-    public boolean checkCodesMatch(){
-        return code.equals(enteredCode);
+    public boolean checkCodesMatch() throws NoSuchAlgorithmException {
+        HashingObject hashingObject = new HashingObject(enteredCode, code);
+
+        return code.equals(hashingObject.getGeneratedHash());
     }
 
     /**

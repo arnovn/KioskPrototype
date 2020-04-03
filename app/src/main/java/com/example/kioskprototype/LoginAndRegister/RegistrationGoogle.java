@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.LoginAndRegister.GooglePollService.SyncService;
 import com.example.kioskprototype.MailSender.GmailSender;
@@ -615,9 +616,15 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
         protected String doInBackground(String... strings) {
             try{
                 code = generateRandomNumber();
+
+                System.out.println("New code: " + code);
+
+                HashingObject hashingObject = new HashingObject(code);
+                String hashCode = hashingObject.getGeneratedHash();
+
                 userName = userName.replaceAll("\\s","");
                 System.out.println("We here 2");
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + userName + "&mail=" + userMail+"&phonenumber=" + phoneNumber +"&code=" + code;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + userName + "&mail=" + userMail+"&phonenumber=" + phoneNumber +"&code='" + hashCode + "'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

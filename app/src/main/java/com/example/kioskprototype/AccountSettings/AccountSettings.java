@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 
@@ -207,7 +208,6 @@ public class AccountSettings extends AppCompatActivity {
         newLoginButton.setOnClickListener(v -> {
             newCode = generateNewCode();
             new ConnectionUpdateCode().execute();
-            sendCodeMail();
         });
 
         membercardButton.setOnClickListener(v -> {
@@ -348,7 +348,12 @@ public class AccountSettings extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://10.0.2.2/updateusercode.php?id="+ id + "&code=" + newCode;
+                System.out.println("New code: " + newCode);
+
+                HashingObject hashingObject = new HashingObject(newCode);
+                String hashCode = hashingObject.getGeneratedHash();
+
+                String host = "http://10.0.2.2/updateusercode.php?id="+ id + "&code='" + hashCode +"'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -377,8 +382,9 @@ public class AccountSettings extends AppCompatActivity {
                 int success = jsonResult.getInt("success");
                 if(success == 1){
                     Toast.makeText(getApplicationContext(),"Succes: new code has been sent to your mail",Toast.LENGTH_LONG).show();
-
+                    sendCodeMail();
                 }else if(success == 0){
+                    System.out.println("Result: " + result);
                     Toast.makeText(getApplicationContext(),"Failed: No user found.",Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e){

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
@@ -227,8 +228,12 @@ public class RegisterStandard extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             try{
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code=" + code;
-               // String host = "http://10.0.2.2/input_std_registerdata.php?name=Arno&mail=zeifjo&phonenumber=fref&code=fzfez";
+                System.out.println("New code: " + code);
+
+                HashingObject hashingObject = new HashingObject(code);
+                String hashCode = hashingObject.getGeneratedHash();
+
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code='" + hashCode + "'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

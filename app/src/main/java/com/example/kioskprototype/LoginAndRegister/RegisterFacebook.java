@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
@@ -343,7 +344,8 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
     }
 
     /**
-     * Class in charge of inserting the new user to the user table of the MySql Database
+     * Class in charge of inserting the new user to the user table of the MySql Database.
+     * We also hash the users code for safety.
      */
     @SuppressLint("StaticFieldLeak")
     class ConnectionNewUserToDatabaseFB extends AsyncTask<String, String, String>{
@@ -352,9 +354,13 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
         protected String doInBackground(String... strings) {
             try{
                 code = generateRandomNumber();
+                System.out.println("New code : " + code);
+                HashingObject hashingObject = new HashingObject(code);
+                String hashCode = hashingObject.getGeneratedHash();
+
                 name = name.replaceAll("\\s","");
                 System.out.println("We here 2");
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code=" + code;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code='" + hashCode + "'";
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
