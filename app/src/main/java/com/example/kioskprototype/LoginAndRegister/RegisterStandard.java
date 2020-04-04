@@ -73,6 +73,11 @@ public class RegisterStandard extends AppCompatActivity {
     String phone;
 
     /**
+     * Id of the user
+     */
+    int id;
+
+    /**
      * Inputted mail will be checked against this pattern to check if mail structure is correct
      */
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -272,7 +277,7 @@ public class RegisterStandard extends AppCompatActivity {
                     JSONArray userDetails = jsonResult.getJSONArray("message");
                     JSONObject userDetail = userDetails.getJSONObject(0);
 
-                    int id = userDetail.getInt("id");
+                    id = userDetail.getInt("id");
                     String name = userDetail.getString("name");
                     Toast.makeText(getApplicationContext(),"User successfully registered.\n \n  User: " + id + " : " + name,Toast.LENGTH_LONG).show();
 
@@ -317,6 +322,7 @@ public class RegisterStandard extends AppCompatActivity {
         intent.putExtra("VerificationCode", verificationCode);
         intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail",mail);
+        intent.putExtra("Id", id);
         startActivity(intent);
     }
 

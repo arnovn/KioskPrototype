@@ -352,6 +352,7 @@ public class LoginStandardCode extends AppCompatActivity {
         Intent intent = new Intent(LoginStandardCode.this, PaymentSelect.class);
         intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail", mail);
+        intent.putExtra("Id", id);
         startActivity(intent);
     }
 

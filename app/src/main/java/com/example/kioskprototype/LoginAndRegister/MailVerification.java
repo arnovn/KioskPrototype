@@ -72,6 +72,11 @@ public class MailVerification extends AppCompatActivity {
     String verificationCode;
 
     /**
+     * Id of the user
+     */
+    int id;
+
+    /**
      * When the activity is created:
      *  - initialize the buttons & textviews
      *  - retrieve the bike, mail & verificationcode from previous activity
@@ -89,6 +94,7 @@ public class MailVerification extends AppCompatActivity {
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
         mail = getIntent().getStringExtra("Mail");
         verificationCode = getIntent().getStringExtra("VerificationCode");
+        id = getIntent().getIntExtra("Id", 0);
 
         connectTextViews();
         connectButtons();
@@ -142,6 +148,7 @@ public class MailVerification extends AppCompatActivity {
             Intent intent = new Intent(MailVerification.this, InstructionVideo.class);
             intent.putExtra("Bike", bikeObject);
             intent.putExtra("Mail", mail);
+            intent.putExtra("Id", id);
             startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(),"Code failure: code doesn't match verification code.",Toast.LENGTH_SHORT).show();

@@ -37,6 +37,11 @@ public class InstructionVideo extends AppCompatActivity {
     String mail;
 
     /**
+     * Id of the user
+     */
+    int id;
+
+    /**
      * When the activity is created:
      *  - Retrieve bike and mail from previous activity
      *  - Initialize the VideoView and Button
@@ -50,6 +55,7 @@ public class InstructionVideo extends AppCompatActivity {
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
         mail = getIntent().getStringExtra("Mail");
+        id = getIntent().getIntExtra("Id", 0);
 
         videoView = findViewById(R.id.videoView);
         String uriPath = "android.resource://com.example.kioskprototype/"+R.raw.wowvideo;
@@ -63,6 +69,7 @@ public class InstructionVideo extends AppCompatActivity {
         final Intent intent = new Intent(InstructionVideo.this, PaymentSelect.class);
         intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail",mail);
+        intent.putExtra("Id", id);
 
         buttonNext.setOnClickListener(v -> startActivity(intent));
     }

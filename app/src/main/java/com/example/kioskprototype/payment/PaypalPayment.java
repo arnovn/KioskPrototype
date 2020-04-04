@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
+import com.example.kioskprototype.adapterView.ABikeObject;
 import com.google.zxing.WriterException;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -20,19 +21,30 @@ public class PaypalPayment extends AppCompatActivity {
 
     ImageView qrView;
 
+    ABikeObject bikeObject;
+    String mail;
+    int id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal_payment);
 
+        bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
+        mail = getIntent().getStringExtra("Mail");
+        id = getIntent().getIntExtra("Id", 0);
+
         qrView = findViewById(R.id.qrPaypalView);
 
         Bundle bundle = new Bundle();
         bundle.putInt("Amount", 50);
-        bundle.putInt("Id", 1);
+        bundle.putInt("Id", 0);
         bundle.putString("Name", "Arno");
         String data = "Amount: 50";
-        QRGEncoder qrgEncoder = new QRGEncoder(data,bundle, QRGContents.Type.TEXT, 500);
+
+        String jsonData = "{\"id\":\""+ id +"\", \"amount\": \"50\"}";
+
+        QRGEncoder qrgEncoder = new QRGEncoder(jsonData,null, QRGContents.Type.TEXT, 500);
         try {
             Bitmap qrBit = qrgEncoder.encodeAsBitmap();
             qrView.setImageBitmap(qrBit);

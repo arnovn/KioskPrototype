@@ -151,6 +151,11 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
      */
     ABikeObject bikeObject;
 
+    /**
+     * User id
+     */
+    int id;
+
 
     /**
      * Login id of our application for the Google oauth2.0 api
@@ -663,7 +668,7 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
                 if(success == 1){
                     JSONArray userDetails = jsonResult.getJSONArray("message");
                     JSONObject userDetail = userDetails.getJSONObject(0);
-                    int id = userDetail.getInt("id");
+                    id = userDetail.getInt("id");
                     String name = userDetail.getString("name");
                     System.out.println("Success");
                     Toast.makeText(getApplicationContext(),"User successfully registered.\n \n  User: " + id + " : " + name,Toast.LENGTH_LONG).show();
@@ -710,6 +715,7 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
         Intent intent = new Intent(RegistrationGoogle.this, InstructionVideo.class);
         intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail",userMail);
+        intent.putExtra("Id", id);
         startActivity(intent);
     }
 }

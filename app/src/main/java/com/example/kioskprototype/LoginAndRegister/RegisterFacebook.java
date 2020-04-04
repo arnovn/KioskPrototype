@@ -94,6 +94,11 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
     PhoneDialog phoneDialog;
 
     /**
+     * Id of the user
+     */
+    int id;
+
+    /**
      * When the activity is created:
      *  - Bike object from previous activity is retrieved
      *  - Check if someone was already logged in on the Kiosk with Facebook
@@ -107,6 +112,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
         setContentView(R.layout.activity_register_facebook);
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
+        id = 0;
 
         AccessToken checkCurrent = AccessToken.getCurrentAccessToken();
         if(checkCurrent != null){
@@ -400,7 +406,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
                 if(success == 1){
                     JSONArray userDetails = jsonResult.getJSONArray("message");
                     JSONObject userDetail = userDetails.getJSONObject(0);
-                    int id = userDetail.getInt("id");
+                    id = userDetail.getInt("id");
                     String name = userDetail.getString("name");
                     System.out.println("Success");
                     Toast.makeText(getApplicationContext(),"User successfully registered.\n \n  User: " + id + " : " + name,Toast.LENGTH_LONG).show();
@@ -448,6 +454,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
         Intent intent = new Intent(RegisterFacebook.this, PaymentSelect.class);
         intent.putExtra("Bike", bikeObject);
         intent.putExtra("Mail",mail);
+        intent.putExtra("Id", id);
         startActivity(intent);
     }
 }

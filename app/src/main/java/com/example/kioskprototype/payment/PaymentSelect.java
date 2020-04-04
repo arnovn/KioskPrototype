@@ -97,6 +97,11 @@ public class PaymentSelect extends AppCompatActivity {
     double priceperhour;
 
     /**
+     * User id
+     */
+    int id;
+
+    /**
      * When the activity is created:
      *  - Buttons & TextViews are set
      *  - Selected bike is retrieved from previous activity
@@ -121,6 +126,7 @@ public class PaymentSelect extends AppCompatActivity {
 
         bikeObject          = (ABikeObject)getIntent().getSerializableExtra("Bike");
         mail                = getIntent().getStringExtra("Mail");
+        id                  = getIntent().getIntExtra("Id", 0);
 
         new ConnectionGetUserPaymentInfo().execute();
 
@@ -189,6 +195,7 @@ public class PaymentSelect extends AppCompatActivity {
             intent.putExtra("Bike", bikeObject);
             intent.putExtra("Type", 1);
             intent.putExtra("Mail", mail);
+            intent.putExtra("Id", id);
             startActivity(intent);
         });
     }
