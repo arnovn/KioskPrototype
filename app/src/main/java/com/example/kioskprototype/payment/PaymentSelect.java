@@ -53,8 +53,8 @@ public class PaymentSelect extends AppCompatActivity {
     /**
      * Selection buttons guiding the user to the preferred payment option or logout if the user changed his mind during the process
      */
-    Button creditCardButton;
-    Button bancontactButton;
+    Button cardButton;
+    Button paypalButton;
     Button creditsButton;
     Button delayedButton;
     Button signOutButton;
@@ -113,8 +113,8 @@ public class PaymentSelect extends AppCompatActivity {
         creditView          = findViewById(R.id.creditView);
         priceBikeView       = findViewById(R.id.bikePriceView);
         infoView            = findViewById(R.id.infoViewPS);
-        creditCardButton    = findViewById(R.id.creditButton);
-        bancontactButton    = findViewById(R.id.bancontactButton);
+        cardButton    = findViewById(R.id.cardButton);
+        paypalButton    = findViewById(R.id.paypalButton);
         creditsButton       = findViewById(R.id.creditsButton);
         delayedButton       = findViewById(R.id.delayedPaymentButton);
         signOutButton       = findViewById(R.id.signOutButton);
@@ -126,8 +126,8 @@ public class PaymentSelect extends AppCompatActivity {
 
         setDelayedButton();
         setCreditsButton();
-        setBancontactButton();
-        setCreditCardButton();
+        setCardButton();
+        setPaypalButton();
         setSignOutButton();
     }
 
@@ -174,8 +174,8 @@ public class PaymentSelect extends AppCompatActivity {
     /**
      * Bancontact button initializer
      */
-    public void setBancontactButton(){
-        bancontactButton.setOnClickListener(v -> {
+    public void setCardButton(){
+        cardButton.setOnClickListener(v -> {
             //Handle bancontact payment.
         });
     }
@@ -183,9 +183,13 @@ public class PaymentSelect extends AppCompatActivity {
     /**
      * Creditcard button initializer
      */
-    public void setCreditCardButton(){
-        creditCardButton.setOnClickListener(v -> {
-            //Handle creditcard payment.
+    public void setPaypalButton(){
+        paypalButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PaymentSelect.this, PaypalPayment.class);
+            intent.putExtra("Bike", bikeObject);
+            intent.putExtra("Type", 1);
+            intent.putExtra("Mail", mail);
+            startActivity(intent);
         });
     }
 

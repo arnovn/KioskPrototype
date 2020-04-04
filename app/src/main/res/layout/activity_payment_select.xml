@@ -167,11 +167,11 @@
             android:layout_marginHorizontal="40dp">
 
             <Button
-                android:id="@+id/creditButton"
+                android:id="@+id/cardButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="Credit card"
+                android:text="Pay by card"
                 android:layout_marginHorizontal="20dp"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/lightGreen"
@@ -180,11 +180,11 @@
                 android:background="@drawable/confirmbuttonshape"/>
 
             <Button
-                android:id="@+id/bancontactButton"
+                android:id="@+id/paypalButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="Bancontact"
+                android:text="Paypal"
                 android:layout_marginHorizontal="20dp"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/lightGreen"

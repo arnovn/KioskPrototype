@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginAndRegister.LoginSms"></activity>
+        <activity android:name=".payment.PaypalPayment"></activity>
+        <activity android:name=".LoginAndRegister.LoginSms" />
         <activity android:name=".POI.PoiSingleRoute" />
         <activity android:name=".POI.PoiAllMapView" />
         <activity android:name=".LoginAndRegister.RegistrationGoogle" />

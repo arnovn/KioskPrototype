@@ -360,7 +360,7 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
 
                 name = name.replaceAll("\\s","");
                 System.out.println("We here 2");
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code='" + hashCode + "'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phonenumber +"&code=" + hashCode ;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

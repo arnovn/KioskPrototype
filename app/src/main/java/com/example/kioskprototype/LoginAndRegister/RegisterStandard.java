@@ -233,7 +233,7 @@ public class RegisterStandard extends AppCompatActivity {
                 HashingObject hashingObject = new HashingObject(code);
                 String hashCode = hashingObject.getGeneratedHash();
 
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code='" + hashCode + "'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + name + "&mail=" + mail+"&phonenumber=" + phone +"&code=" + hashCode;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));

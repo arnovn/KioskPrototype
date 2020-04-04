@@ -624,7 +624,7 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
 
                 userName = userName.replaceAll("\\s","");
                 System.out.println("We here 2");
-                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + userName + "&mail=" + userMail+"&phonenumber=" + phoneNumber +"&code='" + hashCode + "'";
+                String host = "http://"+ getResources().getString(R.string.ip) +"/input_std_registerdata.php?name=" + userName + "&mail=" + userMail+"&phonenumber=" + phoneNumber +"&code=" + hashCode;
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
