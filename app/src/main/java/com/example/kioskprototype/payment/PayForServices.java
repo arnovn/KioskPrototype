@@ -54,7 +54,7 @@ public class PayForServices extends AppCompatActivity {
     double amount;
 
     /**
-     * Extra credits the user wnats to add to his account
+     * Extra credits the user wants to add to his account
      */
     double extraCredits;
 

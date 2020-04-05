@@ -23,7 +23,9 @@ public class PaypalPayment extends AppCompatActivity {
 
     ABikeObject bikeObject;
     String mail;
-    int id;
+    int userId;
+    int orderId;
+    int amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +34,14 @@ public class PaypalPayment extends AppCompatActivity {
 
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
         mail = getIntent().getStringExtra("Mail");
-        id = getIntent().getIntExtra("Id", 0);
+        userId = getIntent().getIntExtra("UserId", 0);
+        orderId = getIntent().getIntExtra("OrderId", 0);
+        amount = getIntent().getIntExtra("Amount", 0);
 
         qrView = findViewById(R.id.qrPaypalView);
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("Amount", 50);
-        bundle.putInt("Id", 0);
-        bundle.putString("Name", "Arno");
-        String data = "Amount: 50";
-
-        String jsonData = "{\"id\":\""+ id +"\", \"amount\": \"50\"}";
+        String jsonData = "{\"userId\":\""+ userId +"\",\"orderId\":\""+  orderId +"\", \"amount\": \""+ amount +"\"}";
+        String jsonData2 = "{\"userId\":\""+ userId +"\", \"amount\": \"50\"}";
 
         QRGEncoder qrgEncoder = new QRGEncoder(jsonData,null, QRGContents.Type.TEXT, 500);
         try {
@@ -51,6 +50,8 @@ public class PaypalPayment extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
+        //TODO: implement polling of database for payment status
 
     }
 }

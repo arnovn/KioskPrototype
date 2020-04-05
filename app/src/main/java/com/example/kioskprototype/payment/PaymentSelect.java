@@ -191,11 +191,13 @@ public class PaymentSelect extends AppCompatActivity {
      */
     public void setPaypalButton(){
         paypalButton.setOnClickListener(v -> {
-            Intent intent = new Intent(PaymentSelect.this, PaypalPayment.class);
+            Intent intent = new Intent(PaymentSelect.this, AddCreditAmount.class);
             intent.putExtra("Bike", bikeObject);
             intent.putExtra("Type", 1);
             intent.putExtra("Mail", mail);
             intent.putExtra("Id", id);
+            intent.putExtra("Method", "Paypal");
+            intent.putExtra("UserCredits", credits);
             startActivity(intent);
         });
     }
