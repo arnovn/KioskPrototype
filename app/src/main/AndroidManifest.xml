@@ -40,12 +40,19 @@
             android:name=".LoginAndRegister.GooglePollService.SyncService"
             android:enabled="true" />
 
+        <service
+            android:name=".payment.PaymentStatusPollService"
+            android:enabled="true" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/client_token" />
+
+        <receiver android:name=".payment.PaypalPayment$OrderStatusBroadcastReceiver" >
+        </receiver>
 
         <activity android:name=".LoginAndRegister.RegisterFacebook" />
         <activity android:name=".payment.PaymentSelect" />

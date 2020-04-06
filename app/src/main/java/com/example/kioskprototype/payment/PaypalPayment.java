@@ -1,5 +1,9 @@
 package com.example.kioskprototype.payment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -27,6 +31,12 @@ public class PaypalPayment extends AppCompatActivity {
     int orderId;
     int amount;
 
+    Intent statusPollIntent;
+    int broadcastOrderId;
+    int broadcastOrderStatus;
+    OrderStatusBroadcastReceiver orderStatusBroadcastReceiver;
+    IntentFilter filter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +47,11 @@ public class PaypalPayment extends AppCompatActivity {
         userId = getIntent().getIntExtra("UserId", 0);
         orderId = getIntent().getIntExtra("OrderId", 0);
         amount = getIntent().getIntExtra("Amount", 0);
+        broadcastOrderStatus = 0;
 
         qrView = findViewById(R.id.qrPaypalView);
 
-        String jsonData = "{\"userId\":\""+ userId +"\",\"orderId\":\""+  orderId +"\", \"amount\": \""+ amount +"\"}";
+        String jsonData = "{\"userId\":\""+ userId +"\",\"orderId\":\""+  orderId +"\", \"amount\":\""+ amount +"\"}";
         String jsonData2 = "{\"userId\":\""+ userId +"\", \"amount\": \"50\"}";
 
         QRGEncoder qrgEncoder = new QRGEncoder(jsonData,null, QRGContents.Type.TEXT, 500);
@@ -51,7 +62,106 @@ public class PaypalPayment extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //TODO: implement polling of database for payment status
+        orderStatusBroadcastReceiver = new OrderStatusBroadcastReceiver();
+        orderStatusBroadcastReceiver.setOrderStatusBroadcastListener(title -> {
+            broadcastOrderId = orderStatusBroadcastReceiver.getOrderId();
+            broadcastOrderStatus = orderStatusBroadcastReceiver.getOrderStatus();
 
+            System.out.println("RECEIVED LISTENER");
+            if(broadcastOrderId == orderId){
+                switch(broadcastOrderStatus){
+                    case 0:
+                        System.out.println("Order status: INIT");
+                        break;
+                    case 1:
+                        System.out.println("Order status: PENDING");
+                        break;
+                    case 2:
+                        System.out.println("Order status: SUCCESS");
+                        break;
+                    case -1:
+                        System.out.println("Order status: FAILED");
+                        break;
+                    default:
+                        System.out.println("ERROR Order status: DEFAULT");
+                }
+            }
+        });
+
+        filter = new IntentFilter();
+        filter.addAction("PAYMENT_STATUS");
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(orderStatusBroadcastReceiver, filter);
+
+        startPolling();
+    }
+
+    private void startPolling(){
+        statusPollIntent = new Intent(getApplicationContext(), PaymentStatusPollService.class);
+        statusPollIntent.putExtra("OrderId", orderId);
+        statusPollIntent.putExtra("PollInterval", 5);
+        startService(statusPollIntent);
+    }
+
+
+    /**
+     * Broadcast receiver, needed to receive data from the polling thread when it has received the access token.
+     */
+    public static class OrderStatusBroadcastReceiver extends BroadcastReceiver {
+
+        int orderId;
+        int orderStatus;
+
+        public interface OrderStatusBroadcastListener {
+            void onObjectReady(String title);
+        }
+
+        /**
+         * Listener for this class.
+         */
+        private OrderStatusBroadcastListener listener;
+
+        public OrderStatusBroadcastReceiver(){
+            this.listener = null;
+        }
+
+        public void setOrderStatusBroadcastListener(OrderStatusBroadcastListener listener){
+            this.listener = listener;
+        }
+
+        /**
+         * Getters for the orderId
+         * @return
+         *              Order id of the broadcast sent
+         */
+        public int getOrderId() {
+            return orderId;
+        }
+
+        /**
+         * Getters for the orderStatus
+         * @return
+         *              Order status of the broadcast sent
+         */
+        public int getOrderStatus(){
+            return orderStatus;
+        }
+
+        /**
+         * When the BroadcastReceiver receives a broadcast we try to get the received data from it.
+         * @param context
+         *              Current context of the activity
+         * @param intent
+         *              PollingIntent
+         */
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            System.out.println("RECEIVING");
+            Bundle b = intent.getExtras();
+            assert b != null;
+            orderId = b.getInt("OrderId");
+            orderStatus = b.getInt("STATUS");
+            listener.onObjectReady("ready");
+        }
     }
 }
