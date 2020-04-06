@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.kioskprototype.FinalScreen;
 import com.example.kioskprototype.R;
 import com.example.kioskprototype.adapterView.ABikeObject;
 import com.google.zxing.WriterException;
@@ -78,6 +79,12 @@ public class PaypalPayment extends AppCompatActivity {
                         break;
                     case 2:
                         System.out.println("Order status: SUCCESS");
+                        stopService(statusPollIntent);
+                        //TODO: Update database: 1. update user credits in DB 2. connect user & bike in DB 3. send confirmation mail
+                        toFinalScreen();
+                        break;
+                    case 3:
+                        System.out.println("Order status: TIMEDOUT");
                         break;
                     case -1:
                         System.out.println("Order status: FAILED");
@@ -103,6 +110,11 @@ public class PaypalPayment extends AppCompatActivity {
         startService(statusPollIntent);
     }
 
+    private void toFinalScreen(){
+        Intent finalIntent = new Intent(PaypalPayment.this, FinalScreen.class);
+        finalIntent.putExtra("Bike", bikeObject);
+        startActivity(finalIntent);
+    }
 
     /**
      * Broadcast receiver, needed to receive data from the polling thread when it has received the access token.

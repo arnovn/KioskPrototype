@@ -135,7 +135,7 @@ public class PaymentStatusPollService extends Service {
                 int success = jsonResult.getInt("success");
                 if(success == 1){
                     JSONObject jsonObject = jsonResult.getJSONObject("status");
-                    paymentStatus = 1;
+                    paymentStatus = jsonObject.getInt("progresscode");
                     broadCastStatus();
                     System.out.println(jsonObject.toString());
                 }else if(success == 0){
