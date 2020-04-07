@@ -343,7 +343,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
     }
 
     /**
-     * Class in charge of updating the user so the bikeId is set to the is of the selected bike
+     * Class in charge of updating the user so the bikeId is set to the id of the selected bike
      */
     @SuppressLint("StaticFieldLeak")
     class ConnectionSetUser extends AsyncTask<String, String, String> {
