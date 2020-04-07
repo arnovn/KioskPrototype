@@ -345,6 +345,14 @@ public class AccountSettings extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     class ConnectionUpdateCode extends AsyncTask<String, String, String>{
         String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             try{
@@ -375,6 +383,11 @@ public class AccountSettings extends AppCompatActivity {
             return result;
         }
 
+        /**
+         * On post execute we send a mail with the new code
+         * @param s
+         *              params passed from doInBackground
+         */
         @Override
         protected void onPostExecute(String s) {
             try{

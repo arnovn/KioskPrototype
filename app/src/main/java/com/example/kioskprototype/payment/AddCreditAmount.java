@@ -65,15 +65,48 @@ public class AddCreditAmount extends AppCompatActivity {
      */
     double userCredits;
 
+    /**
+     * Adapter for the extraCredit ListView
+     */
     ExtraCreditAdapter extraCreditAdapter;
+
+    /**
+     * List containing all extre credit objects the user want to add to his account
+     */
     ArrayList<ExtraCreditObject> extraCreditObjectList;
 
+    /**
+     * Title of this activity on the UI layer
+     */
     TextView titleView;
+
+    /**
+     * TextView visualizing the amount of credits to be added on the UI layer
+     */
     TextView amountView;
+
+    /**
+     * ListView visualizing the extra credit objects to be added on the UI layer
+     */
     ListView extraCreditListView;
+
+    /**
+     * Interaction buttons on the UI layer
+     */
     ArrayList<Button> extraCreditButtons;
+
+    /**
+     * Checkout button on UI layer
+     */
     Button checkOutButton;
 
+    /**
+     * When the activity is created:
+     *  - Retrieve necessary information from previous activity (userId, mail, selected bike, payment method, credits of the user)
+     *  - Initialize objects of the UI layer
+     * @param savedInstanceState
+     *                  Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +124,9 @@ public class AddCreditAmount extends AppCompatActivity {
         initSetOnClickListeners();
     }
 
+    /**
+     * Initializes the TextViews of the UI layer
+     */
     @SuppressLint("SetTextI18n")
     private void initTextViews(){
         titleView = findViewById(R.id.titleViewCreditAmount);
@@ -99,6 +135,9 @@ public class AddCreditAmount extends AppCompatActivity {
         amountView.setText("€" + 0);
     }
 
+    /**
+     * Initializes the objects needed for adding extra objects to the users' account
+     */
     private void initExtraCreditObjects(){
         extraCreditObjectList = new ArrayList<>();
         extraCreditAdapter = new ExtraCreditAdapter(this,R.layout.adapter_extra_credits, extraCreditObjectList);
@@ -114,6 +153,9 @@ public class AddCreditAmount extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initialize the interaction buttons of the UI layer
+     */
     private void initButtons(){
         extraCreditButtons = new ArrayList<>();
         Button fiveEuroButton = findViewById(R.id.fiveEuroButtonAddCredit);
@@ -128,6 +170,9 @@ public class AddCreditAmount extends AppCompatActivity {
         checkOutButton = findViewById(R.id.checkoutButtonAddCredit);
     }
 
+    /**
+     * Initialize the OnClickListeners of the buttons of the UI layer
+     */
     private void initSetOnClickListeners(){
         for(Button button: extraCreditButtons){
             button.setOnClickListener(v -> {
@@ -165,6 +210,11 @@ public class AddCreditAmount extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method in charge of calculating the total amount of credits that have been added by the user
+     * @return
+     *          Amount of credits to be added
+     */
     private int getExtraCredits(){
         int accumulator = 0;
         if(extraCreditObjectList.isEmpty()){ return accumulator;}
@@ -174,6 +224,9 @@ public class AddCreditAmount extends AppCompatActivity {
         return accumulator;
     }
 
+    /**
+     * Method in charge of updating the TextView visualizing the amount of credits to be added on the UI layer
+     */
     @SuppressLint("SetTextI18n")
     private void updateAmountView(){
         int partialTotal = 0;
@@ -187,6 +240,9 @@ public class AddCreditAmount extends AppCompatActivity {
         amountView.setText("€"+partialTotal);
     }
 
+    /**
+     * If everything want successful we move on to the PaypalActivity
+     */
     public void toPaypalPayment(){
         Intent paypalIntent = new Intent(AddCreditAmount.this, PaypalPayment.class);
         paypalIntent.putExtra("Bike", bikeObject);

@@ -35,24 +35,80 @@ public class PaypalPayment extends AppCompatActivity {
 
     //Sandbox account: sb-hu4yp1369124@business.example.com
     //ClientID: AWbtJWYvpTOJPPc_iO-4tqMjdRB0DmWm27a_23m61ctvWSyVs1wC25zmc25meWOtikVU56VW_dztbY9o
-    //Secret: EGV-UG8S6BLBfdGsPljkVOB0uLQ0TwPetGu49CL_dJkD0WehJTR41iKUCh26vg0xmR1eMc5tLzdUU-Pz
 
+    /**
+     * ImageView visualizing the QR-code that needs to be scanned in order to pay using PayPal
+     */
     ImageView qrView;
 
+    /**
+     * Selected bike which needs to be rented
+     */
     ABikeObject bikeObject;
+
+    /**
+     * Mail of the user
+     */
     String mail;
+
+    /**
+     * Id of the user
+     */
     int userId;
+
+    /**
+     * Id of the order
+     */
     int orderId;
+
+    /**
+     * Amount of credits the user wants to add
+     */
     int amount;
 
-    Intent statusPollIntent;
+    /**
+     * Broadcasted order id
+     */
     int broadcastOrderId;
+
+    /**
+     * Broadcasted order status
+     */
     int broadcastOrderStatus;
+
+    /**
+     * Poll intent for polling the status of the order
+     */
+    Intent statusPollIntent;
+
+    /**
+     * BroadcastReceiver for the payment status poll service
+     */
     OrderStatusBroadcastReceiver orderStatusBroadcastReceiver;
+
+    /**
+     * Filter of broadcasts
+     */
     IntentFilter filter;
 
+    /**
+     * To finalize the order, the database needs to be updated through 3 async tasks:
+     *  - Update the user: 1. set the credits 2. connect bike to his account
+     *  - Update the bike: 1. set unavailable 2. connect user unlock code to bike (hashed)
+     *  - Create new bike order: We create new bike order in charge of handling the bike rent (bike duration & cost will be saved here)
+     */
     boolean asyncTask1, asyncTask2, asyncTask3;
 
+    /**
+     * When the activity is created:
+     *  - retrieve necessary information from previous activity
+     *  - set async tasks on false (completion)
+     *  - Create the QR-code which will contain data that, when read, can be converted into a JSON object
+     *  - Start the broadcast receiver
+     *  - Start polling the database on the progress
+     * @param savedInstanceState
+     *                  Bundle containing the activity's previously saved states
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +127,6 @@ public class PaypalPayment extends AppCompatActivity {
         qrView = findViewById(R.id.qrPaypalView);
 
         String jsonData = "{\"userId\":\""+ userId +"\",\"orderId\":\""+  orderId +"\", \"amount\":\""+ amount +"\"}";
-        String jsonData2 = "{\"userId\":\""+ userId +"\", \"amount\": \"50\"}";
 
         QRGEncoder qrgEncoder = new QRGEncoder(jsonData,null, QRGContents.Type.TEXT, 500);
         try {
@@ -126,6 +181,9 @@ public class PaypalPayment extends AppCompatActivity {
         startPolling();
     }
 
+    /**
+     * Method in charge of initializing the polling service
+     */
     private void startPolling(){
         statusPollIntent = new Intent(getApplicationContext(), PaymentStatusPollService.class);
         statusPollIntent.putExtra("OrderId", orderId);
@@ -153,6 +211,17 @@ public class PaypalPayment extends AppCompatActivity {
         mailThread.start();
     }
 
+    /**
+     * When the order is successful it needs to be finalized:
+     *  - AsyncTask 1: Update the user
+     *      1. set the credits
+     *      2. connect bike to his account
+     *  - AsyncTask 2: Update the bike
+     *      1. set unavailable
+     *      2. connect user unlock code to bike (hashed)
+     *  - AsyncTask 3: Create new bike order
+     *      1. We create new bike order in charge of handling the bike rent (bike duration & cost will be saved here)
+     */
     private void finalizeOrder(){
         //Start the 3 connections
         new ConnectionSetInputOrder().execute();
@@ -160,6 +229,23 @@ public class PaypalPayment extends AppCompatActivity {
         new ConnectionSetBike().execute();
     }
 
+    /**
+     * When one of the tasks has successfully finished it is set to true
+     * When all of the tasks have been set to true (the last async task successfully finished):
+     *  - send confirmation mail
+     *  - go to the final screen
+     * @param task1
+     *      AsyncTask 1: Update the user
+     *            1. set the credits
+     *            2. connect bike to his account
+     * @param task2
+     *      AsyncTask 2: Update the bike
+     *            1. set unavailable
+     *            2. connect user unlock code to bike (hashed)
+     * @param task3
+     *      AsyncTask 3: Create new bike order
+     *            1. We create new bike order in charge of handling the bike rent (bike duration & cost will be saved here)
+     */
     private void setTask(boolean task1, boolean task2, boolean task3){
         asyncTask1 = task1;
         asyncTask2 = task2;
@@ -171,6 +257,9 @@ public class PaypalPayment extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates intent for last activity & starts this activity
+     */
     private void toFinalScreen(){
         Intent finalIntent = new Intent(PaypalPayment.this, FinalScreen.class);
         finalIntent.putExtra("Bike", bikeObject);

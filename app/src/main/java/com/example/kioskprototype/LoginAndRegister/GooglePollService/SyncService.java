@@ -83,6 +83,19 @@ public class SyncService extends Service {
      */
     String params;
 
+    /**
+     * When the service is started:
+     *  - we retrieve the data needed for polling the login service of google from the intent which initiated the service
+     *  - we set a handler which will poll the Oauth database with an interval of (interval) seconds for the login status
+     * @param intent
+     *              Intent which initiated the service
+     * @param flags
+     *              Flags passed to the service
+     * @param startId
+     *              Service id
+     * @return
+     *              How to handle service when not enough memory: STICKY: system will recreate service when it is killed
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         clientId = intent.getStringExtra("ClientId");
@@ -96,6 +109,11 @@ public class SyncService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * On successful sign-in we broadcast a GOOGLE_LOGIN action passing:
+     *  - AccesToken, expiration of token, scope of token, type of token and id of token
+     *  To the intent which needs to receive this (RegistrationGoogle)
+     */
     public void signInSuccesfull(){
         Intent broadcastIntent = new Intent("GOOGLE_LOGIN");
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -109,6 +127,9 @@ public class SyncService extends Service {
         sendBroadcast(broadcastIntent);
     }
 
+    /**
+     * When the service is destroyed we stop the handler & stop the service
+     */
     @Override
     public void onDestroy() {
         handler.removeCallbacks(runnableService);
@@ -122,20 +143,33 @@ public class SyncService extends Service {
         return null;
     }
 
+    /**
+     * Runnable which will be executed by the handler each 5s
+     *  - poll the Oauth server of Google for the login status
+     */
     private Runnable runnableService = new Runnable(){
 
         @Override
         public void run() {
             //create AsyncTask here
-
-
             new GoogleSigninChecker2().execute();
             handler.postDelayed(runnableService, interval*1000);
         }
     };
 
+    /**
+     * Class in charge of polling the Oauth server of google
+     */
     @SuppressLint("StaticFieldLeak")
     class GoogleSigninChecker2 extends AsyncTask<String, String, String> {
+
+        /**
+         * Method in charge of querying the Oauth Google server through an HTTP request.
+         * @param strings
+         *          Parameters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
         @Override
         protected String doInBackground(String... strings) {
             String output;
@@ -181,6 +215,11 @@ public class SyncService extends Service {
             return "Ok";
         }
 
+        /**
+         * On post execute we set the received data and broadcast this received data
+         * @param s
+         *              params passed from doInBackground
+         */
         @Override
         protected void onPostExecute(String s) {
             System.out.println("Responsecode: " + responseCode);

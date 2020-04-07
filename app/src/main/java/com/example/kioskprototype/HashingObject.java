@@ -41,7 +41,7 @@ public class HashingObject {
     /**
      * Boolean which gives the result from checking if a given code is equal to a given hash code
      */
-    boolean isLogin;
+    private boolean isLogin;
 
     /**
      * Constructor of a HasingObject when registering
@@ -141,6 +141,15 @@ public class HashingObject {
         return bytesToHex(hash);
     }
 
+    /**
+     * Generate hash based on given code
+     * @param code
+     *          Code that needs to be hashed
+     * @return
+     *          Hashed code
+     * @throws NoSuchAlgorithmException
+     *          If the SHA-256 algorithm isn't found an exception is thrown
+     */
     private String generateHash2(String code) throws NoSuchAlgorithmException{
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = "failed".getBytes();
@@ -150,6 +159,13 @@ public class HashingObject {
         return bytesToHex(hash);
     }
 
+    /**
+     * Convert bytes to hexadecimal values that can be stored as a string object
+     * @param hash
+     *              Hash value that needs to be converted
+     * @return
+     *              The converted hash value
+     */
     private static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder();
         for (byte b : hash) {
@@ -160,6 +176,11 @@ public class HashingObject {
         return hexString.toString();
     }
 
+    /**
+     * Paste the salt in the generated hash so new codes can be verified using the salt
+     * @return
+     *          Hash with salt pasted into it
+     */
     private String pasteSaltToHash(){
         String hashPart = hashValue.substring(0, 54);
         System.out.println("First part: " + hashPart);
@@ -170,6 +191,15 @@ public class HashingObject {
         return result;
     }
 
+    /**
+     * Pastes a given salt in a given hash
+     * @param hash
+     *              the given hash
+     * @param salt
+     *              the given salt
+     * @return
+     *              hash with salt pasted into it
+     */
     private String pasteSaltToHash2(String hash, String salt){
         String hashPart = hash.substring(0, 54);
         System.out.println("First part: " + hashPart);

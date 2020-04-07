@@ -2,7 +2,6 @@ package com.example.kioskprototype.payment;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,20 +23,49 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+/**
+ * Activity in charge of polling the database to check the status of the payment being handled at the Kiosk
+ */
 public class PaymentStatusPollService extends Service {
 
+    /**
+     * Handler which will poll the database each (interval) seconds
+     */
     private Handler handler;
 
+    /**
+     * ID of the order to be polled
+     */
     private int orderId;
 
+    /**
+     * Status of the payment of the order
+     */
     private int paymentStatus;
 
+    /**
+     * Interval for which the database is polled
+     */
     private int interval;
 
+    /**
+     * When after (interval)*(timeoutCounter) seconds the payment hasn't been done the order has timed out
+     */
     private int timeoutCounter;
 
-    private Context mContext;
-
+    /**
+     * When the service is started:
+     *  - retrieve necessary information from activity that initiated it
+     *  - initialize the handler
+     * @param intent
+     *              Intent which initialized this service
+     * @param flags
+     *              Flags passed to the service
+     * @param startId
+     *              Start id of the service
+     * @return
+     *              How to handle service when not enough memory: STICKY: system will recreate service when it is killed
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         orderId = intent.getIntExtra("OrderId", 0);
@@ -46,10 +74,12 @@ public class PaymentStatusPollService extends Service {
 
         handler = new Handler();
         handler.post(runnableService);
-        mContext = getApplicationContext();
         return START_STICKY;
     }
 
+    /**
+     * When the service is destroyed we stop the handler & stop the service
+     */
     @Override
     public void onDestroy() {
         handler.removeCallbacks(runnableService);
@@ -57,6 +87,10 @@ public class PaymentStatusPollService extends Service {
         super.onDestroy();
     }
 
+    /**
+     * Runnable which will be executed by the handler each 5s
+     *  - poll our database for the payment progress
+     */
     private Runnable runnableService = new Runnable(){
 
         @Override
@@ -74,6 +108,9 @@ public class PaymentStatusPollService extends Service {
         }
     };
 
+    /**
+     * Each time we polled the database we broadcast the result so the activity which initiated the service can handle this
+     */
     public void broadCastStatus(){
         Intent broadcastStatusIntent = new Intent();
         broadcastStatusIntent.setAction("PAYMENT_STATUS");
@@ -86,6 +123,9 @@ public class PaymentStatusPollService extends Service {
         System.out.println("BROADCASTING");
     }
 
+    /**
+     * When the payment timed out we broadcast STATUS = 3 (TIMEDOUT)
+     */
     public void broadCastTimedOut(){
         Intent broadcastStatusIntent = new Intent();
         broadcastStatusIntent.setAction("PAYMENT_STATUS");
@@ -105,7 +145,7 @@ public class PaymentStatusPollService extends Service {
     }
 
     /**
-     *  Class in charge of creating new order entry for the payment, status: PENDING
+     *  Class in charge of polling the database & retrieving the order status
      */
     @SuppressLint("StaticFieldLeak")
     public class ConnectionPollOrderStatus extends AsyncTask<String, String, String> {
@@ -145,7 +185,7 @@ public class PaymentStatusPollService extends Service {
 
         /**
          * Method in charge of handling the result gathered from the database:
-         *  - if successful pending payment objects are created & added to the list
+         *  - we return the paymentStatus
          * @param s
          *          Parameters passed when the AsyncTask has finished.
          */
@@ -173,7 +213,6 @@ public class PaymentStatusPollService extends Service {
 
 
     /**
-     *  Class in charge of creating new order entry for the payment, status: PENDING
      */
     @SuppressLint("StaticFieldLeak")
     public class ConnectionDeleteOrder extends AsyncTask<String, String, String> {
@@ -213,7 +252,7 @@ public class PaymentStatusPollService extends Service {
 
         /**
          * Method in charge of handling the result gathered from the database:
-         *  - if successful pending payment objects are created & added to the list
+         *  - if successful the order has been deleted
          * @param s
          *          Parameters passed when the AsyncTask has finished.
          */
