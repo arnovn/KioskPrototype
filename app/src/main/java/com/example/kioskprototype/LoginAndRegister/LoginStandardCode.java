@@ -45,7 +45,7 @@ public class LoginStandardCode extends AppCompatActivity {
     String enteredCode;
 
     /**
-     * Type of the bike
+     * Type of flow (rent a bike, ...)
      */
     String type;
 
@@ -130,8 +130,8 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      * Whent he activity is created:
      *  - EnteredCode & Code & entryList are initialized
-     *  - Selected bike is retreived from previous activity
-     *  - Type of the selected bike is retreived from previous activity
+     *  - Selected bike is retrieved from previous activity
+     *  - Type of the flow retrieved from previous activity
      *  - EditTexts, TextViews, Buttons are initialized.
      * @param savedInstanceState
      *              Bundle containing the activity's previously saved states

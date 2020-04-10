@@ -36,6 +36,7 @@ import java.util.TimeZone;
  *  - Paying for depths
  *  - Adding credits to your account
  */
+//TODO: imeplment checkout payment (paypal)
 public class PayForServices extends AppCompatActivity {
 
     /**

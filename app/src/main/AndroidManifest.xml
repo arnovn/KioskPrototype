@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.hardware.usb.host" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application
         android:allowBackup="true"
@@ -15,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".payment.AddCreditAmount"></activity>
+        <activity android:name=".LoginAndRegister.LoginMemberCardBluetooth"></activity>
+        <activity android:name=".payment.AddCreditAmount" />
         <activity android:name=".payment.PaypalPayment" />
         <activity android:name=".LoginAndRegister.LoginSms" />
         <activity android:name=".POI.PoiSingleRoute" />
@@ -26,8 +32,16 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".LoginAndRegister.LoginMemberCard" />
         <activity android:name=".AccountSettings.RequestMemberCard" />
+        <activity android:name=".LoginAndRegister.LoginMemberCardUSB">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
         <activity android:name=".AccountSettings.PastActivities" />
         <activity android:name=".AccountSettings.AccountSettings" />
         <activity android:name=".payment.PayForServices" />
@@ -39,7 +53,6 @@
         <service
             android:name=".LoginAndRegister.GooglePollService.SyncService"
             android:enabled="true" />
-
         <service
             android:name=".payment.PaymentStatusPollService"
             android:enabled="true" />
@@ -51,8 +64,7 @@
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/client_token" />
 
-        <receiver android:name=".payment.PaypalPayment$OrderStatusBroadcastReceiver" >
-        </receiver>
+        <receiver android:name=".payment.PaypalPayment$OrderStatusBroadcastReceiver"></receiver>
 
         <activity android:name=".LoginAndRegister.RegisterFacebook" />
         <activity android:name=".payment.PaymentSelect" />

@@ -29,7 +29,7 @@ public class LoginOptions extends AppCompatActivity {
     Button smsLogin;
 
     /**
-     * Button which takes the user to the LoginMemberCard activity
+     * Button which takes the user to the LoginMemberCardUSB activity
      */
     Button rfidButton;
 
@@ -70,7 +70,7 @@ public class LoginOptions extends AppCompatActivity {
         });
 
         rfidButton.setOnClickListener(v->{
-            Intent intent = new Intent(LoginOptions.this, LoginMemberCard.class);
+            Intent intent = new Intent(LoginOptions.this, LoginMemberCardBluetooth.class);
             intent.putExtra("Bike", bikeObject);
             intent.putExtra("Type", type);
             startActivity(intent);

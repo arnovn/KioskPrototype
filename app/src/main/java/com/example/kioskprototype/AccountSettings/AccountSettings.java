@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.HashingObject;
+import com.example.kioskprototype.LoginAndRegister.LoginMemberCardBluetooth;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
 
@@ -33,6 +34,7 @@ import java.util.Random;
  *  - request a new member card
  *  - request a new user code
  *  - view past transactions/activities
+ *  - register one of the users his own RFID card as membercard
  */
 public class AccountSettings extends AppCompatActivity {
 
@@ -65,6 +67,11 @@ public class AccountSettings extends AppCompatActivity {
      * Button which will 'sign out' the user and return to the MainActivity activity.
      */
     Button signOutButton;
+
+    /**
+     * Button whi will guide the user to the LoginMemberCardBluetooth activity with type set as "AccountSettings"
+     */
+    Button registerMembercardButton;
 
     /**
      * Mail of the current user logged in at the Kiosk.
@@ -138,6 +145,12 @@ public class AccountSettings extends AppCompatActivity {
      *  - If resultCode = RESULT_OK: pop up dialog saying the request was succesful.
      *  - If resultCode = RESULT_FAILED: pop up dialog saying the request failed.
      *
+     * Requestcode: 2
+     *  - Returned from LoginMemberCardBluetooth to register new RFID card
+     *  - If resultCode = RESULT_CANCELED: pop up dialog saying request canceled
+     *  - If resultCode = RESULT_OK: new RIFD card is registered, request successful
+     *  - If resultCode = RESULT_FAILD: something went wrong while querying the database, pop up saying request failed.
+     *
      * @param requestCode
      *          Code to identify where the result is coming from.
      * @param resultCode
@@ -178,6 +191,36 @@ public class AccountSettings extends AppCompatActivity {
                             }).show();
                     break;
             }
+        }else if(requestCode == 2) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("CARD SET")
+                            .setMessage("Your card has successfully been set as membercard.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", (dialog, which) -> {
+
+                            }).show();
+                    break;
+                case RESULT_CANCELED:
+                    new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("CARD CANCELED")
+                            .setMessage("Request has been canceled, try again later.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", (dialog, which) -> {
+
+                            }).show();
+                    break;
+                case RESULT_FAILED:
+                    new AlertDialog.Builder(AccountSettings.this)
+                            .setTitle("CARD SET FAILED")
+                            .setMessage("Request has failed when updating database.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", (dialog, which) -> {
+
+                            }).show();
+                    break;
+            }
         }
     }
 
@@ -189,6 +232,7 @@ public class AccountSettings extends AppCompatActivity {
         membercardButton = findViewById(R.id.membercardButton);
         newLoginButton = findViewById(R.id.requestNewUserCode);
         signOutButton = findViewById(R.id.signOutButton);
+        registerMembercardButton = findViewById(R.id.setMembercardButton);
     }
 
     /**
@@ -215,6 +259,13 @@ public class AccountSettings extends AppCompatActivity {
             intent.putExtra("Id",id);
             intent.putExtra("Mail", mail);
             startActivityForResult(intent,0);
+        });
+
+        registerMembercardButton.setOnClickListener(v->{
+            Intent intent = new Intent(AccountSettings.this, LoginMemberCardBluetooth.class);
+            intent.putExtra("Mail", mail);
+            intent.putExtra("Type", "AccountSettings");
+            startActivityForResult(intent,2);
         });
 
         signOutButton.setOnClickListener(v -> finish());
