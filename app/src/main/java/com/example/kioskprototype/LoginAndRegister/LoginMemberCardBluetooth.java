@@ -235,14 +235,12 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
                 loadingDialog.dismissDialog();
                 deviceName = name;
                 checkConnected();
-                Toast.makeText(getApplicationContext(), "Connected to listener: " + name, Toast.LENGTH_SHORT).show();
                 setOnReceiveListener();
                 sendReadMessage();
             }
 
             public void onDeviceDisconnected() {
                 loadingDialog.dismissDialog();
-                Toast.makeText(getApplicationContext(), "Disconnected with reader.", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
@@ -259,7 +257,6 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
      */
     private void setOnReceiveListener(){
         bluetooth.setOnDataReceivedListener((data, message) -> {
-            Toast.makeText(getApplicationContext(), "Received: " + message, Toast.LENGTH_SHORT).show();
             checkMessage(message);
         });
     }
@@ -281,17 +278,17 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
         switch (result[0]){
             case "1010":
                 //Reading
-                Toast.makeText(getApplicationContext(), "Reading confirmed", Toast.LENGTH_SHORT).show();
+                System.out.println("Reading confirmed");
                 break;
             case "2020":
                 //Cancel
-                Toast.makeText(getApplicationContext(), "Reading cancelled " + message, Toast.LENGTH_SHORT).show();
+                System.out.println("Reading cancelled " + message);
                 bluetooth.disconnect();
                 finish();
                 break;
             case "3030":
                 //Pending
-                Toast.makeText(getApplicationContext(), "Scanning for card" + message, Toast.LENGTH_SHORT).show();
+                System.out.println("Scanning for card" + message);
                 androidPollHandler.postDelayed(runnable, handlerInterval);
                 break;
             case "4040":
@@ -304,7 +301,7 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
                 break;
             case "5050":
                 //Card_read
-                Toast.makeText(getApplicationContext(), "Received2: " + result[1], Toast.LENGTH_SHORT).show();
+                System.out.println("Received 2: " + result[1]);
                 codeRFID = result[1].replaceAll("\\s","");
                 if(type.equals("AccountSettings")){
                     inputRfidUser();
@@ -316,7 +313,7 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
                 }
             case "6060":
                 //Finish successfully received
-                Toast.makeText(getApplicationContext(), "Card details being processed.", Toast.LENGTH_SHORT).show();
+                System.out.println("Card details being processed");
         }
     }
 
@@ -430,16 +427,13 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
      */
     private void checkConnected(){
         if (bluetooth.getServiceState() == BluetoothState.STATE_CONNECTED) {
-            Toast.makeText(getApplicationContext(), "Still connected to: " + deviceName, Toast.LENGTH_SHORT).show();
             if(deviceName == null){
                 Intent intent = new Intent(getApplicationContext(), DeviceList.class);
-                Toast.makeText(getApplicationContext(), "SETTING UP CONNECTION", Toast.LENGTH_SHORT).show();
                 startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
             }
 
         } else {
             Intent intent = new Intent(getApplicationContext(), DeviceList.class);
-            Toast.makeText(getApplicationContext(), "SETTING UP CONNECTION", Toast.LENGTH_SHORT).show();
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
         }
     }
@@ -499,7 +493,6 @@ public class LoginMemberCardBluetooth extends AppCompatActivity {
                 JSONObject jsonResult = new JSONObject(result);
                 int success = jsonResult.getInt("success");
                 if(success == 1){
-                    Toast.makeText(getApplicationContext(), "SUCCES", Toast.LENGTH_LONG).show();
                     bluetooth.send(FINISH, false);
                     setResult(RESULT_OK);
                     bluetooth.disconnect();

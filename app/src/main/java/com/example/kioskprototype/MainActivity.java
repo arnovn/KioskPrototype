@@ -6,7 +6,6 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.kioskprototype.LoginAndRegister.LoginMemberCardBluetooth;
 import com.example.kioskprototype.LoginAndRegister.LoginOptions;
 import com.example.kioskprototype.POI.PoiSelectType;
 
@@ -61,12 +60,6 @@ public class MainActivity extends AppCompatActivity {
         settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, LoginOptions.class);
             intent.putExtra("Type", "AccountSettingsLogin");
-            startActivity(intent);
-        });
-
-        Button toMemberButton = findViewById(R.id.toMembercardButton);
-        toMemberButton.setOnClickListener(v->{
-            Intent intent  = new Intent(MainActivity.this, LoginMemberCardBluetooth.class);
             startActivity(intent);
         });
     }
