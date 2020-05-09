@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
-import com.example.kioskprototype.adapterView.MailDialog;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.MailDialog;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -353,7 +353,7 @@ public class LoginSms extends AppCompatActivity implements MailDialog.MailDialog
      * @param entry
      *              the code up to now.
      */
-    public void addEntry(String entry){
+    private void addEntry(String entry){
         if(enteredCode.length()<4){
             enteredCode = enteredCode+entry;
             entryList.get(enteredCode.length()-1).setText("*");
@@ -363,7 +363,7 @@ public class LoginSms extends AppCompatActivity implements MailDialog.MailDialog
     /**
      *  When the DeleteButton is pressed we remove one of the * of one of the TextViews for feedback to the user
      */
-    public  void deleteEntry(){
+    private  void deleteEntry(){
         if(enteredCode.length()>0){
             enteredCode = enteredCode.substring(0, enteredCode.length()-1);
             entryList.get(enteredCode.length()).setText("");
@@ -373,7 +373,7 @@ public class LoginSms extends AppCompatActivity implements MailDialog.MailDialog
     /**
      * Check the user mail input is inside the MySql Database.
      */
-    public void checkInput() {
+    private void checkInput() {
         //check if mail valid
         if(verificationCode.equals(enteredCode)){
             //GO TO NEXT INTENT
@@ -391,7 +391,7 @@ public class LoginSms extends AppCompatActivity implements MailDialog.MailDialog
      * @return
      *          true or false
      */
-    public boolean checkMailEdit(){
+    private boolean checkMailEdit(){
         return mail.trim().matches(mailPattern);
     }
 

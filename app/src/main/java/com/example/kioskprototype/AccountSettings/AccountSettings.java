@@ -130,7 +130,7 @@ public class AccountSettings extends AppCompatActivity {
     /**
      * Method in charge of connecting the TextView objects to the TextViews in the UI layer.
      */
-    public void initTextViews(){
+    private void initTextViews(){
         welcomeView = findViewById(R.id.accountSettingTitle);
         creditView = findViewById(R.id.creditsWindow);
     }
@@ -227,7 +227,7 @@ public class AccountSettings extends AppCompatActivity {
     /**
      * Method in charge of connection the Button objects to the Buttons of the UI layer.
      */
-    public void initButtons(){
+    private void initButtons(){
         pastactivitiesButton = findViewById(R.id.pastActivityButton);
         membercardButton = findViewById(R.id.membercardButton);
         newLoginButton = findViewById(R.id.requestNewUserCode);
@@ -242,7 +242,7 @@ public class AccountSettings extends AppCompatActivity {
      * - For membercardButton: start the RequestMemberCard activity.
      * - For signOutButton: return to mains screen.
      */
-    public void setButtonListeners(){
+    private void setButtonListeners(){
         pastactivitiesButton.setOnClickListener(v -> {
             Intent intent = new Intent(AccountSettings.this, PastActivities.class);
             intent.putExtra("Id", id);
@@ -298,7 +298,7 @@ public class AccountSettings extends AppCompatActivity {
      * @return
      *          returns the new code as String
      */
-    public String generateNewCode(){
+    private String generateNewCode(){
         Random random = new Random();
         int randomNumber = random.nextInt(9999);
         if(randomNumber < 10){

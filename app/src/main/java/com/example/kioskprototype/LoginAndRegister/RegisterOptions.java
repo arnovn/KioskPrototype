@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 /**
  * Activity which gives the user the different register options
@@ -52,10 +52,7 @@ public class RegisterOptions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_options);
 
-        facebookRegister = findViewById(R.id.facebookButton);
-        googleRegister = findViewById(R.id.googleButton);
-        itsmeRegister = findViewById(R.id.itsmeButton);
-        standardRegister = findViewById(R.id.standardButton);
+        initButtons();
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
@@ -68,6 +65,16 @@ public class RegisterOptions extends AppCompatActivity {
         setStandardButton();
         setFacebookButton();
         setGoogleButton();
+    }
+
+    /**
+     * Connect buttons of UI layer to button objects
+     */
+    private void initButtons(){
+        facebookRegister = findViewById(R.id.facebookButton);
+        googleRegister = findViewById(R.id.googleButton);
+        itsmeRegister = findViewById(R.id.itsmeButton);
+        standardRegister = findViewById(R.id.standardButton);
     }
 
     /**

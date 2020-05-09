@@ -12,9 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
-import com.example.kioskprototype.adapterView.ExtraCreditAdapter;
-import com.example.kioskprototype.adapterView.ExtraCreditObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ExtraCreditAdapter;
+import com.example.kioskprototype.adapterAndObjects.ExtraCreditObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -112,16 +112,22 @@ public class AddCreditAmount extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_credit_amount);
 
+        getPreviousInfo();
+        initExtraCreditObjects();
+        initTextViews();
+        initButtons();
+        initSetOnClickListeners();
+    }
+
+    /**
+     * Retrieve necessary information from previous activity
+     */
+    private void getPreviousInfo(){
         userId = getIntent().getIntExtra("Id", 0);
         mail = getIntent().getStringExtra("Mail");
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
         paymentMethod = getIntent().getStringExtra("Method");
         userCredits = getIntent().getDoubleExtra("UserCredits",0);
-
-        initExtraCreditObjects();
-        initTextViews();
-        initButtons();
-        initSetOnClickListeners();
     }
 
     /**
@@ -245,11 +251,13 @@ public class AddCreditAmount extends AppCompatActivity {
      */
     public void toPaypalPayment(){
         Intent paypalIntent = new Intent(AddCreditAmount.this, PaypalPayment.class);
+        paypalIntent.putExtra("Type", "rent");
         paypalIntent.putExtra("Bike", bikeObject);
         paypalIntent.putExtra("Mail", mail);
         paypalIntent.putExtra("UserId", userId);
         paypalIntent.putExtra("OrderId", orderId);
         paypalIntent.putExtra("Amount", amountOfExtraCredits);
+        paypalIntent.putExtra("Credits", userCredits);
         startActivity(paypalIntent);
     }
 

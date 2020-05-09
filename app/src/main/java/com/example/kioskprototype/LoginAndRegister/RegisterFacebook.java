@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
-import com.example.kioskprototype.adapterView.PhoneDialog;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.PhoneDialog;
 import com.example.kioskprototype.payment.PaymentSelect;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -160,13 +159,6 @@ public class RegisterFacebook extends AppCompatActivity implements PhoneDialog.P
                 Toast.makeText(getApplicationContext(),error+"",Toast.LENGTH_SHORT);
             }
         });
-
-        Button finishRegistration = findViewById(R.id.finishRegButton);
-        finishRegistration.setOnClickListener(v -> {
-            //Time to finish the registration:
-            finishRegistration();
-        });
-
 
     }
 

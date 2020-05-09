@@ -10,8 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.Order.OrderConfirmation;
-import com.example.kioskprototype.adapterView.ABikeAdapter;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeAdapter;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

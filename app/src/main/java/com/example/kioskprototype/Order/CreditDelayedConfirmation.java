@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.FinalScreen;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -121,7 +121,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
     /**
      * Initialize if asynctasks are ready
      */
-    public void initTaskBooleans(){
+    private void initTaskBooleans(){
         taskReady1 = false;
         taskReady2 = false;
         taskReady3 = false;
@@ -150,7 +150,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
     /**
      * When the order is finished we move to the final activity
      */
-    public void toFinalScreen(){
+    private void toFinalScreen(){
         Intent intent = new Intent(CreditDelayedConfirmation.this, FinalScreen.class);
         intent.putExtra("Bike", bikeObject);
         startActivity(intent);
@@ -159,7 +159,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
     /**
      * Confirm button setter
      */
-    public void setconfirm(){
+    private void setconfirm(){
         confirm = findViewById(R.id.confirmButtonCfn);
         confirm.setOnClickListener(v -> new ConnectionGetId().execute());
     }
@@ -177,7 +177,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
      * TextView setters
      */
     @SuppressLint("SetTextI18n")
-    public void setBikeTextviews(){
+    private void setBikeTextviews(){
         bikeNameView = findViewById(R.id.bikeNameViewConf);
         bikeAmountView = findViewById(R.id.bikeAmountViewConf);
 
@@ -190,7 +190,7 @@ public class CreditDelayedConfirmation extends AppCompatActivity {
      * TextView setters
      */
     @SuppressLint("SetTextI18n")
-    public void setInfoTextviews(){
+    private void setInfoTextviews(){
         infoViewType = findViewById(R.id.confirmSideText);
         infoViewExtra = findViewById(R.id.confirmSideText2);
 

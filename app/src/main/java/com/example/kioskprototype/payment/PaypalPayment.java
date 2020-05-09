@@ -15,8 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.FinalScreen;
 import com.example.kioskprototype.MailSender.GmailSender;
+import com.example.kioskprototype.MainActivity;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 import com.google.zxing.WriterException;
 
 import org.apache.http.HttpResponse;
@@ -52,6 +53,11 @@ public class PaypalPayment extends AppCompatActivity {
     String mail;
 
     /**
+     * Type of flow
+     */
+    String type;
+
+    /**
      * Id of the user
      */
     int userId;
@@ -77,6 +83,11 @@ public class PaypalPayment extends AppCompatActivity {
     int broadcastOrderStatus;
 
     /**
+     * Credits of the user
+     */
+    int credits;
+
+    /**
      * Poll intent for polling the status of the order
      */
     Intent statusPollIntent;
@@ -97,7 +108,7 @@ public class PaypalPayment extends AppCompatActivity {
      *  - Update the bike: 1. set unavailable 2. connect user unlock code to bike (hashed)
      *  - Create new bike order: We create new bike order in charge of handling the bike rent (bike duration & cost will be saved here)
      */
-    boolean asyncTask1, asyncTask2, asyncTask3;
+    boolean asyncTask1, asyncTask2, asyncTask3, asyncTask4;
 
     /**
      * When the activity is created:
@@ -114,20 +125,45 @@ public class PaypalPayment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal_payment);
 
+        getPreviousInfo();
+
+        broadcastOrderStatus = 0;
+        asyncTask1 = false;
+        asyncTask2 = false;
+        asyncTask3 = false;
+        asyncTask4 = false;
+
+        qrView = findViewById(R.id.qrPaypalView);
+
+        initQR();
+        setBroadcastReceiver();
+        setBroadcastFilter();
+
+        startPolling();
+    }
+
+    /**
+     * Retrieve info from previous activity
+     */
+    private void getPreviousInfo(){
+        type = getIntent().getStringExtra("Type");
+        credits = getIntent().getIntExtra("Credits",0);
         bikeObject = (ABikeObject) getIntent().getSerializableExtra("Bike");
         mail = getIntent().getStringExtra("Mail");
         userId = getIntent().getIntExtra("UserId", 0);
         orderId = getIntent().getIntExtra("OrderId", 0);
         amount = getIntent().getIntExtra("Amount", 0);
-        broadcastOrderStatus = 0;
-        asyncTask1 = false;
-        asyncTask2 = false;
-        asyncTask3 = false;
+        Toast.makeText(getApplicationContext(),"Type: " + type, Toast.LENGTH_SHORT).show();
+    }
 
-        qrView = findViewById(R.id.qrPaypalView);
-
+    /**
+     * Initialize the QR code to be displayed on the Kiosk with the necessary info
+     */
+    private void initQR(){
+        if(credits<0){
+            amount = amount - credits;
+        }
         String jsonData = "{\"userId\":\""+ userId +"\",\"orderId\":\""+  orderId +"\", \"amount\":\""+ amount +"\"}";
-
         QRGEncoder qrgEncoder = new QRGEncoder(jsonData,null, QRGContents.Type.TEXT, 500);
         try {
             Bitmap qrBit = qrgEncoder.encodeAsBitmap();
@@ -135,7 +171,12 @@ public class PaypalPayment extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Method in charge of initializing the broadcastreceiver and handling the result when something has been received
+     */
+    private void setBroadcastReceiver(){
         orderStatusBroadcastReceiver = new OrderStatusBroadcastReceiver();
         orderStatusBroadcastReceiver.setOrderStatusBroadcastListener(title -> {
             broadcastOrderId = orderStatusBroadcastReceiver.getOrderId();
@@ -164,7 +205,6 @@ public class PaypalPayment extends AppCompatActivity {
                         finish();
                         break;
                     case -1:
-                        //TODO: handle when failed
                         System.out.println("Order status: FAILED");
                         break;
                     default:
@@ -172,13 +212,16 @@ public class PaypalPayment extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    /**
+     * The the filter of the broadcast receiver to "PAYMENY STATUS", only handle these type of broadcasts
+     */
+    private void setBroadcastFilter(){
         filter = new IntentFilter();
         filter.addAction("PAYMENT_STATUS");
         filter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(orderStatusBroadcastReceiver, filter);
-
-        startPolling();
     }
 
     /**
@@ -202,7 +245,7 @@ public class PaypalPayment extends AppCompatActivity {
                 sender.sendMail("WOW kiosk Verification mail",
                         "Payment confirmation. \n \nYou've succesfull added €" + amount + " to your account."+
                         "\nConfirmation number: " + orderId,
-                        "wowkioskmail@gmail.com", mail);
+                        "wowkioskmail@gmail.com", "arnovanneste96@gmail.com");
             } catch (Exception e) {
                 System.out.println("The exception :" + e);
             }
@@ -224,9 +267,17 @@ public class PaypalPayment extends AppCompatActivity {
      */
     private void finalizeOrder(){
         //Start the 3 connections
-        new ConnectionSetInputOrder().execute();
-        new ConnectionSetUser().execute();
-        new ConnectionSetBike().execute();
+        Toast.makeText(getApplicationContext(),"Finalizing order", Toast.LENGTH_SHORT).show();
+        if(type.equals("rent")){
+            Toast.makeText(getApplicationContext(),"RENT", Toast.LENGTH_SHORT).show();
+            new ConnectionSetInputOrder().execute();
+            new ConnectionSetUser().execute();
+            new ConnectionSetBike().execute();
+        }else if(type.equals("service")){
+            Toast.makeText(getApplicationContext(),"Executing", Toast.LENGTH_SHORT).show();
+            new ConnectionSetUserService().execute();
+            new ConnectionUpdateUserDepths().execute();
+        }
     }
 
     /**
@@ -246,14 +297,22 @@ public class PaypalPayment extends AppCompatActivity {
      *      AsyncTask 3: Create new bike order
      *            1. We create new bike order in charge of handling the bike rent (bike duration & cost will be saved here)
      */
-    private void setTask(boolean task1, boolean task2, boolean task3){
+    private void setTask(boolean task1, boolean task2, boolean task3, boolean task4){
         asyncTask1 = task1;
         asyncTask2 = task2;
         asyncTask3 = task3;
+        asyncTask4 = task4;
 
-        if(task1 & task2 & task3){
+        if(task1 && task2 && task3 && type.equals("rent")){
             sendConfirmationMail();
             toFinalScreen();
+        }else if(task2 && task4 && type.equals("service")){
+            Toast.makeText(getApplicationContext(),"TASK SUCESS", Toast.LENGTH_SHORT).show();
+            sendConfirmationMail();
+
+            Intent toMainIntent = new Intent(PaypalPayment.this, MainActivity.class);
+            toMainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(toMainIntent);
         }
     }
 
@@ -376,7 +435,7 @@ public class PaypalPayment extends AppCompatActivity {
             try{
                 if(result.equals("succes")){
                     Toast.makeText(getApplicationContext(),"Insertion of ORDER successul", Toast.LENGTH_SHORT).show();
-                    setTask(true,asyncTask2,asyncTask3);
+                    setTask(true,asyncTask2,asyncTask3,asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Insertion of ORDER failed..", Toast.LENGTH_SHORT).show();
                 }
@@ -403,7 +462,13 @@ public class PaypalPayment extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try{
+                System.out.println("executing");
                 String host = "http://"+ getResources().getString(R.string.ip) +"/updateusercredit.php?userid="+ userId + "&bikeid=" + bikeObject.getId() + "&amount=" + amount;
+                if(type.equals("service")){
+                    System.out.println("executing2");
+                    amount = amount + credits;
+                    host = "http://"+ getResources().getString(R.string.ip) +"/updateusercreditservice.php?userid="+ userId + "&amount=" + amount;
+                }
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(host));
@@ -433,12 +498,76 @@ public class PaypalPayment extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             try{
+                System.out.println("executing3");
                 if(result.equals("succes")){
                     Toast.makeText(getApplicationContext(),"Update of USER successul", Toast.LENGTH_SHORT).show();
-                    setTask(asyncTask1,true,asyncTask3);
+                    setTask(asyncTask1,true,asyncTask3,asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of USER failed..", Toast.LENGTH_SHORT).show();
                 }
+                System.out.println("executing4");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Class in charge of updating the user so the bikeId is set to the id of the selected bike
+     */
+    @SuppressLint("StaticFieldLeak")
+    class ConnectionSetUserService extends AsyncTask<String, String, String> {
+        String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Parameters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                amount = amount + credits;
+                String host = "http://"+ getResources().getString(R.string.ip) +"/updateusercreditservice.php?userid="+ userId + "&amount=" + amount;
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(host));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuilder stringBuffer = new StringBuilder();
+
+                String line;
+                while((line = reader.readLine()) != null){
+                    stringBuffer.append(line);
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return "The exception: " + e.getMessage();
+            }
+            return result;
+        }
+
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successful we set this task to true meaning it has finished
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            try{
+                System.out.println("executing3");
+                if(result.equals("succes")){
+                    Toast.makeText(getApplicationContext(),"Update of USER successul", Toast.LENGTH_SHORT).show();
+                    setTask(asyncTask1,true,asyncTask3,asyncTask4);
+                }else if(result.equals("error")){
+                    Toast.makeText(getApplicationContext(),"Update of USER failed..", Toast.LENGTH_SHORT).show();
+                }
+                System.out.println("executing4");
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -494,7 +623,7 @@ public class PaypalPayment extends AppCompatActivity {
             try{
                 if(result.equals("succes")){
                     Toast.makeText(getApplicationContext(),"Update of BIKE successful", Toast.LENGTH_SHORT).show();
-                    setTask(asyncTask1,asyncTask2, true);
+                    setTask(asyncTask1,asyncTask2, true, asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of BIKE failed..", Toast.LENGTH_SHORT).show();
                 }
@@ -504,4 +633,62 @@ public class PaypalPayment extends AppCompatActivity {
         }
     }
 
+    /**
+     * Class in charge of updating the selected bike so the user id in the MySql Database is set to the id of the user
+     */
+    @SuppressLint("StaticFieldLeak")
+    class ConnectionUpdateUserDepths extends AsyncTask<String, String, String> {
+        String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param params
+         *          Parameters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String host = "http://"+ getResources().getString(R.string.ip) +"/updateuserdepths.php?userid="+ userId;
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(host));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuilder stringBuffer = new StringBuilder();
+
+                String line;
+                while((line = reader.readLine()) != null){
+                    stringBuffer.append(line);
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                return "The exception: " + e.getMessage();
+            }
+            return result;
+        }
+
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - If successful we set this task to true meaning it has finished
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            try{
+                if(result.equals("succes")){
+                    Toast.makeText(getApplicationContext(),"Update of BIKE successful", Toast.LENGTH_SHORT).show();
+                    setTask(asyncTask1,asyncTask2, asyncTask3, true);
+                }else if(result.equals("error")){
+                    Toast.makeText(getApplicationContext(),"Update of BIKE failed..", Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

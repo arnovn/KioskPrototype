@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.KioskInfo;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.PoiObject1;
+import com.example.kioskprototype.adapterAndObjects.PoiObject1;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -100,10 +101,8 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
         Mapbox.getInstance(this,getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_poi_all_map_view);
 
-        kioskInfo = KioskInfo.get();
-        poiMapObjects = new ArrayList<>();
-        poiMarkers = new ArrayList<>();
-        selectedPoiObject = null;
+        getKioskInfo();
+        initPoiObjects();
 
         new ConnectionGetAllPoi().execute();
 
@@ -112,6 +111,22 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
 
         initializeButton();
 
+    }
+
+    /**
+     * Get Kiosk information
+     */
+    private void getKioskInfo(){
+        kioskInfo = KioskInfo.get();
+    }
+
+    /**
+     * Init the POI lists & markers
+     */
+    private void initPoiObjects(){
+        poiMapObjects = new ArrayList<>();
+        poiMarkers = new ArrayList<>();
+        selectedPoiObject = null;
     }
 
     /**
@@ -143,14 +158,24 @@ public class PoiAllMapView extends AppCompatActivity implements OnMapReadyCallba
     private void initializeMarkerListener(){
         mapBoxMap.setOnMarkerClickListener(marker ->
         {
-            String name = marker.getTitle();
-            for(PoiObject1 poiMapObject: poiMapObjects){
-                if(poiMapObject.getName().equals(name)){
-                    selectedPoiObject = poiMapObject;
-                }
-            }
+            selectedPoiObject = setMarker(marker);
             return false;
         });
+    }
+
+    /**
+     * Set poiObject of sleected marker
+     * @param marker
+     *          Marker that has been selected
+     */
+    private PoiObject1 setMarker(Marker marker){
+        String name = marker.getTitle();
+        for(PoiObject1 poiMapObject: poiMapObjects){
+            if(poiMapObject.getName().equals(name)){
+                return poiMapObject;
+            }
+        }
+        return null;
     }
 
     /**

@@ -7,7 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 /**
  * Activity which gives the user to option to select if he is a new user or a member.
@@ -40,10 +40,17 @@ public class MemberOrNot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_or_not);
 
+        bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
+
+        initButtons();
+    }
+
+    /**
+     * Connect buttons of UI layer to button objects
+     */
+    private void initButtons(){
         registerButton = findViewById(R.id.newUserButton);
         loginButton = findViewById(R.id.memberbutton);
-
-        bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
         registerButton.setOnClickListener(v -> {
             Intent intent = new Intent(MemberOrNot.this, RegisterOptions.class);

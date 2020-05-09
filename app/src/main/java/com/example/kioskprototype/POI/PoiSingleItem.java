@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.PoiObject1;
+import com.example.kioskprototype.adapterAndObjects.PoiObject1;
 
 import java.net.URL;
 
@@ -77,14 +77,9 @@ public class PoiSingleItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poi_single_item);
 
-        hoofdView = findViewById(R.id.hoofdView);
-        addressView = findViewById(R.id.addressText);
-        distanceView = findViewById(R.id.distanceText);
-        descriptionsView = findViewById(R.id.descriptionText);
-        poiImageView = findViewById(R.id.poiImageView);
-        poiRouteButton = findViewById(R.id.poiRouteButton);
+        initViews();
+        getPreviousData();
 
-        object1 = (PoiObject1) getIntent().getSerializableExtra("Object");
         assert object1 != null;
         Toast toast = Toast.makeText(getApplicationContext(),
                 object1.getName(),
@@ -92,10 +87,8 @@ public class PoiSingleItem extends AppCompatActivity {
 
         toast.show();
         id = object1.getId();
-        hoofdView.setText(object1.getName());
-        addressView.setText(object1.getAddress());
-        distanceView.setText(String.valueOf(object1.getDistance()));
-        descriptionsView.setText(object1.getDescription());
+
+        setViews();
 
         ConnectionPoi poiImage = new ConnectionPoi();
         poiImage.execute();
@@ -103,12 +96,44 @@ public class PoiSingleItem extends AppCompatActivity {
 
     }
 
+    /**
+     * In charge of connection TextView & Button of UI layer to objects
+     */
+    private void initViews(){
+        hoofdView = findViewById(R.id.hoofdView);
+        addressView = findViewById(R.id.addressText);
+        distanceView = findViewById(R.id.distanceText);
+        descriptionsView = findViewById(R.id.descriptionText);
+        poiImageView = findViewById(R.id.poiImageView);
+        poiRouteButton = findViewById(R.id.poiRouteButton);
+    }
+
+    /**
+     * Set the poiRouteButton listener, leading to PoiSingleRoute activity visualizing the route from the kiosk to the POI
+     */
     private void buttonListener(){
         poiRouteButton.setOnClickListener(v->{
             Intent routeIntent = new Intent(PoiSingleItem.this, PoiSingleRoute.class);
             routeIntent.putExtra("POI", object1);
             startActivity(routeIntent);
         });
+    }
+
+    /**
+     * Get data from past activity
+     */
+    private void getPreviousData(){
+        object1 = (PoiObject1) getIntent().getSerializableExtra("Object");
+    }
+
+    /**
+     * Set the textviews of the UI layers with the necessary data
+     */
+    private void setViews(){
+        hoofdView.setText(object1.getName());
+        addressView.setText(object1.getAddress());
+        distanceView.setText(String.valueOf(object1.getDistance()));
+        descriptionsView.setText(object1.getDescription());
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 

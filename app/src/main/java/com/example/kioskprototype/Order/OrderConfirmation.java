@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.LoginAndRegister.MemberOrNot;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -90,17 +90,28 @@ public class OrderConfirmation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirmation);
 
-        bikeNameView = findViewById(R.id.bikeNameView);
-        bikeAmountView = findViewById(R.id.bikeAmountView);
-        pricePerHourView = findViewById(R.id.bikePriceView);
-        infoView = findViewById(R.id.infoView);
-        confirmButton = findViewById(R.id.confirmButton);
+        initUiObjects();
 
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
 
         ConnectionBikeInfo connectionBikeInfo = new ConnectionBikeInfo();
         connectionBikeInfo.execute();
 
+        setButton();
+    }
+
+    /**
+     * Connect UI layer with objects
+     */
+    private void initUiObjects(){
+        bikeNameView = findViewById(R.id.bikeNameView);
+        bikeAmountView = findViewById(R.id.bikeAmountView);
+        pricePerHourView = findViewById(R.id.bikePriceView);
+        infoView = findViewById(R.id.infoView);
+        confirmButton = findViewById(R.id.confirmButton);
+    }
+
+    private void setButton(){
         confirmButton.setOnClickListener(v -> {
             Intent intent2 = new Intent(OrderConfirmation.this, MemberOrNot.class);
             intent2.putExtra("Bike", bikeObject);

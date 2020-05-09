@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -94,13 +94,27 @@ public class RegisterStandard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_standard);
 
+        initButtons();
+        bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
+        setButtons();
+    }
+
+    /**
+     * Connect buttons of UI layer with button objects
+     */
+    private void initButtons(){
         editNameText = findViewById(R.id.editNameText);
         editMailText = findViewById(R.id.editEmailText);
         editPhoneNumer = findViewById(R.id.editPhoneText);
         confirmButton = findViewById(R.id.registerButton1);
+    }
 
-        bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
-
+    /**
+     * Set confirmbutton when clicked:
+     *  - check if inputted data is valid
+     *  - if so we input in database
+     */
+    private void setButtons(){
         confirmButton.setOnClickListener(v -> {
             if(checkValidInputData()){
                 name = editNameText.getText().toString();
@@ -116,7 +130,7 @@ public class RegisterStandard extends AppCompatActivity {
     /**
      * We check if the user doesn't already exist inside the MySql Database
      */
-    public void startRegistration(){
+    private void startRegistration(){
         new ConnectionCheckUserData().execute();
     }
 
@@ -125,7 +139,7 @@ public class RegisterStandard extends AppCompatActivity {
      * @return
      *          True or false
      */
-    public boolean checkValidInputData(){
+    private boolean checkValidInputData(){
         if(editNameText.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(),"Name field empty.\nEnter your name please.",Toast.LENGTH_SHORT).show();
             return false;

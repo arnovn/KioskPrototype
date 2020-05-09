@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,6 +32,11 @@ public class ABikeAdapter extends ArrayAdapter<ABikeObject> {
     private int mResource;
 
     /**
+     * Bike at position
+     */
+    private ABikeObject bike;
+
+    /**
      * Constructor of the ABikeAdapter object
      * @param context
      *          Current context of the application
@@ -61,13 +66,15 @@ public class ABikeAdapter extends ArrayAdapter<ABikeObject> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        int id = Objects.requireNonNull(getItem(position)).getId();
-        int type = Objects.requireNonNull(getItem(position)).getType();
-        double level = Objects.requireNonNull(getItem(position)).getBatteryLevel();
-        double latitude = Objects.requireNonNull(getItem(position)).getLatitude();
-        double longitude = Objects.requireNonNull(getItem(position)).getLongitude();
-        int code = Objects.requireNonNull(getItem(position)).getCode();
-        int bikeStand = Objects.requireNonNull(getItem(position)).getBikeStand();
+        bike = getItem(position);
+
+        int id = Objects.requireNonNull(bike).getId();
+        int type = Objects.requireNonNull(bike).getType();
+        double level = Objects.requireNonNull(bike).getBatteryLevel();
+        double latitude = Objects.requireNonNull(bike).getLatitude();
+        double longitude = Objects.requireNonNull(bike).getLongitude();
+        int code = Objects.requireNonNull(bike).getCode();
+        int bikeStand = Objects.requireNonNull(bike).getBikeStand();
 
         ABikeObject bikeObject = new ABikeObject(id, type, level, latitude, longitude, code, bikeStand);
         LayoutInflater inflater = LayoutInflater.from(mContext);

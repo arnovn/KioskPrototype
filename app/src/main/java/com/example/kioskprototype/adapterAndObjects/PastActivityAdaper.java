@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -33,6 +33,8 @@ public class PastActivityAdaper extends ArrayAdapter<PastActivityObject> {
      */
     private int mResource;
 
+    private PastActivityObject pastActivity;
+
     /**
      * Constructor of the PastActivityObject
      * @param context
@@ -64,14 +66,11 @@ public class PastActivityAdaper extends ArrayAdapter<PastActivityObject> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        int bikeId = Objects.requireNonNull(getItem(position)).getBikeId();
-        Date orderdate = Objects.requireNonNull(getItem(position)).getOrderDate();
-        Date startrent = Objects.requireNonNull(getItem(position)).getStartRent();
-        Date endrent = Objects.requireNonNull(getItem(position)).getEndRent();
-        double amount = Objects.requireNonNull(getItem(position)).getAmount();
-        double amountPayed = Objects.requireNonNull(getItem(position)).getAmountpayed();
+        pastActivity = getItem(position);
+        Date orderdate = Objects.requireNonNull(pastActivity).getOrderDate();
+        double amount = Objects.requireNonNull(pastActivity).getAmount();
+        double amountPayed = Objects.requireNonNull(pastActivity).getAmountpayed();
 
-        PastActivityObject activityObject  = new PastActivityObject(bikeId, orderdate, startrent, endrent, amount, amountPayed);
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent,false);
 
@@ -81,16 +80,16 @@ public class PastActivityAdaper extends ArrayAdapter<PastActivityObject> {
         TextView tobePaidText = convertView.findViewById(R.id.tobePaidViewPA);
         TextView amountPayedText = convertView.findViewById(R.id.payedViewPA);
 
-        bikeNameText.setText(activityObject.getBikeName());
+        bikeNameText.setText(pastActivity.getBikeName());
 
         String pattern = "dd-MM-yy";
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String simpleOrderDate = simpleDateFormat.format(orderdate);
 
         orderDateText.setText(simpleOrderDate);
-        timeRentedText.setText(activityObject.getDuration());
-        tobePaidText.setText("€" + activityObject.getAmount());
-        amountPayedText.setText("€" + activityObject.getAmountpayed());
+        timeRentedText.setText(pastActivity.getDuration());
+        tobePaidText.setText("€" + amount);
+        amountPayedText.setText("€" + amountPayed);
 
         return convertView;
     }

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,7 +68,7 @@ public class FinalScreen extends AppCompatActivity {
      * Initialization of the TextViews
      */
     @SuppressLint("SetTextI18n")
-    public void setViews(){
+    private void setViews(){
         bikeView = findViewById(R.id.bikeView1);
         bikeStandView = findViewById(R.id.bikeStandView);
 
@@ -80,7 +80,7 @@ public class FinalScreen extends AppCompatActivity {
     /**
      * Initialization of the button
      */
-    public void setButton(){
+    private void setButton(){
         lastSignoutButton =  findViewById(R.id.lastSignOut);
 
         lastSignoutButton.setOnClickListener(v -> startActivity(new Intent(FinalScreen.this, MainActivity.class)));
@@ -89,7 +89,7 @@ public class FinalScreen extends AppCompatActivity {
     /**
      * Initialization of the timer
      */
-    public void setTimer(){
+    private void setTimer(){
         timer = new Timer();
 
         timer.schedule(new TimerTask() {

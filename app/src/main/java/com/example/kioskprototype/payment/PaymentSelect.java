@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kioskprototype.MainActivity;
 import com.example.kioskprototype.Order.CreditDelayedConfirmation;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -115,18 +115,8 @@ public class PaymentSelect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_select);
 
-        creditView          = findViewById(R.id.creditView);
-        priceBikeView       = findViewById(R.id.bikePriceView);
-        infoView            = findViewById(R.id.infoViewPS);
-        cardButton    = findViewById(R.id.cardButton);
-        paypalButton    = findViewById(R.id.paypalButton);
-        creditsButton       = findViewById(R.id.creditsButton);
-        delayedButton       = findViewById(R.id.delayedPaymentButton);
-        signOutButton       = findViewById(R.id.signOutButton);
-
-        bikeObject          = (ABikeObject)getIntent().getSerializableExtra("Bike");
-        mail                = getIntent().getStringExtra("Mail");
-        id                  = getIntent().getIntExtra("Id", 0);
+        initUiLayer();
+        getPreviousInfo();
 
         new ConnectionGetUserPaymentInfo().execute();
 
@@ -138,11 +128,34 @@ public class PaymentSelect extends AppCompatActivity {
     }
 
     /**
+     * Connect objects to UI layer elements
+     */
+    private void initUiLayer(){
+        creditView          = findViewById(R.id.creditView);
+        priceBikeView       = findViewById(R.id.bikePriceView);
+        infoView            = findViewById(R.id.infoViewPS);
+        cardButton    = findViewById(R.id.cardButton);
+        paypalButton    = findViewById(R.id.paypalButton);
+        creditsButton       = findViewById(R.id.creditsButton);
+        delayedButton       = findViewById(R.id.delayedPaymentButton);
+        signOutButton       = findViewById(R.id.signOutButton);
+    }
+
+    /**
+     * Retrieve info from previous activity
+     */
+    private void getPreviousInfo(){
+        bikeObject          = (ABikeObject)getIntent().getSerializableExtra("Bike");
+        mail                = getIntent().getStringExtra("Mail");
+        id                  = getIntent().getIntExtra("Id", 0);
+    }
+
+    /**
      * Delayed payment button initializer
      *  -   If not set: Toast to the user ha can't payed delayed
      *  -   If set: we finalize the order
      */
-    public void setDelayedButton(){
+    private void setDelayedButton(){
         delayedButton.setOnClickListener(v -> {
             if(delayedPayment == 0){
                 Toast.makeText(getApplicationContext(),"Failed: delayed payment not set for your account.",Toast.LENGTH_SHORT).show();

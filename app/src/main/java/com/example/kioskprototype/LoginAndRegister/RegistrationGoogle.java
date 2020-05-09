@@ -18,8 +18,8 @@ import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.LoginAndRegister.GooglePollService.SyncService;
 import com.example.kioskprototype.MailSender.GmailSender;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
-import com.example.kioskprototype.adapterView.PhoneDialog;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.PhoneDialog;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -207,7 +207,7 @@ public class RegistrationGoogle extends AppCompatActivity implements PhoneDialog
     /**
      * TextView initializer
      */
-    public void setUserInfoViews(){
+    private void setUserInfoViews(){
         googleUrlView.setText(verificationUrl);
         googleCodeView.setText(userCode);
     }

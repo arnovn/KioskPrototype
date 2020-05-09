@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -51,6 +51,11 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
     private TextView timeDriven;
 
     /**
+     * Pending payment object at position
+     */
+    private PendingPaymentObject pendingPayment;
+
+    /**
      * Constructor of PendingPaymentAdapter
      * @param context
      *              Current context of the application
@@ -83,18 +88,14 @@ public class PendingPaymentAdapter extends ArrayAdapter<PendingPaymentObject> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        int id = Objects.requireNonNull(getItem(position)).getId();
-        int bikeid = Objects.requireNonNull(getItem(position)).getBikeid();
-        Date startRent = Objects.requireNonNull(getItem(position)).getStartRent();
-        Date endRent = Objects.requireNonNull(getItem(position)).getEndRent();
-        double amount = Objects.requireNonNull(getItem(position)).getAmount();
-        double amountPayed = Objects.requireNonNull(getItem(position)).getAmountPayed();
-        int type = Objects.requireNonNull(getItem(position)).getType();
-        double pricePerHour = Objects.requireNonNull(getItem(position)).getPricePerHour();
+        pendingPayment = getItem(position);
+        Date startRent = Objects.requireNonNull(pendingPayment).getStartRent();
+        double amount = Objects.requireNonNull(pendingPayment).getAmount();
+        double amountPayed = Objects.requireNonNull(pendingPayment).getAmountPayed();
+        int type = Objects.requireNonNull(pendingPayment).getType();
 
-        PendingPaymentObject pendingPaymentObject = new PendingPaymentObject(id, bikeid, startRent, endRent, amount, amountPayed, type, pricePerHour);
 
-        ArrayList timeList = pendingPaymentObject.getTimeRented();
+        ArrayList timeList = pendingPayment.getTimeRented();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);

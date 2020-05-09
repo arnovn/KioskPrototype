@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -33,6 +33,11 @@ public class ExtraCreditAdapter extends ArrayAdapter<ExtraCreditObject> {
     private int mResource;
 
     /**
+     * CreditObject at position
+     */
+    private ExtraCreditObject credit;
+
+    /**
      * Constructor of the ExtraCreditAdapter
      * @param context
      *          Current context of the application
@@ -62,10 +67,9 @@ public class ExtraCreditAdapter extends ArrayAdapter<ExtraCreditObject> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
-        Date date = Objects.requireNonNull(getItem(position)).getTimeOrdered();
-        double amount = Objects.requireNonNull(getItem(position)).getAmount();
-
-        ExtraCreditObject extraCreditObject = new ExtraCreditObject(date, amount);
+        credit = getItem(position);
+        Date date = Objects.requireNonNull(credit).getTimeOrdered();
+        double amount = Objects.requireNonNull(credit).getAmount();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);

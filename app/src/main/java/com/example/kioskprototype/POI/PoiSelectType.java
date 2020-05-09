@@ -38,14 +38,23 @@ public class PoiSelectType extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poi_select_type);
+
+        initButtons();
+
+        intent = new Intent(PoiSelectType.this, PoiArrayView.class);
+
+        setOnClickListeners();
+    }
+
+    private void initButtons(){
         restoButton = findViewById(R.id.restButton);
         visitButton = findViewById(R.id.visitButton);
         routesButton = findViewById(R.id.routesButton);
         activitiesButton = findViewById(R.id.activitiesButton);
         poiMapButton = findViewById(R.id.allMapPoiButton);
+    }
 
-        intent = new Intent(PoiSelectType.this, PoiArrayView.class);
-
+    private void setOnClickListeners(){
         restoButton.setOnClickListener(v -> {
             intent.putExtra("Type", 1);
             startActivity(intent);
@@ -68,6 +77,4 @@ public class PoiSelectType extends AppCompatActivity {
 
         poiMapButton.setOnClickListener(v-> startActivity(new Intent(PoiSelectType.this, PoiAllMapView.class)));
     }
-
-
 }

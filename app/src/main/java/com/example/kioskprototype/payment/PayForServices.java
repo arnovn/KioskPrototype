@@ -1,6 +1,7 @@
 package com.example.kioskprototype.payment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,10 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ExtraCreditAdapter;
-import com.example.kioskprototype.adapterView.ExtraCreditObject;
-import com.example.kioskprototype.adapterView.PendingPaymentAdapter;
-import com.example.kioskprototype.adapterView.PendingPaymentObject;
+import com.example.kioskprototype.adapterAndObjects.ExtraCreditAdapter;
+import com.example.kioskprototype.adapterAndObjects.ExtraCreditObject;
+import com.example.kioskprototype.adapterAndObjects.PendingPaymentAdapter;
+import com.example.kioskprototype.adapterAndObjects.PendingPaymentObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -45,6 +46,11 @@ public class PayForServices extends AppCompatActivity {
     int userId;
 
     /**
+     * Id of the order created
+     */
+    int orderId;
+
+    /**
      * Amount of credits the user has on his account (gathered from MySql Database)
      */
     double credits;
@@ -58,6 +64,16 @@ public class PayForServices extends AppCompatActivity {
      * Extra credits the user wants to add to his account
      */
     double extraCredits;
+
+    /**
+     * Method to pay for these services, since only paypal was implemented, it is set to paypal
+     */
+    String paymentMethod;
+
+    /**
+     * Mail of the user
+     */
+    String mail;
 
     /**
      * Total amount of credits to be payed by the user visualization for the UI layer
@@ -108,6 +124,11 @@ public class PayForServices extends AppCompatActivity {
     Button add20Credits;
 
     /**
+     * Checkout button on UI layer
+     */
+    Button checkoutButton;
+
+    /**
      * When the activity is created:
      *  - Lists, TextViews & Buttons are initialized
      *  - Credits/depth is retrieved and set
@@ -119,17 +140,13 @@ public class PayForServices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_for_services);
 
-        pendingPaymentObjects = new ArrayList<>();
-        extraCreditObjects = new ArrayList<>();
-        adapter = new PendingPaymentAdapter(this,R.layout.adapter_pending_payments,pendingPaymentObjects);
-        creditAdapter = new ExtraCreditAdapter(this, R.layout.adapter_extra_credits, extraCreditObjects);
-        listView = findViewById(R.id.paymentList);
-        creditsListView = findViewById(R.id.extraCreditList);
-        creditsListView.setAdapter(creditAdapter);
+        initElements();
 
         amount = 0;
         extraCredits = 0;
         userId = getIntent().getIntExtra("Id", 0);
+        mail = getIntent().getStringExtra("Mail");
+        paymentMethod = "Paypal";
 
         setTextViews();
         setButtons();
@@ -137,6 +154,19 @@ public class PayForServices extends AppCompatActivity {
 
         new ConnectionGetUserCredits().execute();
 
+    }
+
+    /**
+     * Method in charge of initializing the lists, UI layer elements, ...
+     */
+    private void initElements(){
+        pendingPaymentObjects = new ArrayList<>();
+        extraCreditObjects = new ArrayList<>();
+        adapter = new PendingPaymentAdapter(this,R.layout.adapter_pending_payments,pendingPaymentObjects);
+        creditAdapter = new ExtraCreditAdapter(this, R.layout.adapter_extra_credits, extraCreditObjects);
+        listView = findViewById(R.id.paymentList);
+        creditsListView = findViewById(R.id.extraCreditList);
+        creditsListView.setAdapter(creditAdapter);
     }
 
     /**
@@ -163,7 +193,7 @@ public class PayForServices extends AppCompatActivity {
      * When the user added extra credits to his account he can remove them
      *  - when clicked on an object inside the extra credit ListView it is removed and everything is updated
      */
-    public void setCreditListViewListener(){
+    private void setCreditListViewListener(){
         creditsListView.setOnItemClickListener((parent, view, position, id) -> {
             ExtraCreditObject creditObject = creditAdapter.getItem(position);
             assert creditObject != null;
@@ -178,7 +208,7 @@ public class PayForServices extends AppCompatActivity {
      * Method in charge of updating the total amount to be payed when the uses adds or deletes extra credits
      */
     @SuppressLint("SetTextI18n")
-    public void updateAmountView(){
+    private void updateAmountView(){
         double totalAmount;
         if(credits < 0){
             totalAmount = extraCredits - credits;
@@ -191,11 +221,12 @@ public class PayForServices extends AppCompatActivity {
     /**
      * Extra credit button initialization
      */
-    public void setButtons(){
+    private void setButtons(){
         add5Credits = findViewById(R.id.fiveEuroButton);
         add10Credits = findViewById(R.id.tenEuroButton);
         add15Credits = findViewById(R.id.fifteenEuroButton);
         add20Credits = findViewById(R.id.twentyEuroButton);
+        checkoutButton = findViewById(R.id.checkoutButton);
 
         add5Credits.setOnClickListener(v -> {
             Date date = new Date();
@@ -232,14 +263,32 @@ public class PayForServices extends AppCompatActivity {
             extraCredits = extraCredits + 20;
             updateAmountView();
         });
+
+        checkoutButton.setOnClickListener(v->{
+            new ConnectionInsertNewPayment().execute();
+        });
     }
 
     /**
-     * TextVie initialization
+     * TextView initialization
      */
-    public void setTextViews(){
+    private void setTextViews(){
         amountView = findViewById(R.id.amountView);
         depthView = findViewById(R.id.depthView);
+    }
+
+    /**
+     * When new order is created we go to paypal payment activity
+     */
+    private void toPaypalPayment(){
+        Intent paypalIntent = new Intent(PayForServices.this, PaypalPayment.class);
+        paypalIntent.putExtra("Type", "service");
+        paypalIntent.putExtra("Mail", mail);
+        paypalIntent.putExtra("UserId", userId);
+        paypalIntent.putExtra("OrderId", orderId);
+        paypalIntent.putExtra("Amount", (int) extraCredits);
+        paypalIntent.putExtra("Credits", (int) credits);
+        startActivity(paypalIntent);
     }
 
     /**
@@ -388,6 +437,75 @@ public class PayForServices extends AppCompatActivity {
                 }else if(success == 0){
                     listView.setAdapter(adapter);
                     Toast.makeText(getApplicationContext(),"No pending payments.",Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     *  Class in charge of creating new order entry for the payment, status: PENDING
+     */
+    @SuppressLint("StaticFieldLeak")
+    public class ConnectionInsertNewPayment extends AsyncTask<String, String, String> {
+        String result = "";
+
+        /**
+         * Method in charge of querying the database through an HTTP request.
+         * @param strings
+         *          Paramaters passed when the execution of the AsyncTask is called;
+         * @return
+         *          Returns the response of the database.
+         */
+        @Override
+        protected String doInBackground(String... strings) {
+            try{
+                String host;
+                if(credits < 0){
+                    double total = extraCredits - credits;
+                    host = "http://"+ getResources().getString(R.string.ip) +"/insertcreditorder.php?ordername=" + paymentMethod + "&userid=" + userId + "&amount=" + total;
+                }else{
+                    host = "http://"+ getResources().getString(R.string.ip) +"/insertcreditorder.php?ordername=" + paymentMethod + "&userid=" + userId + "&amount=" + extraCredits;
+                }
+
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(host));
+                HttpResponse response = client.execute(request);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuilder stringBuffer = new StringBuilder();
+
+                String line;
+                while((line = reader.readLine()) != null){
+                    stringBuffer.append(line);
+                }
+                reader.close();
+                result = stringBuffer.toString();
+            } catch (Exception e) {
+                System.out.println("The exception: "+e.getMessage());
+                return "The exception: " + e.getMessage();
+            }
+            return result;
+        }
+
+        /**
+         * Method in charge of handling the result gathered from the database:
+         *  - if successful pending payment objects are created & added to the list
+         * @param s
+         *          Parameters passed when the AsyncTask has finished.
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            try{
+                JSONObject jsonResult = new JSONObject(result);
+                int success = jsonResult.getInt("success");
+                if(success == 1){
+                    orderId = jsonResult.getInt("id");
+                    toPaypalPayment();
+                }else if(success == 0){
+                    Toast.makeText(getApplicationContext(),"Error: something went wrong when creating the payment order entry",Toast.LENGTH_LONG).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();

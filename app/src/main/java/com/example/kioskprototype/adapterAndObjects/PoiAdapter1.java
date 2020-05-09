@@ -1,4 +1,4 @@
-package com.example.kioskprototype.adapterView;
+package com.example.kioskprototype.adapterAndObjects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -33,6 +33,11 @@ public class PoiAdapter1 extends ArrayAdapter<PoiObject1> {
     private int mResource;
 
     /**
+     * PoiObject at position
+     */
+    private PoiObject1 poiObject1;
+
+    /**
      * Constructor of PendingPaymentAdapter
      * @param context
      *              Current context of the application
@@ -62,16 +67,15 @@ public class PoiAdapter1 extends ArrayAdapter<PoiObject1> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        int id = Objects.requireNonNull(getItem(position)).getId();
-        int type = Objects.requireNonNull(getItem(position)).getType();
-        String name = Objects.requireNonNull(getItem(position)).getName();
-        String address = Objects.requireNonNull(getItem(position)).getAddress();
-        float distance = Objects.requireNonNull(getItem(position)).getDistance();
-        String description = Objects.requireNonNull(getItem(position)).getDescription();
-        double latitude = Objects.requireNonNull(getItem(position)).getLatitude();
-        double longitude = Objects.requireNonNull(getItem(position)).getLongitude();
-
-        PoiObject1 object1 = new PoiObject1(id,name,address,distance,description,type, latitude, longitude);
+        poiObject1 = getItem(position);
+        int id = Objects.requireNonNull(poiObject1).getId();
+        int type = Objects.requireNonNull(poiObject1).getType();
+        String name = Objects.requireNonNull(poiObject1).getName();
+        String address = Objects.requireNonNull(poiObject1).getAddress();
+        float distance = Objects.requireNonNull(poiObject1).getDistance();
+        String description = Objects.requireNonNull(poiObject1).getDescription();
+        double latitude = Objects.requireNonNull(poiObject1).getLatitude();
+        double longitude = Objects.requireNonNull(poiObject1).getLongitude();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource,parent,false);

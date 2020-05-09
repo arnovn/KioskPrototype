@@ -16,8 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.PastActivityAdaper;
-import com.example.kioskprototype.adapterView.PastActivityObject;
+import com.example.kioskprototype.adapterAndObjects.PastActivityAdaper;
+import com.example.kioskprototype.adapterAndObjects.PastActivityObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -113,7 +113,7 @@ public class PastActivities extends AppCompatActivity {
     /**
      * ButtonListener: when the user presses this, we return to the AccountSettings activity
      */
-    public void setbackButtonListener(){
+    private void setbackButtonListener(){
         backButton.setOnClickListener(v -> {
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_CANCELED, returnIntent);
@@ -126,7 +126,7 @@ public class PastActivities extends AppCompatActivity {
      * We set the dropdown layout as custom_spinner_dropdown layout
      * We fill the entries with the entryList save in the Strings file
      */
-    public void initSpinner(){
+    private void initSpinner(){
         spinner = findViewById(R.id.spinner1);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -141,7 +141,7 @@ public class PastActivities extends AppCompatActivity {
      * Sets a Listener for the spinner, when a new item is selected the pastActivityList needs to be updated.
      * When nothing has been selected, nothing needs to happen.
      */
-    public void setSpinnerListener(){
+    private void setSpinnerListener(){
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -162,7 +162,7 @@ public class PastActivities extends AppCompatActivity {
      * @return
      *          Returns the date from which past activities need to gathered.
      */
-    public String getSelectedDate(){
+    private String getSelectedDate(){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("%27yyyy-MM-dd%20HH:mm:ss%27");
         switch (selected) {
             case "All":
@@ -198,7 +198,7 @@ public class PastActivities extends AppCompatActivity {
     /**
      * Method to choose how we will query the MySql database.
      */
-    public void updateList(){
+    private void updateList(){
         newDate = getSelectedDate();
         if(newDate.equals("All")){
             new ConnectionGetAllTransactions().execute();

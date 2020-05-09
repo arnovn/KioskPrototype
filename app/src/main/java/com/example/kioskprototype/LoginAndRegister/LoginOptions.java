@@ -7,7 +7,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 /**
  * Activity which gives the different login options:
@@ -58,6 +58,10 @@ public class LoginOptions extends AppCompatActivity {
         bikeObject = (ABikeObject)getIntent().getSerializableExtra("Bike");
         type = getIntent().getStringExtra("Type");
 
+        initButtons();
+    }
+
+    private void initButtons(){
         codeLogin = findViewById(R.id.standardButton);
         smsLogin = findViewById(R.id.smsButton);
         rfidButton = findViewById(R.id.rfidButton);

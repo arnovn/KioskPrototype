@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kioskprototype.AccountSettings.AccountSettings;
 import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 import com.example.kioskprototype.payment.PayForServices;
 import com.example.kioskprototype.payment.PaymentSelect;
 
@@ -159,7 +159,7 @@ public class LoginStandardCode extends AppCompatActivity {
      * Connect the TextView objects to the TextViews on the UI layer.
      * Add the TextView objects to the entryList.
      */
-    public void connectTextViews(){
+    private void connectTextViews(){
         firstEntry = findViewById(R.id.codeView1);
         secondEntry = findViewById(R.id.codeView2);
         thirdEntry = findViewById(R.id.codeView3);
@@ -174,7 +174,7 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      * Connect the Button objects to the Buttons on the UI layer.
      */
-    public void connectButtons(){
+    private void connectButtons(){
         deleteButton = findViewById(R.id.buttonDel);
         loginButton = findViewById(R.id.loginButtonStd);
         button1 = findViewById(R.id.entryButton1);
@@ -192,7 +192,7 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      * Initialize the OnClickListeners of the buttons.
      */
-    public void setOnClickListeners(){
+    private void setOnClickListeners(){
         setDeleteButton();
         setLoginButton();
         setButton1();
@@ -210,11 +210,11 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      * Initialize the OnClickListeners of the buttons
      */
-    public void setDeleteButton(){
+    private void setDeleteButton(){
         deleteButton.setOnClickListener(v -> deleteEntry());
     }
 
-    public void setLoginButton(){
+    private void setLoginButton(){
         loginButton.setOnClickListener(v -> checkInput());
     }
 
@@ -292,7 +292,7 @@ public class LoginStandardCode extends AppCompatActivity {
      * @param entry
      *              the code up to now.
      */
-    public void addEntry(String entry){
+    private void addEntry(String entry){
         if(enteredCode.length()<4){
             enteredCode = enteredCode+entry;
             entryList.get(enteredCode.length()-1).setText("*");
@@ -302,7 +302,7 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      *  When the DeleteButton is pressed we remove one of the * of one of the TextViews for feedback to the user
      */
-    public  void deleteEntry(){
+    private  void deleteEntry(){
         if(enteredCode.length()>0){
             enteredCode = enteredCode.substring(0, enteredCode.length()-1);
             entryList.get(enteredCode.length()).setText("");
@@ -312,7 +312,7 @@ public class LoginStandardCode extends AppCompatActivity {
     /**
      * Check the user mail input is inside the MySql Database.
      */
-    public void checkInput() {
+    private void checkInput() {
         //check if mail valid
         if(checkMailEdit()){
             //First check if mail address in database & get code assigned with the mail address
@@ -330,7 +330,7 @@ public class LoginStandardCode extends AppCompatActivity {
      * @return
      *          true or false
      */
-    public boolean checkMailEdit(){
+    private boolean checkMailEdit(){
         return editMailTextStd.getText().toString().trim().matches(mailPattern);
     }
 
@@ -388,7 +388,7 @@ public class LoginStandardCode extends AppCompatActivity {
             case "PayForServices":
                 toPayForServicesWindow();
                 break;
-            case "AccountSettings":
+            case "AccountSettingsLogin":
                 toAccountSettingsWindow();
                 break;
         }

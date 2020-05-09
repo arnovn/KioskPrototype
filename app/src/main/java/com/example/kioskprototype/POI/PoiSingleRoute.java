@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.KioskInfo;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.PoiObject1;
+import com.example.kioskprototype.adapterAndObjects.PoiObject1;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
@@ -102,7 +102,7 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
 
         poiObject1 = (PoiObject1) getIntent().getSerializableExtra("POI");
 
-        kioskInfo = KioskInfo.get();
+        getKioskInfo();
         distanceTextView = findViewById(R.id.distanceViewRoute);
         titleView = findViewById(R.id.routeNameView);
 
@@ -128,6 +128,13 @@ public class PoiSingleRoute extends AppCompatActivity implements OnMapReadyCallb
 
         });
         titleView.setText(poiObject1.getName() + " ROUTE");
+    }
+
+    /**
+     * Retrieve info of the Kiosk
+     */
+    private void getKioskInfo(){
+        kioskInfo = KioskInfo.get();
     }
 
     /**

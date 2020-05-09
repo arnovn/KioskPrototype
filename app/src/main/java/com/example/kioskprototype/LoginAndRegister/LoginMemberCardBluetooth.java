@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kioskprototype.AccountSettings.AccountSettings;
 import com.example.kioskprototype.HashingObject;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
-import com.example.kioskprototype.adapterView.LoadingDialog;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.LoadingDialog;
 import com.example.kioskprototype.payment.PayForServices;
 import com.example.kioskprototype.payment.PaymentSelect;
 

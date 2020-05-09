@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.KioskInfo;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.PoiAdapter1;
-import com.example.kioskprototype.adapterView.PoiObject1;
+import com.example.kioskprototype.adapterAndObjects.PoiAdapter1;
+import com.example.kioskprototype.adapterAndObjects.PoiObject1;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

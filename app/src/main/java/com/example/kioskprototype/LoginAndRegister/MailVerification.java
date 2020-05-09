@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kioskprototype.InstructionVideo;
 import com.example.kioskprototype.R;
-import com.example.kioskprototype.adapterView.ABikeObject;
+import com.example.kioskprototype.adapterAndObjects.ABikeObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class MailVerification extends AppCompatActivity {
      * Connect the TextView Objects to the TextViews in the UI layer.
      * Add them to the entryList
      */
-    public void connectTextViews(){
+    private void connectTextViews(){
         firstEntry = findViewById(R.id.codeView1);
         secondEntry = findViewById(R.id.codeView2);
         thirdEntry = findViewById(R.id.codeView3);
@@ -142,7 +142,7 @@ public class MailVerification extends AppCompatActivity {
      * - If true: We go the InstructionVideo activity
      * - Else: Toast("failed")
      */
-    public void checkCode(){
+    private void checkCode(){
         if(enteredCode.equals(verificationCode)){
             Toast.makeText(getApplicationContext(),"Verification succesful!",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(MailVerification.this, InstructionVideo.class);
@@ -162,7 +162,7 @@ public class MailVerification extends AppCompatActivity {
     /**
      *  When the DeleteButton is pressed we remove one of the * of one of the TextViews for feedback to the user
      */
-    public  void deleteEntry(){
+    private  void deleteEntry(){
         if(enteredCode.length()>0){
             enteredCode = enteredCode.substring(0, enteredCode.length()-1);
             entryList.get(enteredCode.length()).setText("");
@@ -172,7 +172,7 @@ public class MailVerification extends AppCompatActivity {
     /**
      * Connect the Button objects to the Buttons on the UI layer.
      */
-    public void setOnClickListeners(){
+    private void setOnClickListeners(){
         setDeletButton();
         setButton1();
         setButton2();
@@ -189,7 +189,7 @@ public class MailVerification extends AppCompatActivity {
     /**
      * Connect the Button objects to the Buttons on the UI layer.
      */
-    public void connectButtons(){
+    private void connectButtons(){
         deleteButton = findViewById(R.id.buttonDel);
         button1 = findViewById(R.id.entryButton1);
         button2 = findViewById(R.id.entryButton2);

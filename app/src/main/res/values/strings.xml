@@ -3,8 +3,8 @@
     <string name="facebook_app_id">3299183700105486</string>
     <string name="client_token">5fcb0c39dbae5cc40a55705c54c5f067</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiYXJub3Zhbm5lc3RlIiwiYSI6ImNrODRsaWl0YTFqYWYzbHJ1ZnBzbWw5NmgifQ.Y8hF7FV-cQeS1I8ZEh4eNA</string>
-    <string name="ip">192.168.0.122</string>
-    <string name="ipemulator">10.0.2.2</string>
+    <string name="ip">10.0.2.2</string>
+    <string name="ipphone">192.168.0.123</string>
     <string-array name="entrylist">
         <item>All</item>
         <item>Last month</item>

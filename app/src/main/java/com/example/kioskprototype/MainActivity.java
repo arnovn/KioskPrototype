@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     Button payButton;
     Button settingsButton;
 
-    HashingObject hashingObject;
     /**
      * When the activity is created:
      *  - Initialize buttons
