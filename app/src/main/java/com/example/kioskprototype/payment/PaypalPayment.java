@@ -153,7 +153,6 @@ public class PaypalPayment extends AppCompatActivity {
         userId = getIntent().getIntExtra("UserId", 0);
         orderId = getIntent().getIntExtra("OrderId", 0);
         amount = getIntent().getIntExtra("Amount", 0);
-        Toast.makeText(getApplicationContext(),"Type: " + type, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -267,14 +266,11 @@ public class PaypalPayment extends AppCompatActivity {
      */
     private void finalizeOrder(){
         //Start the 3 connections
-        Toast.makeText(getApplicationContext(),"Finalizing order", Toast.LENGTH_SHORT).show();
         if(type.equals("rent")){
-            Toast.makeText(getApplicationContext(),"RENT", Toast.LENGTH_SHORT).show();
             new ConnectionSetInputOrder().execute();
             new ConnectionSetUser().execute();
             new ConnectionSetBike().execute();
         }else if(type.equals("service")){
-            Toast.makeText(getApplicationContext(),"Executing", Toast.LENGTH_SHORT).show();
             new ConnectionSetUserService().execute();
             new ConnectionUpdateUserDepths().execute();
         }
@@ -307,7 +303,6 @@ public class PaypalPayment extends AppCompatActivity {
             sendConfirmationMail();
             toFinalScreen();
         }else if(task2 && task4 && type.equals("service")){
-            Toast.makeText(getApplicationContext(),"TASK SUCESS", Toast.LENGTH_SHORT).show();
             sendConfirmationMail();
 
             Intent toMainIntent = new Intent(PaypalPayment.this, MainActivity.class);
@@ -434,7 +429,6 @@ public class PaypalPayment extends AppCompatActivity {
         protected void onPostExecute(String s) {
             try{
                 if(result.equals("succes")){
-                    Toast.makeText(getApplicationContext(),"Insertion of ORDER successul", Toast.LENGTH_SHORT).show();
                     setTask(true,asyncTask2,asyncTask3,asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Insertion of ORDER failed..", Toast.LENGTH_SHORT).show();
@@ -500,7 +494,6 @@ public class PaypalPayment extends AppCompatActivity {
             try{
                 System.out.println("executing3");
                 if(result.equals("succes")){
-                    Toast.makeText(getApplicationContext(),"Update of USER successul", Toast.LENGTH_SHORT).show();
                     setTask(asyncTask1,true,asyncTask3,asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of USER failed..", Toast.LENGTH_SHORT).show();
@@ -562,7 +555,6 @@ public class PaypalPayment extends AppCompatActivity {
             try{
                 System.out.println("executing3");
                 if(result.equals("succes")){
-                    Toast.makeText(getApplicationContext(),"Update of USER successul", Toast.LENGTH_SHORT).show();
                     setTask(asyncTask1,true,asyncTask3,asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of USER failed..", Toast.LENGTH_SHORT).show();
@@ -622,7 +614,6 @@ public class PaypalPayment extends AppCompatActivity {
         protected void onPostExecute(String s) {
             try{
                 if(result.equals("succes")){
-                    Toast.makeText(getApplicationContext(),"Update of BIKE successful", Toast.LENGTH_SHORT).show();
                     setTask(asyncTask1,asyncTask2, true, asyncTask4);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of BIKE failed..", Toast.LENGTH_SHORT).show();
@@ -681,7 +672,6 @@ public class PaypalPayment extends AppCompatActivity {
         protected void onPostExecute(String s) {
             try{
                 if(result.equals("succes")){
-                    Toast.makeText(getApplicationContext(),"Update of BIKE successful", Toast.LENGTH_SHORT).show();
                     setTask(asyncTask1,asyncTask2, asyncTask3, true);
                 }else if(result.equals("error")){
                     Toast.makeText(getApplicationContext(),"Update of BIKE failed..", Toast.LENGTH_SHORT).show();
